@@ -7,11 +7,11 @@ const navLinks = [
     { id: 'solar', label: 'Solar Solutions', path: '/products/solar' },
     { id: 'storage', label: 'Energy Storage', path: '/products/storage' },
     { id: 'batteries', label: 'Battery Packs', path: '/products/batteries' },
-    { id: 'pumps', label: 'Pumps & Motors', path: '/category/pumps-motors' },
     { id: 'innovation', label: 'Innovation' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' }
 ];
+
 
 
 const productsMenu = {

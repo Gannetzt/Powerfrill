@@ -213,57 +213,6 @@ export const productsData: ProductData[] = [
         description: 'Mobile Power Banks offer portable energy storage for events, construction sites, emergency response, and temporary power needs.',
         solutionId: 'storage'
     },
-    // Pumps and Motors
-    {
-        id: 'pumps-sub',
-        category: 'PUMPS AND MOTORS',
-        categoryPath: ['Pumps and Motors', 'Pumps'],
-        title: 'Pumps',
-        subtitle: 'High-Efficiency Fluid Solutions',
-        image: 'https://images.unsplash.com/photo-1581092921461-7d1a9da9cd61?w=800',
-        features: [
-            { value: 'Industrial', label: 'GRADE' },
-            { value: 'Variable', label: 'SPEED' },
-            { value: 'Corrosion', label: 'RESISTANT' }
-        ],
-        description: 'Our industrial pumps are engineered for demanding environments, providing reliable fluid management for water systems and industrial processes.',
-        advantages: ['Unmatched Reliability', 'Precision Control', 'Low Maintenance Costs'],
-        solutionId: 'industrial'
-    },
-
-    {
-        id: 'motors-sub',
-        category: 'PUMPS AND MOTORS',
-        categoryPath: ['Pumps and Motors', 'Motors'],
-        title: 'Motors',
-        subtitle: 'Powering Industrial Excellence',
-        image: 'https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=800',
-        features: [
-            { value: 'High', label: 'TORQUE' },
-            { value: 'IE4/IE5', label: 'EFFICIENCY' },
-            { value: 'Smart', label: 'MONITORING' }
-        ],
-        description: 'Premium electric motors designed for maximum efficiency and durability, suitable for a wide range of industrial and energy applications.',
-        advantages: ['Energy Efficiency IE5', 'Robust Construction', 'Smart Diagnostics'],
-        solutionId: 'industrial'
-    },
-
-    {
-        id: 'qx-webshop',
-        category: 'PUMPS AND MOTORS',
-        categoryPath: ['Pumps and Motors', 'QX-Webshop'],
-        title: 'QX-Webshop',
-        subtitle: 'Digital Spare Parts Management',
-        image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800',
-        features: [
-            { value: '24/7', label: 'ORDERING' },
-            { value: 'Real-time', label: 'INVENTORY' },
-            { value: 'Global', label: 'SHIPPING' }
-        ],
-        description: 'Our QX-Webshop provides a streamlined digital interface for managing spare parts, technical documentation, and order tracking for all pump and motor systems.',
-        advantages: ['Instant Quotations', 'Global Logistics', 'Technical Archive Access'],
-        solutionId: 'industrial'
-    },
     {
         id: 'lithium-standard',
         category: 'LITHIUM-ION PACKS',
@@ -393,14 +342,6 @@ export const categories: Category[] = [
         image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=1200',
         description: 'Customizable battery configurations tailored to specific power requirements.',
         solutionId: 'batteries'
-    },
-    // Isolated
-    {
-        id: 'pumps-motors',
-        name: 'Pumps and Motors',
-        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1200',
-        description: 'Industrial-grade pumping and motor solutions for water management and energy systems.',
-        solutionId: 'industrial'
     }
 ];
 
