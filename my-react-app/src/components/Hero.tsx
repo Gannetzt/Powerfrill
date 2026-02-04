@@ -7,7 +7,7 @@ const sections = [
     {
         id: 'bess',
         title: 'BESS',
-        subtitle: 'Battery Energy Storage',
+        subtitle: 'Battery Energy Storage System',
         content: 'Grid-scale battery solutions for reliable, sustainable energy storage and distribution.',
         image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920'
     },
@@ -127,8 +127,9 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                         }}
                     >
                         <h1 className="hero-title">
-                            {section.title} <span className="gradient-text">{section.subtitle}</span>
+                            <span className="gradient-text">{section.subtitle}</span>
                         </h1>
+
                         <p className="hero-subtitle">
                             {section.content}
                         </p>
