@@ -1,0 +1,32 @@
+.footer {
+    padding: 1rem 0;
+    background: #000000;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-logo {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}
