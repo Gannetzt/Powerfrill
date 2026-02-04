@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 import { categories, getProductsByCategoryId } from '../data/products';
 import './CategoryDetail.css';
@@ -7,7 +7,8 @@ import './CategoryDetail.css';
 const CategoryDetail: React.FC = () => {
     const { categoryId } = useParams<{ categoryId: string }>();
     const category = categories.find(c => c.id === categoryId);
-    const subCategories = getProductsByCategoryId(categoryId || '');
+    const subProducts = getProductsByCategoryId(categoryId || '');
+    const [activeIndex, setActiveIndex] = useState(0);
 
     if (!category) {
         return (
@@ -17,6 +18,16 @@ const CategoryDetail: React.FC = () => {
             </div>
         );
     }
+
+    const nextSlide = () => {
+        setActiveIndex((prev) => (prev + 1) % subProducts.length);
+    };
+
+    const prevSlide = () => {
+        setActiveIndex((prev) => (prev - 1 + subProducts.length) % subProducts.length);
+    };
+
+    const activeProduct = subProducts[activeIndex];
 
     return (
         <div className="category-detail-page">
@@ -38,43 +49,104 @@ const CategoryDetail: React.FC = () => {
                 <nav className="industrial-breadcrumb">
                     <Link to="/">Home</Link>
                     <span className="sep">›</span>
-                    <Link to="/products">Products</Link>
+                    <Link to="/products/solar">Products</Link>
                     <span className="sep">›</span>
                     <span className="active-crumb">{category.name}</span>
                 </nav>
             </div>
 
-            {/* Content Section */}
+            {/* Combined Slider & Detail Section */}
             <section className="category-content">
                 <div className="container">
-                    <h2 className="section-heading">
-                        {category.name}
-                        <div className="heading-accent" />
-                    </h2>
+                    <div className="product-slider-wrapper">
+                        <button className="slider-arrow left" onClick={prevSlide}>‹</button>
 
-                    <div className="sub-category-grid">
-                        {subCategories.map((sub, index) => (
-                            <motion.div
-                                key={sub.id}
-                                className="sub-category-card"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                            >
-                                <Link to={`/product/${sub.id}`} className="card-link">
-                                    <div className="card-image-wrap">
-                                        <img src={sub.image} alt={sub.title} className="card-image" />
+                        <div className="product-slider-container">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeProduct.id}
+                                    initial={{ opacity: 0, x: 100 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -100 }}
+                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    className="active-slide-content"
+                                >
+                                    <div className="slide-image-container">
+                                        <img src={activeProduct.image} alt={activeProduct.title} className="slide-main-image" />
                                     </div>
-                                    <div className="card-info">
-                                        <h3 className="card-title">{sub.title}</h3>
-                                        <div className="expand-indicator">
-                                            <span className="plus">+</span>
-                                        </div>
+
+                                    <div className="slide-main-info">
+                                        <motion.h2
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            className="active-product-title"
+                                        >
+                                            {activeProduct.title}
+                                        </motion.h2>
+                                        <motion.p
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{ delay: 0.1 }}
+                                            className="active-product-subtitle"
+                                        >
+                                            {activeProduct.subtitle}
+                                        </motion.p>
                                     </div>
-                                </Link>
-                            </motion.div>
-                        ))}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+
+                        <button className="slider-arrow right" onClick={nextSlide}>›</button>
+
+                        <div className="slider-dots">
+                            {subProducts.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    className={`dot ${idx === activeIndex ? 'active' : ''}`}
+                                    onClick={() => setActiveIndex(idx)}
+                                />
+                            ))}
+                        </div>
                     </div>
+
+                    {/* Technical Details (Below Image) */}
+                    <motion.div
+                        key={`details-${activeProduct.id}`}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="product-detail-expanded"
+                    >
+                        <div className="detail-grid">
+                            <div className="detail-main">
+                                <h3 className="detail-section-label">Overview</h3>
+                                <p className="detail-description">{activeProduct.description}</p>
+
+                                {activeProduct.advantages && (
+                                    <div className="advantages-section">
+                                        <h3 className="detail-section-label">Key Advantages</h3>
+                                        <ul className="advantages-list">
+                                            {activeProduct.advantages.map((adv, i) => (
+                                                <li key={i}>{adv}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="detail-sidebar">
+                                <h3 className="detail-section-label">Technical Stats</h3>
+                                <div className="detail-features">
+                                    {activeProduct.features.map((feature, index) => (
+                                        <div key={index} className="detail-feature-item">
+                                            <span className="feature-val">{feature.value}</span>
+                                            <span className="feature-lab">{feature.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
             </section>
         </div>
@@ -82,3 +154,4 @@ const CategoryDetail: React.FC = () => {
 };
 
 export default CategoryDetail;
+
