@@ -124,7 +124,8 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <header className="header">
+            <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
+
                 <div className="header-container">
                     <Link to="/" onClick={() => window.scrollTo(0, 0)}>
                         <img src={logo} alt="Powerfrill" className="logo-img" />
