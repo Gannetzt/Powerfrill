@@ -16,6 +16,7 @@ interface ProductPageProps {
     image: string;
     features: Feature[];
     description: string;
+    advantages?: string[];
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({
@@ -25,8 +26,11 @@ const ProductPage: React.FC<ProductPageProps> = ({
     subtitle,
     image,
     features,
-    description
+    description,
+    advantages
 }) => {
+
+
     return (
         <motion.div
             className="product-page"
@@ -106,7 +110,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                         ))}
                     </motion.div>
 
-                    {/* Description - Inside Info for desktop layout balance? */}
+                    {/* Description */}
                     <motion.p
                         className="product-description"
                         initial={{ opacity: 0 }}
@@ -115,6 +119,24 @@ const ProductPage: React.FC<ProductPageProps> = ({
                     >
                         {description}
                     </motion.p>
+
+                    {/* Advantages */}
+                    {advantages && (
+                        <motion.div
+                            className="product-advantages"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1, duration: 0.6 }}
+                        >
+                            <h3 className="advantages-title">Key Advantages</h3>
+                            <ul className="advantages-list">
+                                {advantages.map((adv, i) => (
+                                    <li key={i}>{adv}</li>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    )}
+
                 </div>
             </div>
         </motion.div>

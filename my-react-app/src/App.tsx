@@ -6,7 +6,9 @@ import Features from './components/Features'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
+import CategoryDetail from './components/CategoryDetail'
 import { getProductById } from './data/products'
+
 
 function ProductPageWrapper() {
   const { productId } = useParams<{ productId: string }>();
@@ -54,8 +56,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsOverview />} />
+          <Route path="/category/:categoryId" element={<CategoryDetail />} />
           <Route path="/product/:productId" element={<ProductPageWrapper />} />
         </Routes>
+
       </div>
     </BrowserRouter>
   )

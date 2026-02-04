@@ -38,14 +38,18 @@ const ProductsOverview: React.FC = () => {
                             <div className="card-content">
                                 <h3 className="card-title">{category.name}</h3>
                                 {focusedCategoryId === category.id && (
-                                    <motion.p
+                                    <motion.div
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="card-description"
+                                        className="card-details-reveal"
                                     >
-                                        {category.description}
-                                    </motion.p>
+                                        <p className="card-description">{category.description}</p>
+                                        <Link to={`/category/${category.id}`} className="view-category-link" onClick={(e) => e.stopPropagation()}>
+                                            View Professional Series →
+                                        </Link>
+                                    </motion.div>
                                 )}
+
                             </div>
                         </motion.div>
                     ))}

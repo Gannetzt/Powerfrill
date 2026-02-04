@@ -162,10 +162,46 @@
     font-size: 1rem;
     line-height: 1.8;
     max-width: 850px;
-    margin-top: 3rem;
+    margin-top: 2rem;
     font-weight: 400;
     letter-spacing: 0.2px;
 }
+
+.product-advantages {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.advantages-title {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.advantages-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.advantages-list li {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.advantages-list li::before {
+    content: '✓';
+    color: #3b82f6;
+    font-weight: bold;
+}
+
 
 /* Responsive */
 @media (max-width: 1100px) {

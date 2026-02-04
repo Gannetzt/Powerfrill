@@ -99,7 +99,25 @@
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.6);
     line-height: 1.6;
+    margin-bottom: 1rem;
 }
+
+.view-category-link {
+    display: inline-block;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.view-category-link:hover {
+    color: #60a5fa;
+    border-bottom-color: #60a5fa;
+    transform: translateX(5px);
+}
+
 
 .sub-items-section {
     max-width: 1200px;
