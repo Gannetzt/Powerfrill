@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import './SideNav.css';
 
-const navItems = [
+const defaultNavItems = [
     { id: 'bess', label: 'BESS' },
     { id: 'application', label: 'Application' },
     { id: 'innovation', label: 'Innovation' },
@@ -12,9 +12,12 @@ const navItems = [
 
 interface SideNavProps {
     containerRef: React.RefObject<HTMLDivElement | null>;
+    customItems?: { id: string; label: string }[];
 }
 
-const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
+const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
+    const navItems = customItems || defaultNavItems;
+
     // Tracking scroll progress of the main container for real-time indicator
     const { scrollYProgress } = useScroll({
         container: containerRef,
@@ -28,11 +31,12 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
     });
 
     // Map progress (0-1) to the vertical position. 
-    // Total line height is (navItems.length - 1) * 3.5rem (matches CSS gap)
-    const indicatorTop = useTransform(smoothProgress, [0, 1], ["0rem", "14rem"]);
+    // Each item is 3.5rem apart in height (gap)
+    const totalHeight = (navItems.length - 1) * 3.5;
+    const indicatorTop = useTransform(smoothProgress, [0, 1], ["0rem", `${totalHeight}rem`]);
 
     // Determine active section based on progress ranges
-    const [activeSection, setActiveSection] = useState('bess');
+    const [activeSection, setActiveSection] = useState(navItems[0].id);
 
     useEffect(() => {
         return scrollYProgress.onChange((v) => {
@@ -41,7 +45,7 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
                 setActiveSection(navItems[index].id);
             }
         });
-    }, [scrollYProgress]);
+    }, [scrollYProgress, navItems]);
 
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
@@ -54,7 +58,7 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
         <div className="side-nav-wrapper">
             <div className="side-nav-content">
                 {/* Continuous Vertical Line */}
-                <div className="nav-vertical-line">
+                <div className="nav-vertical-line" style={{ height: `${totalHeight}rem` }}>
                     <motion.div
                         className="nav-active-indicator"
                         style={{ top: indicatorTop }}
@@ -78,3 +82,4 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
 };
 
 export default SideNav;
+

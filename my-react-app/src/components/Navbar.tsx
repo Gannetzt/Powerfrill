@@ -16,38 +16,27 @@ const productsMenu = {
     categories: [
         {
             name: 'Solar energy & Solar Power Solutions',
-            path: '/products/solar',
-            items: [
-                { name: 'Solar Panels', id: 'solar-panels' },
-                { name: 'Autonomous Cleaning Robotic Systems', id: 'robotic-systems' },
-                { name: 'Active tracking Systems', id: 'tracking-systems' },
-                { name: 'Miscellaneous', id: 'miscellaneous' }
-            ]
+            path: '/products',
+            anchor: 'solar'
         },
         {
             name: 'Energy storage systems',
-            path: '/products/storage',
-            items: [
-                { name: 'Residential Storage', id: 'residential-storage' },
-                { name: 'Industrial Storage', id: 'industrial-storage' }
-            ]
+            path: '/products',
+            anchor: 'storage'
         },
         {
             name: 'Battery Packs',
-            path: '/products/batteries',
-            items: [
-                { name: 'Lithium-Ion Packs', id: 'lithium-packs' },
-                { name: 'Custom Modular Systems', id: 'modular-systems' }
-            ]
+            path: '/products',
+            anchor: 'batteries'
         }
     ]
 };
 
 
+
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [showProducts, setShowProducts] = useState(false);
-    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -77,15 +66,6 @@ const Navbar: React.FC = () => {
     };
 
 
-
-    const handleProductClick = () => {
-        setIsMenuOpen(false);
-        setShowProducts(false);
-    };
-
-    const toggleCategory = (name: string) => {
-        setExpandedCategory(expandedCategory === name ? null : name);
-    };
 
     // Handle scroll on mount if navigating back to home
     React.useEffect(() => {
@@ -154,41 +134,25 @@ const Navbar: React.FC = () => {
                         <div className="products-categories">
                             {productsMenu.categories.map((category) => (
                                 <div key={category.name} className="category-group">
-                                    <div className="category-header-row">
-                                        <button
-                                            className={`category-header ${expandedCategory === category.name ? 'expanded' : ''}`}
-                                            onClick={() => toggleCategory(category.name)}
-                                        >
-                                            {category.name}
-                                            <span className="chevron">{expandedCategory === category.name ? '−' : '+'}</span>
-                                        </button>
+                                    <div className="category-header-row single-link">
                                         <Link
                                             to={category.path}
-                                            className="hub-overview-link"
-                                            onClick={handleProductClick}
+                                            state={{ scrollTo: category.anchor }}
+                                            className="category-header hub-full-link"
+                                            onClick={() => {
+                                                setIsMenuOpen(false);
+                                                setShowProducts(false);
+                                            }}
                                         >
-                                            View Overview
+                                            {category.name}
+                                            <span className="chevron">→</span>
                                         </Link>
                                     </div>
-
-                                    {expandedCategory === category.name && (
-                                        <div className="category-items">
-                                            {category.items.map((item) => (
-                                                <Link
-                                                    key={item.id}
-                                                    to={`/category/${item.id}`}
-                                                    className="product-item"
-                                                    onClick={handleProductClick}
-                                                >
-                                                    {item.name}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
+
                 )}
 
             </div>
