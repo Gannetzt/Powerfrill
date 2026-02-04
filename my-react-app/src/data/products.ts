@@ -58,8 +58,8 @@ export const productsData: ProductData[] = [
     // Autonomous Cleaning Robotic Systems
     {
         id: 'dobby-r1',
-        category: 'ROBOTIC SYSTEMS',
-        categoryPath: ['Autonomous Cleaning', 'Dobby R1'],
+        category: 'AUTONOMOUS CLEANING ROBOTIC SYSTEMS',
+        categoryPath: ['Autonomous Cleaning Robotic Systems', 'Dobby R1'],
         title: 'Dobby R1',
         subtitle: 'Compact Autonomous Panel Cleaner',
         image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
@@ -72,8 +72,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'dobby-r2',
-        category: 'ROBOTIC SYSTEMS',
-        categoryPath: ['Autonomous Cleaning', 'Dobby R2'],
+        category: 'AUTONOMOUS CLEANING ROBOTIC SYSTEMS',
+        categoryPath: ['Autonomous Cleaning Robotic Systems', 'Dobby R2'],
         title: 'Dobby R2',
         subtitle: 'Industrial-Grade Cleaning Robot',
         image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800',
@@ -87,8 +87,8 @@ export const productsData: ProductData[] = [
     // Active Tracking Systems
     {
         id: 'single-axis-tracker',
-        category: 'TRACKING SYSTEMS',
-        categoryPath: ['Active Tracking', 'Single Axis Tracker'],
+        category: 'ACTIVE TRACKING SYSTEMS',
+        categoryPath: ['Active tracking Systems', 'Single Axis Tracker'],
         title: 'Single Axis Tracker',
         subtitle: 'East-West Solar Tracking',
         image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800',
@@ -101,8 +101,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'dual-axis-tracker',
-        category: 'TRACKING SYSTEMS',
-        categoryPath: ['Active Tracking', 'Dual Axis Tracker'],
+        category: 'ACTIVE TRACKING SYSTEMS',
+        categoryPath: ['Active tracking Systems', 'Dual Axis Tracker'],
         title: 'Dual Axis Tracker',
         subtitle: 'Full Sun Path Optimization',
         image: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=800',
@@ -115,8 +115,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'weather-mitigation',
-        category: 'TRACKING SYSTEMS',
-        categoryPath: ['Active Tracking', 'Weather Mitigation'],
+        category: 'ACTIVE TRACKING SYSTEMS',
+        categoryPath: ['Active tracking Systems', 'Weather Mitigation'],
         title: 'Weather Mitigation System',
         subtitle: 'Intelligent Storm Protection',
         image: 'https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=800',
@@ -130,8 +130,8 @@ export const productsData: ProductData[] = [
     // Energy Storage Systems
     {
         id: 'micro-power-banks',
-        category: 'ENERGY STORAGE',
-        categoryPath: ['Energy Storage', 'Micro Power Banks'],
+        category: 'MISCELLANEOUS',
+        categoryPath: ['Miscellaneous', 'Micro Power Banks'],
         title: 'Micro Power Banks',
         subtitle: 'Residential Energy Storage',
         image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800',
@@ -144,8 +144,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'enterprise-power-banks',
-        category: 'ENERGY STORAGE',
-        categoryPath: ['Energy Storage', 'Enterprise Power Banks'],
+        category: 'MISCELLANEOUS',
+        categoryPath: ['Miscellaneous', 'Enterprise Power Banks'],
         title: 'Enterprise Power Banks',
         subtitle: 'Commercial Energy Solutions',
         image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800',
@@ -158,8 +158,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'energy-farms',
-        category: 'ENERGY STORAGE',
-        categoryPath: ['Energy Storage', 'Energy Farms'],
+        category: 'MISCELLANEOUS',
+        categoryPath: ['Miscellaneous', 'Energy Farms'],
         title: 'Energy Farms – Containerized Banks',
         subtitle: 'Large-Scale Containerized Storage',
         image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800',
@@ -172,8 +172,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'utility-scale',
-        category: 'ENERGY STORAGE',
-        categoryPath: ['Energy Storage', 'Utility Scale'],
+        category: 'MISCELLANEOUS',
+        categoryPath: ['Miscellaneous', 'Utility Scale'],
         title: 'Utility Scale Energy Storage',
         subtitle: 'Grid-Level Power Solutions',
         image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800',
@@ -186,8 +186,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'mobile-power-banks',
-        category: 'ENERGY STORAGE',
-        categoryPath: ['Energy Storage', 'Mobile Power Banks'],
+        category: 'MISCELLANEOUS',
+        categoryPath: ['Miscellaneous', 'Mobile Power Banks'],
         title: 'Mobile Power Banks',
         subtitle: 'Portable Energy Solutions',
         image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
@@ -262,25 +262,25 @@ export const categories: Category[] = [
         id: 'solar-panels',
         name: 'Solar Panels',
         image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200',
-        description: 'Advanced solar cell technology for maximum energy yield and long-term durability.'
+        description: 'Advanced mono-facial, bi-facial, and TOPCon technologies for maximum energy yield.'
     },
     {
         id: 'robotic-systems',
-        name: 'Autonomous Cleaning',
+        name: 'Autonomous Cleaning Robotic Systems',
         image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200',
-        description: 'Intelligent robotic solutions to maintain peak efficiency of your solar installations.'
+        description: 'Intelligent robotic solutions (Dobby R1 & R2) to maintain peak industrial efficiency.'
     },
     {
         id: 'tracking-systems',
-        name: 'Active Tracking',
+        name: 'Active tracking Systems',
         image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200',
-        description: 'Maximize energy capture with intelligent solar tracking systems that follow the sun.'
+        description: 'Single/Dual axis and weather mitigation systems for full sun path optimization.'
     },
     {
-        id: 'energy-storage',
-        name: 'Energy Storage',
-        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1200',
-        description: 'Reliable battery storage solutions from residential power banks to utility-scale farms.'
+        id: 'miscellaneous',
+        name: 'Miscellaneous',
+        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200',
+        description: 'Custom energy components and additional solar power supporting technologies.'
     },
     {
         id: 'pumps-motors',
@@ -289,6 +289,7 @@ export const categories: Category[] = [
         description: 'Industrial-grade pumping and motor solutions for water management and energy systems.'
     }
 ];
+
 
 // Add specific types for the new category to productsData
 // I'll add these at the end of productsData array
