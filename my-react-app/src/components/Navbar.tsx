@@ -4,73 +4,36 @@ import './Navbar.css';
 import logo from '../assets/powerfrill-logo.png';
 
 
-const productsMenu = {
-    title: 'Solar Energy & Solar Power Solutions',
-    categories: [
-        {
-            name: 'Solar Panels',
-            items: [
-                { label: 'Mono Facial', id: 'mono-facial' },
-                { label: 'Bi-Facial', id: 'bi-facial' },
-                { label: 'Topcon', id: 'topcon' }
-            ]
-        },
-        {
-            name: 'Autonomous Cleaning Robotic Systems',
-            items: [
-                { label: 'Dobby R1', id: 'dobby-r1' },
-                { label: 'Dobby R2', id: 'dobby-r2' }
-            ]
-        },
-        {
-            name: 'Active Tracking Systems',
-            items: [
-                { label: 'Single Axis Tracker', id: 'single-axis-tracker' },
-                { label: 'Dual Axis Tracker', id: 'dual-axis-tracker' },
-                { label: 'Weather Mitigation System', id: 'weather-mitigation' }
-            ]
-        },
-        {
-            name: 'Miscellaneous',
-            items: [
-                { label: 'On Grid Inverters', id: 'on-grid-inverters' },
-                { label: 'Off Grid Inverters', id: 'off-grid-inverters' },
-                { label: 'Hybrid Inverters', id: 'hybrid-inverters' },
-                { label: 'Solar Net Meters', id: 'solar-net-meters' },
-                { label: 'Earthing & Lightning Arresters', id: 'earthing-arresters' },
-                { label: 'SCADA & Data Logger Systems', id: 'scada-systems' },
-                { label: 'Plant Efficiency Management Systems', id: 'efficiency-systems' },
-                { label: 'Computer Aided Framework', id: 'computer-framework' },
-                { label: 'Pre Treated Steel Frames', id: 'steel-frames' },
-                { label: 'Prefabricated Mounting Structures', id: 'mounting-structures' }
-            ]
-        },
-        {
-            name: 'Energy Storage Systems',
-            items: [
-                { label: 'Micro Power Banks', id: 'micro-power-banks' },
-                { label: 'Enterprise Power Banks', id: 'enterprise-power-banks' },
-                { label: 'Energy Farms – Containerized Banks', id: 'energy-farms' },
-                { label: 'Utility Scale Energy Storage', id: 'utility-scale' },
-                { label: 'Mobile Power Banks', id: 'mobile-power-banks' }
-            ]
-        }
-    ]
-};
+const navLinks = [
+    { id: 'products', label: 'Products', path: '/products', type: 'link' },
+    { id: 'bess', label: 'BESS', type: 'scroll' },
+    { id: 'application', label: 'Application', type: 'scroll' },
+    { id: 'innovation', label: 'Innovation', type: 'scroll' },
+    { id: 'about', label: 'About', type: 'scroll' },
+    { id: 'contact', label: 'Contact', type: 'scroll' }
+];
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleProductClick = () => {
+    const handleNavClick = (id: string, type: string, path?: string) => {
         setIsMenuOpen(false);
-    };
 
-    const toggleCategory = (name: string) => {
-        setExpandedCategory(expandedCategory === name ? null : name);
+        if (type === 'link' && path) {
+            navigate(path);
+            window.scrollTo(0, 0);
+        } else {
+            if (location.pathname !== '/') {
+                navigate('/', { state: { scrollTo: id } });
+            } else {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
     };
 
     // Handle scroll on mount if navigating back to home
@@ -118,36 +81,17 @@ const Navbar: React.FC = () => {
             </header>
 
             <div className={`fullscreen-menu ${isMenuOpen ? 'open' : ''}`}>
-                <div className="products-panel">
-                    <h2 className="products-title">{productsMenu.title}</h2>
-                    <div className="products-categories">
-                        {productsMenu.categories.map((category) => (
-                            <div key={category.name} className="category-group">
-                                <button
-                                    className={`category-header ${expandedCategory === category.name ? 'expanded' : ''}`}
-                                    onClick={() => toggleCategory(category.name)}
-                                >
-                                    {category.name}
-                                    <span className="chevron">{expandedCategory === category.name ? '−' : '+'}</span>
-                                </button>
-                                {expandedCategory === category.name && (
-                                    <div className="category-items">
-                                        {category.items.map((item) => (
-                                            <Link
-                                                key={item.id}
-                                                to={`/product/${item.id}`}
-                                                className="product-item"
-                                                onClick={handleProductClick}
-                                            >
-                                                {item.label}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <nav className="menu-content">
+                    {navLinks.map((link) => (
+                        <button
+                            key={link.id}
+                            className="menu-link"
+                            onClick={() => handleNavClick(link.id, link.type, link.path)}
+                        >
+                            {link.label}
+                        </button>
+                    ))}
+                </nav>
             </div>
         </>
     );
