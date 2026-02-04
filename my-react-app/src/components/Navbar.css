@@ -111,26 +111,24 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    /* Darker for better contrast */
-    backdrop-filter: blur(30px);
-    /* Stronger blur */
-    -webkit-backdrop-filter: blur(30px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
     z-index: 2000;
-    /* Ensure it stays above EVERYTHING */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    visibility: hidden;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateZ(0);
 }
-
 
 .fullscreen-menu.open {
     opacity: 1;
-    visibility: visible;
+    pointer-events: auto;
 }
+
 
 .menu-content {
     display: flex;
@@ -196,10 +194,18 @@
 .products-panel {
     width: 100%;
     max-width: 800px;
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: auto;
-    padding: 2rem;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
+
 
 .back-btn {
     background: transparent;
@@ -238,10 +244,13 @@
 
 .category-header {
     width: 100%;
-    padding: 1rem 1.25rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
+    padding: 1.1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    /* Unified translucent background */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
     color: #ffffff;
     font-size: 0.95rem;
     font-weight: 600;
@@ -250,8 +259,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 .category-header:hover {
     background: rgba(255, 255, 255, 0.15);
