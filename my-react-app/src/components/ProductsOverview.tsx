@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { categories } from '../data/products';
+import { categories, solutions } from '../data/products';
 import './ProductsOverview.css';
 
 const ProductsOverview: React.FC = () => {
@@ -15,7 +15,7 @@ const ProductsOverview: React.FC = () => {
                         animate={{ y: 0, opacity: 1 }}
                         className="products-hero-title"
                     >
-                        Solar energy & Solar Power Solutions
+                        Our Industrial Solutions
                     </motion.h1>
                 </div>
             </section>
@@ -25,48 +25,58 @@ const ProductsOverview: React.FC = () => {
                 <nav className="industrial-breadcrumb">
                     <Link to="/">Home</Link>
                     <span className="sep">›</span>
-                    <Link to="/products">Products</Link>
-                    <span className="sep">›</span>
-                    <span className="active-crumb">Solar energy & Solar Power Solutions</span>
+                    <span className="active-crumb">Products Portfolio</span>
                 </nav>
             </div>
 
-            {/* Category Content Section */}
-            <section className="products-content-section">
-                <div className="container">
-                    <h2 className="section-heading">
-                        Our Solutions
-                        <div className="heading-accent" />
-                    </h2>
+            {/* Hub Sections */}
+            <div className="portal-hubs-container">
+                {solutions.map((hub) => {
+                    const hubCategories = categories.filter(cat => cat.solutionId === hub.id);
+                    if (hubCategories.length === 0) return null;
 
-                    <div className="category-grid">
-                        {categories.map((category, index) => (
-                            <motion.div
-                                key={category.id}
-                                className="category-major-card"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                            >
-                                <Link to={`/category/${category.id}`} className="card-link">
-                                    <div className="card-image-wrap">
-                                        <img src={category.image} alt={category.name} className="card-image" />
-                                    </div>
-                                    <div className="card-info">
-                                        <h3 className="card-title">{category.name}</h3>
-                                        <p className="card-description">{category.description}</p>
-                                        <div className="expand-indicator">
-                                            <span className="plus">+</span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                    return (
+                        <section key={hub.id} className="hub-portfolio-section">
+                            <div className="container">
+                                <div className="hub-portfolio-header">
+                                    <h2 className="hub-portfolio-title">
+                                        {hub.title}
+                                        <div className="hub-underline" />
+                                    </h2>
+                                </div>
+
+                                <div className="category-grid">
+                                    {hubCategories.map((category, index) => (
+                                        <motion.div
+                                            key={category.id}
+                                            className="category-major-card"
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: index * 0.1 }}
+                                        >
+                                            <Link to={`/category/${category.id}`} className="card-link">
+                                                <div className="card-image-wrap">
+                                                    <img src={category.image} alt={category.name} className="card-image" />
+                                                </div>
+                                                <div className="card-info">
+                                                    <h3 className="card-title">{category.name}</h3>
+                                                    <p className="card-description">{category.description}</p>
+                                                    <div className="expand-indicator">
+                                                        <span className="plus">+</span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    );
+                })}
+            </div>
         </div>
     );
 };
 
 export default ProductsOverview;
+
