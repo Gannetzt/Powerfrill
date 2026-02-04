@@ -2,7 +2,6 @@ import './index.css'
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Features from './components/Features'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
@@ -41,7 +40,6 @@ function HomePage() {
     <>
       <main>
         <Hero />
-        <Features />
       </main>
       <Footer />
     </>
