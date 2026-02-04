@@ -1,152 +1,105 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import { solutions, getCategoriesBySolutionId, getProductsByCategoryId } from '../data/products';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, Link } from 'react-router-dom';
+import { solutions, getProductsByCategoryId, categories } from '../data/products';
 import SideNav from './SideNav';
 import './ProductsOverview.css';
-import './Hero.css'; // Reuse core storytelling styles
 
-interface CategorySliderProps {
-    categoryId: string;
-    categoryName: string;
+interface ProductSliderProps {
+    solutionId: string;
 }
 
-const CategorySlider: React.FC<CategorySliderProps> = ({ categoryId, categoryName }) => {
-    const products = getProductsByCategoryId(categoryId);
+const ProductSlider: React.FC<ProductSliderProps> = ({ solutionId }) => {
+    // Collect all products for this solution hub across its categories
+    const solutionCategories = categories.filter(c => c.solutionId === solutionId);
+    const allProducts = solutionCategories.flatMap(cat => getProductsByCategoryId(cat.id));
+
     const [activeIndex, setActiveIndex] = useState(0);
-    const activeProduct = products[activeIndex];
+    const activeProduct = allProducts[activeIndex];
 
-    const nextSlide = () => setActiveIndex((prev) => (prev + 1) % products.length);
-    const prevSlide = () => setActiveIndex((prev) => (prev - 1 + products.length) % products.length);
+    const nextSlide = () => setActiveIndex((prev) => (prev + 1) % allProducts.length);
+    const prevSlide = () => setActiveIndex((prev) => (prev - 1 + allProducts.length) % allProducts.length);
 
-    if (products.length === 0) return null;
+    if (allProducts.length === 0) return null;
 
     return (
-        <div className="category-slider-block">
-            <h3 className="category-inline-title">{categoryName}</h3>
+        <div className="hub-slider-wrapper">
+            <div className="slider-main-area">
+                <button className="slider-nav-btn prev" onClick={prevSlide}>
+                    <span className="arrow-icon">‹</span>
+                </button>
 
-            <div className="product-slider-wrapper">
-                <button className="slider-arrow left" onClick={prevSlide}>‹</button>
-
-                <div className="product-slider-container">
+                <div className="slider-card-container">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeProduct.id}
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -50 }}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.02 }}
                             transition={{ duration: 0.4 }}
-                            className="active-slide-content"
+                            className="product-detail-slide"
                         >
-                            <div className="slide-image-container">
-                                <img src={activeProduct.image} alt={activeProduct.title} className="slide-main-image" />
+                            <div className="slide-layout">
+                                {/* Left Side: High Density Image */}
+                                <div className="slide-image-side">
+                                    <div className="category-tag">{activeProduct.category}</div>
+                                    <div className="image-frame">
+                                        <img src={activeProduct.image} alt={activeProduct.title} className="slide-image" />
+                                    </div>
+                                </div>
+
+                                {/* Right Side: Technical Specs */}
+                                <div className="slide-info-side">
+                                    <h2 className="slide-title">{activeProduct.title}</h2>
+                                    <p className="slide-subtitle">{activeProduct.subtitle}</p>
+
+                                    <div className="slide-stats-grid">
+                                        {activeProduct.features.map((feature, idx) => (
+                                            <div key={idx} className="stat-box">
+                                                <span className="stat-value">{feature.value}</span>
+                                                <span className="stat-label">{feature.label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="slide-main-info">
-                                <h2 className="active-product-title">{activeProduct.title}</h2>
-                                <p className="active-product-subtitle">{activeProduct.subtitle}</p>
+                            {/* Bottom: Detailed Description */}
+                            <div className="slide-footer-details">
+                                <div className="detail-section">
+                                    <h4 className="detail-section-label">Overview</h4>
+                                    <p className="detail-description">{activeProduct.description}</p>
+                                </div>
+                                {activeProduct.advantages && (
+                                    <div className="detail-section">
+                                        <h4 className="detail-section-label">Key Advantages</h4>
+                                        <ul className="advantages-list">
+                                            {activeProduct.advantages.map((adv, i) => (
+                                                <li key={i}>{adv}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     </AnimatePresence>
                 </div>
 
-                <button className="slider-arrow right" onClick={nextSlide}>›</button>
-
-                <div className="slider-dots">
-                    {products.map((_, idx) => (
-                        <button
-                            key={idx}
-                            className={`dot ${idx === activeIndex ? 'active' : ''}`}
-                            onClick={() => setActiveIndex(idx)}
-                        />
-                    ))}
-                </div>
+                <button className="slider-nav-btn next" onClick={nextSlide}>
+                    <span className="arrow-icon">›</span>
+                </button>
             </div>
 
-            {/* Technical Details Below Slider */}
-            <motion.div
-                key={`details-${activeProduct.id}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="product-detail-expanded"
-            >
-                <div className="detail-grid">
-                    <div className="detail-main">
-                        <h4 className="detail-section-label">Overview</h4>
-                        <p className="detail-description">{activeProduct.description}</p>
-
-                        {activeProduct.advantages && (
-                            <div className="advantages-section">
-                                <h4 className="detail-section-label">Key Advantages</h4>
-                                <ul className="advantages-list">
-                                    {activeProduct.advantages.map((adv, i) => (
-                                        <li key={i}>{adv}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="detail-sidebar">
-                        <h4 className="detail-section-label">Technical Stats</h4>
-                        <div className="detail-features">
-                            {activeProduct.features.map((feature, index) => (
-                                <div key={index} className="detail-feature-item">
-                                    <span className="feature-val">{feature.value}</span>
-                                    <span className="feature-lab">{feature.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
+            <div className="slider-pagination">
+                {allProducts.map((_, idx) => (
+                    <button
+                        key={idx}
+                        className={`pagination-dot ${idx === activeIndex ? 'active' : ''}`}
+                        onClick={() => setActiveIndex(idx)}
+                    />
+                ))}
+            </div>
         </div>
-    );
-};
-
-interface HubSectionProps {
-    solution: typeof solutions[0];
-    containerRef: React.RefObject<HTMLDivElement | null>;
-}
-
-const HubSection: React.FC<HubSectionProps> = ({ solution, containerRef }) => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const categories = getCategoriesBySolutionId(solution.id);
-
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        container: containerRef,
-        offset: ["start end", "end start"]
-    });
-
-    const springProgress = useSpring(scrollYProgress, { stiffness: 45, damping: 15 });
-    const scale = useTransform(springProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
-    const opacity = useTransform(springProgress, [0, 0.45, 0.55, 1], [0.6, 1, 1, 0.6]);
-
-    return (
-        <section id={solution.id} ref={sectionRef} className="solution-hub-section">
-            <motion.div
-                className="hub-hero-sticky"
-                style={{ scale, opacity }}
-            >
-                <div
-                    className="hub-bg-image"
-                    style={{ backgroundImage: `url(${solution.heroImage})` }}
-                />
-                <div className="hub-hero-content">
-                    <h1 className="hub-title">{solution.title}</h1>
-                    <div className="scroll-hint">Discover Solutions ↓</div>
-                </div>
-            </motion.div>
-
-            <div className="hub-sliders-container">
-                <div className="container">
-                    {categories.map((cat) => (
-                        <CategorySlider key={cat.id} categoryId={cat.id} categoryName={cat.name} />
-                    ))}
-                </div>
-            </div>
-        </section>
     );
 };
 
@@ -159,7 +112,7 @@ const ProductsOverview: React.FC = () => {
             const id = (location.state as any).scrollTo;
             setTimeout(() => {
                 const element = document.getElementById(id);
-                if (element && containerRef.current) {
+                if (element) {
                     element.scrollIntoView({ behavior: 'smooth' });
                 }
             }, 100);
@@ -167,14 +120,33 @@ const ProductsOverview: React.FC = () => {
     }, [location]);
 
     return (
-        <div className="unified-products-page">
-            <div className="hero-container-main" ref={containerRef}>
-                <SideNav
-                    containerRef={containerRef}
-                    customItems={solutions.map(s => ({ id: s.id, label: s.title }))}
-                />
+        <div className="unified-portal" ref={containerRef}>
+            <SideNav
+                containerRef={containerRef}
+                customItems={solutions.map(s => ({ id: s.id, label: s.title }))}
+            />
+
+            <div className="portal-container">
+                {/* Global Breadcrumbs (Light Theme) */}
+                <div className="container">
+                    <nav className="industrial-breadcrumb light">
+                        <Link to="/">Home</Link>
+                        <span className="sep">›</span>
+                        <span className="active-crumb">Products Portfolio</span>
+                    </nav>
+                </div>
+
                 {solutions.map((solution) => (
-                    <HubSection key={solution.id} solution={solution} containerRef={containerRef} />
+                    <section key={solution.id} id={solution.id} className="hub-section">
+                        <div className="container">
+                            <div className="hub-header">
+                                <h1 className="hub-display-title">{solution.title}</h1>
+                                <div className="hub-accent-line" />
+                            </div>
+
+                            <ProductSlider solutionId={solution.id} />
+                        </div>
+                    </section>
                 ))}
             </div>
         </div>
@@ -182,4 +154,3 @@ const ProductsOverview: React.FC = () => {
 };
 
 export default ProductsOverview;
-
