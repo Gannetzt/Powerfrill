@@ -108,9 +108,9 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(60px) saturate(200%);
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -299,4 +299,48 @@
 .product-item:hover {
     background: rgba(59, 130, 246, 0.3);
     color: #ffffff;
+}
+
+.category-header-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+.category-header-row .category-header {
+    flex: 1;
+}
+
+.hub-overview-link {
+    display: flex;
+    align-items: center;
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.hub-overview-link:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+@media (max-width: 600px) {
+    .category-header-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hub-overview-link {
+        padding: 0.8rem 1rem;
+        justify-content: center;
+    }
 }

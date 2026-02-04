@@ -4,69 +4,45 @@ import './Navbar.css';
 import logo from '../assets/powerfrill-logo.png';
 
 const navLinks = [
-    { id: 'solar', label: 'Solar Solutions', path: '/products/solar' },
-    { id: 'storage', label: 'Energy Storage', path: '/products/storage' },
-    { id: 'batteries', label: 'Battery Packs', path: '/products/batteries' },
+    { id: 'products', label: 'Products', isSubMenu: true },
+    { id: 'application', label: 'Applications' },
     { id: 'innovation', label: 'Innovation' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' }
 ];
 
-
-
 const productsMenu = {
-    title: 'Solar Energy & Solar Power Solutions',
+    title: 'Our Solutions',
     categories: [
         {
-            name: 'Solar Panels',
+            name: 'Solar energy & Solar Power Solutions',
+            path: '/products/solar',
             items: [
-                { label: 'Mono Facial', id: 'mono-facial' },
-                { label: 'Bi-Facial', id: 'bi-facial' },
-                { label: 'Topcon', id: 'topcon' }
+                { name: 'Solar Panels', id: 'solar-panels' },
+                { name: 'Autonomous Cleaning Robotic Systems', id: 'robotic-systems' },
+                { name: 'Active tracking Systems', id: 'tracking-systems' },
+                { name: 'Miscellaneous', id: 'miscellaneous' }
             ]
         },
         {
-            name: 'Autonomous Cleaning Robotic Systems',
+            name: 'Energy storage systems',
+            path: '/products/storage',
             items: [
-                { label: 'Dobby R1', id: 'dobby-r1' },
-                { label: 'Dobby R2', id: 'dobby-r2' }
+                { name: 'Residential Storage', id: 'residential-storage' },
+                { name: 'Industrial Storage', id: 'industrial-storage' }
             ]
         },
         {
-            name: 'Active Tracking Systems',
+            name: 'Battery Packs',
+            path: '/products/batteries',
             items: [
-                { label: 'Single Axis Tracker', id: 'single-axis-tracker' },
-                { label: 'Dual Axis Tracker', id: 'dual-axis-tracker' },
-                { label: 'Weather Mitigation System', id: 'weather-mitigation' }
-            ]
-        },
-        {
-            name: 'Miscellaneous',
-            items: [
-                { label: 'On Grid Inverters', id: 'on-grid-inverters' },
-                { label: 'Off Grid Inverters', id: 'off-grid-inverters' },
-                { label: 'Hybrid Inverters', id: 'hybrid-inverters' },
-                { label: 'Solar Net Meters', id: 'solar-net-meters' },
-                { label: 'Earthing & Lightning Arresters', id: 'earthing-arresters' },
-                { label: 'SCADA & Data Logger Systems', id: 'scada-systems' },
-                { label: 'Plant Efficiency Management Systems', id: 'efficiency-systems' },
-                { label: 'Computer Aided Framework', id: 'computer-framework' },
-                { label: 'Pre Treated Steel Frames', id: 'steel-frames' },
-                { label: 'Prefabricated Mounting Structures', id: 'mounting-structures' }
-            ]
-        },
-        {
-            name: 'Energy Storage Systems',
-            items: [
-                { label: 'Micro Power Banks', id: 'micro-power-banks' },
-                { label: 'Enterprise Power Banks', id: 'enterprise-power-banks' },
-                { label: 'Energy Farms – Containerized Banks', id: 'energy-farms' },
-                { label: 'Utility Scale Energy Storage', id: 'utility-scale' },
-                { label: 'Mobile Power Banks', id: 'mobile-power-banks' }
+                { name: 'Lithium-Ion Packs', id: 'lithium-packs' },
+                { name: 'Custom Modular Systems', id: 'modular-systems' }
             ]
         }
     ]
 };
+
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +52,12 @@ const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleNavClick = (id: string, path?: string) => {
+    const handleNavClick = (id: string, path?: string, isSubMenu?: boolean) => {
+        if (isSubMenu) {
+            setShowProducts(true);
+            return;
+        }
+
         setIsMenuOpen(false);
         setShowProducts(false);
 
@@ -94,6 +75,7 @@ const Navbar: React.FC = () => {
             }
         }
     };
+
 
 
     const handleProductClick = () => {
@@ -156,7 +138,7 @@ const Navbar: React.FC = () => {
                             <button
                                 key={link.id}
                                 className="menu-link"
-                                onClick={() => handleNavClick(link.id, (link as any).path)}
+                                onClick={() => handleNavClick(link.id, (link as any).path, (link as any).isSubMenu)}
                             >
                                 {link.label}
                             </button>
@@ -172,23 +154,33 @@ const Navbar: React.FC = () => {
                         <div className="products-categories">
                             {productsMenu.categories.map((category) => (
                                 <div key={category.name} className="category-group">
-                                    <button
-                                        className={`category-header ${expandedCategory === category.name ? 'expanded' : ''}`}
-                                        onClick={() => toggleCategory(category.name)}
-                                    >
-                                        {category.name}
-                                        <span className="chevron">{expandedCategory === category.name ? '−' : '+'}</span>
-                                    </button>
+                                    <div className="category-header-row">
+                                        <button
+                                            className={`category-header ${expandedCategory === category.name ? 'expanded' : ''}`}
+                                            onClick={() => toggleCategory(category.name)}
+                                        >
+                                            {category.name}
+                                            <span className="chevron">{expandedCategory === category.name ? '−' : '+'}</span>
+                                        </button>
+                                        <Link
+                                            to={category.path}
+                                            className="hub-overview-link"
+                                            onClick={handleProductClick}
+                                        >
+                                            View Overview
+                                        </Link>
+                                    </div>
+
                                     {expandedCategory === category.name && (
                                         <div className="category-items">
                                             {category.items.map((item) => (
                                                 <Link
                                                     key={item.id}
-                                                    to={`/product/${item.id}`}
+                                                    to={`/category/${item.id}`}
                                                     className="product-item"
                                                     onClick={handleProductClick}
                                                 >
-                                                    {item.label}
+                                                    {item.name}
                                                 </Link>
                                             ))}
                                         </div>
@@ -198,6 +190,7 @@ const Navbar: React.FC = () => {
                         </div>
                     </div>
                 )}
+
             </div>
         </>
     );
