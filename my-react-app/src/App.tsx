@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useParams, Navigate } from 'react-router-
 
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Features from './components/Features'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
@@ -42,12 +41,12 @@ function HomePage() {
     <>
       <main>
         <Hero />
-        <Features />
       </main>
       <Footer />
     </>
   );
 }
+
 
 function App() {
   return (

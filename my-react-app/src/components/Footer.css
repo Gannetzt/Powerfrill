@@ -1,5 +1,5 @@
 .footer {
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     background: #000000;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -9,14 +9,15 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .footer-logo {
-    height: 90px;
+    height: 40px;
     width: auto;
     object-fit: contain;
 }
+
 
 .footer-text {
     color: rgba(255, 255, 255, 0.6);
