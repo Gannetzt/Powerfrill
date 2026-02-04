@@ -198,6 +198,47 @@ export const productsData: ProductData[] = [
     }
 ];
 
+export interface Category {
+    id: string;
+    name: string;
+    image: string;
+    description: string;
+}
+
+export const categories: Category[] = [
+    {
+        id: 'solar-panels',
+        name: 'Solar Panels',
+        image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200',
+        description: 'Advanced solar cell technology for maximum energy yield and long-term durability.'
+    },
+    {
+        id: 'robotic-systems',
+        name: 'Autonomous Cleaning',
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200',
+        description: 'Intelligent robotic solutions to maintain peak efficiency of your solar installations.'
+    },
+    {
+        id: 'tracking-systems',
+        name: 'Active Tracking',
+        image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200',
+        description: 'Maximize energy capture with intelligent solar tracking systems that follow the sun.'
+    },
+    {
+        id: 'energy-storage',
+        name: 'Energy Storage',
+        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1200',
+        description: 'Reliable battery storage solutions from residential power banks to utility-scale farms.'
+    }
+];
+
 export const getProductById = (id: string): ProductData | undefined => {
     return productsData.find(product => product.id === id);
 };
+
+export const getProductsByCategoryId = (categoryId: string): ProductData[] => {
+    const category = categories.find(c => c.id === categoryId);
+    if (!category) return [];
+    return productsData.filter(product => product.categoryPath[0] === category.name);
+};
+

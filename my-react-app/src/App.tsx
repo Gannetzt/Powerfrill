@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import Features from './components/Features'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
+import ProductsOverview from './components/ProductsOverview'
 import { getProductById } from './data/products'
 
 function ProductPageWrapper() {
@@ -52,6 +53,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsOverview />} />
           <Route path="/product/:productId" element={<ProductPageWrapper />} />
         </Routes>
       </div>

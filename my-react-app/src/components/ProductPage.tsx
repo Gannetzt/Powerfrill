@@ -38,7 +38,8 @@ const ProductPage: React.FC<ProductPageProps> = ({
             <nav className="breadcrumb">
                 <Link to="/">🏠 Home</Link>
                 <span className="separator">›</span>
-                <span className="static-crumb">Products</span>
+                <Link to="/products" className="static-crumb">Products</Link>
+
                 {categoryPath.map((path, index) => (
                     <React.Fragment key={index}>
                         <span className="separator">›</span>

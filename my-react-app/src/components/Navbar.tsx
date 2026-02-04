@@ -143,9 +143,14 @@ const Navbar: React.FC = () => {
             <div className={`fullscreen-menu ${isMenuOpen ? 'open' : ''}`}>
                 {!showProducts ? (
                     <nav className="menu-content">
-                        <button className="menu-link" onClick={() => setShowProducts(true)}>
+                        <Link
+                            to="/products"
+                            className="menu-link"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             Products
-                        </button>
+                        </Link>
+
                         {navLinks.map((link) => (
                             <button
                                 key={link.id}
