@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import './SideNav.css';
 
-const defaultNavItems = [
+const navItems = [
     { id: 'bess', label: 'BESS' },
     { id: 'application', label: 'Application' },
     { id: 'innovation', label: 'Innovation' },
@@ -12,12 +12,9 @@ const defaultNavItems = [
 
 interface SideNavProps {
     containerRef: React.RefObject<HTMLDivElement | null>;
-    customItems?: { id: string; label: string }[];
 }
 
-const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
-    const navItems = customItems || defaultNavItems;
-
+const SideNav: React.FC<SideNavProps> = ({ containerRef }) => {
     // Tracking scroll progress of the main container for real-time indicator
     const { scrollYProgress } = useScroll({
         container: containerRef,
@@ -32,8 +29,7 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
 
     // Map progress (0-1) to the vertical position. 
     // Total line height is (navItems.length - 1) * 3.5rem (matches CSS gap)
-    const indicatorTop = useTransform(smoothProgress, [0, 1], ["0rem", `${(navItems.length - 1) * 3.5}rem`]);
-
+    const indicatorTop = useTransform(smoothProgress, [0, 1], ["0rem", "14rem"]);
 
     // Determine active section based on progress ranges
     const [activeSection, setActiveSection] = useState('bess');
