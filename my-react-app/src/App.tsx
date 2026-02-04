@@ -1,5 +1,6 @@
 import './index.css'
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useParams, Navigate } from 'react-router-dom'
+
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
@@ -55,10 +56,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsOverview />} />
+          <Route path="/products" element={<Navigate to="/products/solar" replace />} />
+          <Route path="/products/:solutionId" element={<ProductsOverview />} />
           <Route path="/category/:categoryId" element={<CategoryDetail />} />
           <Route path="/product/:productId" element={<ProductPageWrapper />} />
         </Routes>
+
 
       </div>
     </BrowserRouter>

@@ -4,12 +4,15 @@ import './Navbar.css';
 import logo from '../assets/powerfrill-logo.png';
 
 const navLinks = [
-    { id: 'bess', label: 'BESS' },
-    { id: 'application', label: 'Application' },
+    { id: 'solar', label: 'Solar Solutions', path: '/products/solar' },
+    { id: 'storage', label: 'Energy Storage', path: '/products/storage' },
+    { id: 'batteries', label: 'Battery Packs', path: '/products/batteries' },
+    { id: 'pumps', label: 'Pumps & Motors', path: '/category/pumps-motors' },
     { id: 'innovation', label: 'Innovation' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' }
 ];
+
 
 const productsMenu = {
     title: 'Solar Energy & Solar Power Solutions',
@@ -73,9 +76,14 @@ const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleNavClick = (id: string) => {
+    const handleNavClick = (id: string, path?: string) => {
         setIsMenuOpen(false);
         setShowProducts(false);
+
+        if (path) {
+            navigate(path);
+            return;
+        }
 
         if (location.pathname !== '/') {
             navigate('/', { state: { scrollTo: id } });
@@ -86,6 +94,7 @@ const Navbar: React.FC = () => {
             }
         }
     };
+
 
     const handleProductClick = () => {
         setIsMenuOpen(false);
@@ -143,23 +152,16 @@ const Navbar: React.FC = () => {
             <div className={`fullscreen-menu ${isMenuOpen ? 'open' : ''}`}>
                 {!showProducts ? (
                     <nav className="menu-content">
-                        <Link
-                            to="/products"
-                            className="menu-link"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            Products
-                        </Link>
-
                         {navLinks.map((link) => (
                             <button
                                 key={link.id}
                                 className="menu-link"
-                                onClick={() => handleNavClick(link.id)}
+                                onClick={() => handleNavClick(link.id, (link as any).path)}
                             >
                                 {link.label}
                             </button>
                         ))}
+
                     </nav>
                 ) : (
                     <div className="products-panel">

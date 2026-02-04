@@ -1,21 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { categories } from '../data/products';
+import { Link, useParams, Navigate } from 'react-router-dom';
+import { solutions, getCategoriesBySolutionId } from '../data/products';
 import './ProductsOverview.css';
 
 const ProductsOverview: React.FC = () => {
+    const { solutionId } = useParams<{ solutionId: string }>();
+    const solution = solutions.find(s => s.id === solutionId) || solutions[0];
+    const solutionCategories = getCategoriesBySolutionId(solution.id);
+
+    // If solutionId is provided but not found, could redirect to /products/solar
+    if (solutionId && !solutions.find(s => s.id === solutionId)) {
+        return <Navigate to="/products/solar" replace />;
+    }
+
     return (
         <div className="products-overview-page">
             {/* Hero Section */}
-            <section className="products-hero">
+            <section
+                className="products-hero"
+                style={{ backgroundImage: `url(${solution.heroImage})` }}
+            >
                 <div className="products-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         className="products-hero-title"
                     >
-                        Solar energy & Solar Power Solutions
+                        {solution.title}
                     </motion.h1>
                 </div>
             </section>
@@ -25,9 +37,9 @@ const ProductsOverview: React.FC = () => {
                 <nav className="industrial-breadcrumb">
                     <Link to="/">Home</Link>
                     <span className="sep">›</span>
-                    <Link to="/products">Products</Link>
+                    <Link to="/products/solar">Products</Link>
                     <span className="sep">›</span>
-                    <span className="active-crumb">Solar energy & Solar Power Solutions</span>
+                    <span className="active-crumb">{solution.title}</span>
                 </nav>
             </div>
 
@@ -40,7 +52,7 @@ const ProductsOverview: React.FC = () => {
                     </h2>
 
                     <div className="category-grid">
-                        {categories.map((category, index) => (
+                        {solutionCategories.map((category, index) => (
                             <motion.div
                                 key={category.id}
                                 className="category-major-card"
@@ -68,5 +80,6 @@ const ProductsOverview: React.FC = () => {
         </div>
     );
 };
+
 
 export default ProductsOverview;
