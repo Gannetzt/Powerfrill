@@ -90,24 +90,28 @@
     transform: rotate(-45deg);
 }
 
-/* Fullscreen Menu - Blur only, no white */
+/* Fullscreen Menu - Stronger Blur and Darker Background */
 .fullscreen-menu {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.7);
+    /* Darker for better contrast */
+    backdrop-filter: blur(30px);
+    /* Stronger blur */
+    -webkit-backdrop-filter: blur(30px);
+    z-index: 2000;
+    /* Ensure it stays above EVERYTHING */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 
 .fullscreen-menu.open {
     opacity: 1;
@@ -119,7 +123,15 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    transform: scale(0.9);
+    /* Animate scale */
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.fullscreen-menu.open .menu-content {
+    transform: scale(1);
+}
+
 
 /* Menu links - No background, just text */
 .menu-link {

@@ -111,6 +111,17 @@ const Navbar: React.FC = () => {
         }
     }, [location, navigate]);
 
+    // Handle body scroll lock
+    React.useEffect(() => {
+        if (isMenuOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+        return () => document.body.classList.remove('no-scroll');
+    }, [isMenuOpen]);
+
+
     return (
         <>
             <header className="header">
