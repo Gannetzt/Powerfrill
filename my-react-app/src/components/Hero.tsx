@@ -54,6 +54,11 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         offset: ["start end", "end start"]
     });
 
+    // Responsive offsets/scales
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const startScale = isMobile ? 0.92 : 0.85;
+    const offsetValue = isMobile ? "2vh" : "5vh";
+
     const springProgress = useSpring(scrollYProgress, {
         stiffness: 45,
         damping: 15,
@@ -63,14 +68,14 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
     // ZOOM-OUT & EXPANSION LOGIC
     // When in focus (0.5), scale is 1 (Full screen)
     // When entering/exiting (0 or 1), scale is 0.85 (Zoomed out/Layered)
-    const scale = useTransform(springProgress, [0, 0.5, 1], [0.85, 1, 0.85]);
+    const scale = useTransform(springProgress, [0, 0.5, 1], [startScale, 1, startScale]);
     const opacity = useTransform(springProgress, [0, 0.45, 0.55, 1], [0.4, 1, 1, 0.4]);
     const blurValue = useTransform(springProgress, [0, 0.5, 1], [8, 0, 8]);
     const blur = useTransform(blurValue, (v) => `blur(${v}px)`);
 
     // Continuous vertical flow with parallax
     const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.3, 1, 1.3]);
-    const yOffset = useTransform(springProgress, [0, 0.5, 1], ["5vh", "0vh", "-5vh"]);
+    const yOffset = useTransform(springProgress, [0, 0.5, 1], [offsetValue, "0vh", `-${offsetValue}`]);
 
     return (
         <section
