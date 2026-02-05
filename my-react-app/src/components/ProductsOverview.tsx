@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { categories, solutions } from '../data/products';
+import { solutions } from '../data/products';
 import './ProductsOverview.css';
 
 const ProductsOverview: React.FC = () => {
