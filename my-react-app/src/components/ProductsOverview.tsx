@@ -60,10 +60,6 @@ const ProductsOverview: React.FC = () => {
                                                 </div>
                                                 <div className="card-info">
                                                     <h3 className="card-title">{category.name}</h3>
-                                                    <p className="card-description">{category.description}</p>
-                                                    <div className="expand-indicator">
-                                                        <span className="plus">+</span>
-                                                    </div>
                                                 </div>
                                             </Link>
                                         </motion.div>
