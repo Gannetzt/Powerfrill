@@ -34,9 +34,9 @@ const BiFacial: React.FC = () => {
             </header>
 
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 2rem' }}>
-                <Link to="/products" style={{ color: '#94a3b8', textDecoration: 'none' }}>Products</Link>
-                <span style={{ margin: '0 0.5rem', color: '#64748b' }}>/</span>
-                <span style={{ color: '#fff' }}>Bi-Facial</span>
+                <Link to="/products" style={{ color: '#64748b', textDecoration: 'none' }}>Products</Link>
+                <span style={{ margin: '0 0.5rem', color: '#94a3b8' }}>/</span>
+                <span style={{ color: '#0f172a', fontWeight: '500' }}>Bi-Facial</span>
             </div>
 
             <section className="solar-grid-layout">
@@ -46,10 +46,10 @@ const BiFacial: React.FC = () => {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
                 >
-                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#fff' }}>Maximize Yield</h3>
+                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#0f172a' }}>Maximize Yield</h3>
                     <p>{product.description}</p>
-                    <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '1.5rem', borderRadius: '16px', marginTop: '2rem', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                        <strong style={{ color: '#60a5fa' }}>Pro Tip:</strong> Ideal for reflective surfaces like white rooftops, snow, or sand to capture back-side light.
+                    <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '1.5rem', borderRadius: '16px', marginTop: '2rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                        <strong style={{ color: '#2563eb' }}>Pro Tip:</strong> Ideal for reflective surfaces like white rooftops, snow, or sand to capture back-side light.
                     </div>
                 </motion.div>
 

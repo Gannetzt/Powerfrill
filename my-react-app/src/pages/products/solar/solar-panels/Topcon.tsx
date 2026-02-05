@@ -26,9 +26,9 @@ const Topcon: React.FC = () => {
             </header>
 
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 2rem' }}>
-                <Link to="/products" style={{ color: '#94a3b8', textDecoration: 'none' }}>Products</Link>
-                <span style={{ margin: '0 0.5rem', color: '#64748b' }}>/</span>
-                <span style={{ color: '#fff' }}>TOPCon</span>
+                <Link to="/products" style={{ color: '#64748b', textDecoration: 'none' }}>Products</Link>
+                <span style={{ margin: '0 0.5rem', color: '#94a3b8' }}>/</span>
+                <span style={{ color: '#0f172a', fontWeight: '500' }}>TOPCon</span>
             </div>
 
             <section className="solar-grid-layout">
@@ -43,8 +43,8 @@ const Topcon: React.FC = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
                         {product.features.map((feature: any, idx: number) => (
                             <div key={idx} style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#fbbf24' }}>{feature.value}</span>
-                                <span style={{ fontSize: '0.9rem', color: '#94a3b8', letterSpacing: '2px' }}>{feature.label}</span>
+                                <span style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#d97706' }}>{feature.value}</span>
+                                <span style={{ fontSize: '0.9rem', color: '#64748b', letterSpacing: '2px' }}>{feature.label}</span>
                             </div>
                         ))}
                     </div>
@@ -58,7 +58,7 @@ const Topcon: React.FC = () => {
                     transition={{ delay: 0.6 }}
                 >
                     <p>{product.description}</p>
-                    <p style={{ marginTop: '1.5rem', color: '#94a3b8', fontSize: '0.95rem' }}>
+                    <p style={{ marginTop: '1.5rem', color: '#64748b', fontSize: '0.95rem' }}>
                         * Tunnel Oxide Passivated Contact technology minimizes electron recombination, significantly boosting efficiency compared to standard PERC cells.
                     </p>
                 </motion.div>

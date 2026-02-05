@@ -35,9 +35,9 @@ const MonoFacial: React.FC = () => {
 
             {/* Breadcrumbs (Custom style) */}
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 2rem' }}>
-                <Link to="/products" style={{ color: '#94a3b8', textDecoration: 'none' }}>Products</Link>
-                <span style={{ margin: '0 0.5rem', color: '#64748b' }}>/</span>
-                <span style={{ color: '#fff' }}>Mono Facial</span>
+                <Link to="/products" style={{ color: '#64748b', textDecoration: 'none' }}>Products</Link>
+                <span style={{ margin: '0 0.5rem', color: '#94a3b8' }}>/</span>
+                <span style={{ color: '#0f172a', fontWeight: '500' }}>Mono Facial</span>
             </div>
 
             {/* Split Content */}
@@ -56,9 +56,9 @@ const MonoFacial: React.FC = () => {
                             <span className="spec-value">{feature.value}</span>
                         </div>
                     ))}
-                    <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
                         <span className="spec-label">Applications</span>
-                        <p style={{ color: '#fff', marginTop: '0.5rem' }}>Residential, Commercial Roofs</p>
+                        <p style={{ color: '#334155', marginTop: '0.5rem', fontWeight: '500' }}>Residential, Commercial Roofs</p>
                     </div>
                 </motion.div>
 
@@ -69,15 +69,15 @@ const MonoFacial: React.FC = () => {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.6 }}
                 >
-                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#fff' }}>Overview</h3>
+                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#0f172a' }}>Overview</h3>
                     <p>{product.description}</p>
 
                     {product.advantages && (
                         <div style={{ marginTop: '2rem' }}>
-                            <h4 style={{ color: '#a5b4fc', marginBottom: '1rem' }}>Why Choose Mono Facial?</h4>
+                            <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>Why Choose Mono Facial?</h4>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
                                 {product.advantages.map((adv: string, i: number) => (
-                                    <li key={i} style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <li key={i} style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
                                         <span style={{ color: '#3b82f6' }}>✓</span> {adv}
                                     </li>
                                 ))}
