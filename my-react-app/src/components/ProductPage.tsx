@@ -43,16 +43,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
     return (
         <div className="product-page">
             <header className="product-hero-section">
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="hero-video-bg"
-                    poster={image}
-                >
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-transformation-concept-background-30470-large.mp4" type="video/mp4" />
-                </video>
+                <img src={image} alt={title} className="product-hero-bg" />
                 <div className="product-hero-content">
                     <motion.h1
                         className="product-title"
