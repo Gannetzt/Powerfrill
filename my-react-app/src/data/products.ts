@@ -141,11 +141,11 @@ export const productsData: ProductData[] = [
         description: 'Our Weather Mitigation System uses AI-powered weather prediction to automatically adjust and stow solar panels during severe weather events, protecting your investment.',
         solutionId: 'solar'
     },
-    // Energy Storage Systems
+    // Energy Storage Systems (Unified)
     {
         id: 'micro-power-banks',
-        category: 'RESIDENTIAL STORAGE',
-        categoryPath: ['Residential Storage', 'Micro Power Banks'],
+        category: 'ENERGY STORAGE SYSTEMS',
+        categoryPath: ['Energy Storage Systems', 'Micro Power Banks'],
         title: 'Micro Power Banks',
         subtitle: 'Residential Energy Storage',
         image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800',
@@ -161,8 +161,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'mobile-power-banks',
-        category: 'RESIDENTIAL STORAGE',
-        categoryPath: ['Residential Storage', 'Mobile Power Banks'],
+        category: 'ENERGY STORAGE SYSTEMS',
+        categoryPath: ['Energy Storage Systems', 'Mobile Power Banks'],
         title: 'Mobile Power Banks',
         subtitle: 'Portable Energy Solutions',
         image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
@@ -177,8 +177,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'enterprise-power-banks',
-        category: 'INDUSTRIAL STORAGE',
-        categoryPath: ['Industrial Storage', 'Enterprise Power Banks'],
+        category: 'ENERGY STORAGE SYSTEMS',
+        categoryPath: ['Energy Storage Systems', 'Enterprise Power Banks'],
         title: 'Enterprise Power Banks',
         subtitle: 'Commercial Energy Solutions',
         image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800',
@@ -193,8 +193,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'energy-farms',
-        category: 'INDUSTRIAL STORAGE',
-        categoryPath: ['Industrial Storage', 'Energy Farms'],
+        category: 'ENERGY STORAGE SYSTEMS',
+        categoryPath: ['Energy Storage Systems', 'Energy Farms'],
         title: 'Energy Farms – Containerized Banks',
         subtitle: 'Large-Scale Containerized Storage',
         image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800',
@@ -209,8 +209,8 @@ export const productsData: ProductData[] = [
     },
     {
         id: 'utility-scale',
-        category: 'INDUSTRIAL STORAGE',
-        categoryPath: ['Industrial Storage', 'Utility Scale'],
+        category: 'ENERGY STORAGE SYSTEMS',
+        categoryPath: ['Energy Storage Systems', 'Utility Scale'],
         title: 'Utility Scale Energy Storage',
         subtitle: 'Grid-Level Power Solutions',
         image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800',
@@ -222,6 +222,154 @@ export const productsData: ProductData[] = [
         description: 'Utility Scale Energy Storage provides grid-level power solutions for renewable integration, frequency regulation, and large-scale energy management.',
         solutionId: 'storage',
         applications: 'Power Grid, Cities'
+    },
+
+    // Miscellaneous - Inverters & Power Electronics
+    {
+        id: 'on-grid-inverters',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'On Grid Inverters'],
+        title: 'On Grid Inverters',
+        subtitle: 'Grid-Tied Solar Power Conversion',
+        image: 'https://images.unsplash.com/photo-1592833159057-65a2845722dc?w=800',
+        features: [
+            { value: '98%+', label: 'EFFICIENCY' },
+            { value: 'Smart', label: 'MONITORING' },
+            { value: 'Sync', label: 'GRID SYNC' }
+        ],
+        description: 'High-efficiency grid-tied inverters designed to seamlessly synchronize solar power with the utility grid for residential and commercial feed-in.',
+        solutionId: 'miscellaneous',
+        applications: 'Net Metering Systems'
+    },
+    {
+        id: 'off-grid-inverters',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'Off Grid Inverters'],
+        title: 'Off Grid Inverters',
+        subtitle: 'Standalone Power Reliability',
+        image: 'https://images.unsplash.com/photo-1620846660144-a0953a99527e?w=800',
+        features: [
+            { value: 'Pure Sine', label: 'WAVE' },
+            { value: 'Battery', label: 'SUPPORT' },
+            { value: 'Built-in', label: 'CHARGER' }
+        ],
+        description: 'Robust off-grid inverters that provide reliable power in remote locations, featuring built-in battery chargers and generator support.',
+        solutionId: 'miscellaneous',
+        applications: 'Remote Homes, Cabins'
+    },
+    {
+        id: 'hybrid-inverters',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'Hybrid Inverters'],
+        title: 'Hybrid Inverters',
+        subtitle: 'Smart Energy Management',
+        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800',
+        features: [
+            { value: 'Multi', label: 'MODE' },
+            { value: 'Backup', label: 'POWER' },
+            { value: 'Smart', label: 'CONTROL' }
+        ],
+        description: 'Versatile hybrid inverters that manage power flow between solar panels, batteries, the grid, and your loads for ultimate energy security.',
+        solutionId: 'miscellaneous',
+        applications: 'Energy Independence'
+    },
+    {
+        id: 'solar-net-meters',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'Solar Net Meters'],
+        title: 'Solar Net Meters',
+        subtitle: 'Bi-Directional Energy Measurement',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+        features: [
+            { value: 'Bi-Direct', label: 'METERING' },
+            { value: 'Utility', label: 'APPROVED' },
+            { value: 'Precise', label: 'DATA' }
+        ],
+        description: 'Utility-grade bi-directional meters for accurate recording of energy imported from and exported to the grid.',
+        solutionId: 'miscellaneous',
+        applications: 'Billing, Monitoring'
+    },
+    {
+        id: 'earthing-lightning',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'Earthing & Lightning Arresters'],
+        title: 'Earthing & Lightning Arresters',
+        subtitle: 'System Protection & Safety',
+        image: 'https://images.unsplash.com/photo-1620846660144-a0953a99527e?w=800',
+        features: [
+            { value: 'High', label: 'CONDUCTIVITY' },
+            { value: 'Surge', label: 'PROTECTION' },
+            { value: 'Safety', label: 'STD' }
+        ],
+        description: 'Essential electrical safety components to protect your solar investment from lightning strikes and electrical faults.',
+        solutionId: 'miscellaneous',
+        applications: 'All Solar Plants'
+    },
+    {
+        id: 'scada-data',
+        category: 'INVERTERS & POWER ELECTRONICS',
+        categoryPath: ['Inverters & Power Electronics', 'Scada & Data Logger Systems'],
+        title: 'SCADA & Data Loggers',
+        subtitle: 'Remote Plant Monitoring',
+        image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800',
+        features: [
+            { value: 'Real-Time', label: 'DATA' },
+            { value: 'Cloud', label: 'ACCESS' },
+            { value: 'Remote', label: 'CONTROL' }
+        ],
+        description: 'Advanced monitoring systems that provide real-time insights into plant performance, fault detection, and reporting.',
+        solutionId: 'miscellaneous',
+        applications: 'Plant O&M'
+    },
+
+    // Miscellaneous - Panel Mounting Structures
+    {
+        id: 'computer-aided-frame',
+        category: 'PANEL MOUNTING STRUCTURES',
+        categoryPath: ['Panel Mounting Structures', 'Computer Aided Frame Work'],
+        title: 'Computer Aided Frame Work',
+        subtitle: 'Precision Engineered Mounting',
+        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800',
+        features: [
+            { value: 'CAD', label: 'DESIGNED' },
+            { value: 'Optimized', label: 'LOAD' },
+            { value: 'Custom', label: 'FIT' }
+        ],
+        description: 'Structural framing systems designed using advanced CAD software for optimal load distribution and material efficiency.',
+        solutionId: 'miscellaneous',
+        applications: 'Complex Roofs'
+    },
+    {
+        id: 'pre-treated-steel',
+        category: 'PANEL MOUNTING STRUCTURES',
+        categoryPath: ['Panel Mounting Structures', 'Pre Treated Steel Frames'],
+        title: 'Pre Treated Steel Frames',
+        subtitle: 'Corrosion Resistant Structures',
+        image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800',
+        features: [
+            { value: 'Galvanized', label: 'COATING' },
+            { value: '25 Year', label: 'LIFE' },
+            { value: 'High', label: 'TRENGTH' }
+        ],
+        description: 'Hot-dip galvanized steel frames ensuring long-term structural integrity against rust and environmental corrosion.',
+        solutionId: 'miscellaneous',
+        applications: 'Ground Mounts, Carports'
+    },
+    {
+        id: 'prefabricated-mounting',
+        category: 'PANEL MOUNTING STRUCTURES',
+        categoryPath: ['Panel Mounting Structures', 'Prefabricated Mounting Structures'],
+        title: 'Prefabricated Mounting Structures',
+        subtitle: 'Rapid Installation Systems',
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800',
+        features: [
+            { value: 'Modular', label: 'KIT' },
+            { value: 'Fast', label: 'INSTALL' },
+            { value: 'Zero', label: 'WELDING' }
+        ],
+        description: 'Modular, bolt-together mounting kits that significantly reduce on-site installation time and labor costs.',
+        solutionId: 'miscellaneous',
+        applications: 'Rooftops, Quick Deploy'
     },
 
     // Battery Packs - Automotive
@@ -376,6 +524,12 @@ export const solutions: SolutionHub[] = [
         title: 'Battery Packs',
         heroImage: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920',
         path: 'Battery Packs'
+    },
+    {
+        id: 'miscellaneous',
+        title: 'Miscellaneous',
+        heroImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920',
+        path: 'Miscellaneous'
     }
 ];
 
@@ -402,26 +556,12 @@ export const categories: Category[] = [
         description: 'Single/Dual axis and weather mitigation systems for full sun path optimization.',
         solutionId: 'solar'
     },
+    // Storage Group (Unified)
     {
-        id: 'miscellaneous',
-        name: 'Miscellaneous',
-        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200',
-        description: 'Custom energy components and additional solar power supporting technologies.',
-        solutionId: 'solar'
-    },
-    // Storage Group
-    {
-        id: 'residential-storage',
-        name: 'Residential Storage',
+        id: 'energy-storage-systems',
+        name: 'Energy Storage Systems',
         image: 'https://images.unsplash.com/photo-1620720402163-35f5d1896023?w=1200',
-        description: 'Micro power banks and home battery systems for energy independence.',
-        solutionId: 'storage'
-    },
-    {
-        id: 'industrial-storage',
-        name: 'Industrial Storage',
-        image: 'https://images.unsplash.com/photo-1558449028-2a4066c1b312?w=1200',
-        description: 'Enterprise energy farms and utility-scale containerized storage solutions.',
+        description: 'Comprehensive energy storage solutions ranging from residential micro-banks to utility-scale energy farms.',
         solutionId: 'storage'
     },
     // Battery Packs Group
@@ -438,6 +578,21 @@ export const categories: Category[] = [
         image: 'https://images.unsplash.com/photo-1559297434-fae8a1916a79?w=1200',
         description: 'Specialized lightweight, high-capacity battery systems for aerospace applications.',
         solutionId: 'batteries'
+    },
+    // Miscellaneous Group
+    {
+        id: 'inverters-power-electronics',
+        name: 'Inverters & Power Electronics',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200',
+        description: 'Advanced grid-tie, off-grid, and hybrid inverters along with essential power electronics.',
+        solutionId: 'miscellaneous'
+    },
+    {
+        id: 'panel-mounting-structures',
+        name: 'Panel Mounting Structures',
+        image: 'https://images.unsplash.com/photo-1521618755572-156ae0cdd74d?w=1200',
+        description: 'Robust mounting solutions including computer-aided frames and prefabricated structures.',
+        solutionId: 'miscellaneous'
     }
 ];
 
