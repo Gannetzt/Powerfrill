@@ -4,14 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import { solutions, getCategoriesBySolutionId } from '../data/products';
 import './SolutionDetail.css';
 
-const PowerSignature = () => (
-    <div className="power-signature-backdrop">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor" />
-        </svg>
-    </div>
-);
-
 const SolutionDetail: React.FC = () => {
     const { solutionId } = useParams<{ solutionId: string }>();
     const solution = solutions.find(s => s.id === solutionId);
@@ -28,7 +20,6 @@ const SolutionDetail: React.FC = () => {
 
     return (
         <div className="solution-detail-page">
-            <PowerSignature />
             {/* Hero Section */}
             <section className="solution-hero" style={{ backgroundImage: `url(${solution.heroImage})` }}>
                 <div className="solution-hero-overlay">

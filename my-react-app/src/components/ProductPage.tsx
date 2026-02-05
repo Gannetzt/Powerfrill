@@ -50,10 +50,10 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
     return (
         <div className="product-page">
-            <PowerSignature />
             <header className="product-hero-section">
                 <img src={image} alt={title} className="product-hero-bg" />
                 <div className="product-hero-content">
+                    <PowerSignature />
                     <motion.h1
                         className="product-title"
                         initial={{ y: 30, opacity: 0 }}

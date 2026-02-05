@@ -11,15 +11,16 @@
 
 .power-signature-backdrop {
     position: absolute;
-    top: 50%;
-    right: -5%;
-    width: 600px;
-    height: 600px;
-    color: rgba(251, 191, 36, 0.04);
-    /* Light orange watermark */
+    top: -40px;
+    left: -20px;
+    width: 160px;
+    height: 160px;
+    color: rgba(251, 191, 36, 0.18);
+    /* More visible light orange */
     pointer-events: none;
     z-index: 0;
-    transform: translateY(-50%) rotate(-15deg);
+    transform: rotate(-10deg);
+    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.15));
 }
 
 .power-signature-backdrop svg {
