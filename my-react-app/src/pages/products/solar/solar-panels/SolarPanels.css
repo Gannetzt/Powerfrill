@@ -1,0 +1,111 @@
+/* Solar Panels Specific Styling */
+.solar-product-page {
+    padding-top: 120px;
+    min-height: 100vh;
+    background: #000000;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.solar-hero-section {
+    position: relative;
+    height: 60vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4rem;
+}
+
+.solar-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.solar-hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.solar-title {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.solar-subtitle {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    font-weight: 300;
+}
+
+.solar-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    align-items: center;
+}
+
+.solar-specs-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.solar-feature-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.solar-feature-row:last-child {
+    border-bottom: none;
+}
+
+.spec-label {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.spec-value {
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.solar-description-area {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+    .solar-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .solar-title {
+        font-size: 2.5rem;
+    }
+}
