@@ -43,7 +43,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
     return (
         <div className="product-page">
             <header className="product-hero-section">
-                <div className="vimeo-wrapper">
+                <div className="vimeo-wrapper" style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <iframe
                         src="https://player.vimeo.com/video/343511874?autoplay=1&loop=1&muted=1&background=1"
                         frameBorder="0"
