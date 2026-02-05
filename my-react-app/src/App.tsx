@@ -6,9 +6,6 @@ import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
 import CategoryDetail from './components/CategoryDetail'
-import MonoFacial from './pages/products/solar/solar-panels/MonoFacial'
-import BiFacial from './pages/products/solar/solar-panels/BiFacial'
-import Topcon from './pages/products/solar/solar-panels/Topcon'
 import { getProductById } from './data/products'
 
 
@@ -27,13 +24,15 @@ function ProductPageWrapper() {
 
   return (
     <ProductPage
-      category={product.category}
       categoryPath={product.categoryPath}
       title={product.title}
       subtitle={product.subtitle}
       image={product.image}
       features={product.features}
       description={product.description}
+      advantages={product.advantages}
+      applications={product.applications}
+      proTip={product.proTip}
     />
   );
 }
@@ -58,11 +57,6 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsOverview />} />
           <Route path="/category/:categoryId" element={<CategoryDetail />} />
-
-          {/* Specific Product Routes */}
-          <Route path="/product/mono-facial" element={<MonoFacial />} />
-          <Route path="/product/bi-facial" element={<BiFacial />} />
-          <Route path="/product/topcon" element={<Topcon />} />
 
           {/* Generic Product Route */}
           <Route path="/product/:productId" element={<ProductPageWrapper />} />

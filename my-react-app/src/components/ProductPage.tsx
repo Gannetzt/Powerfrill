@@ -9,7 +9,6 @@ interface Feature {
 }
 
 interface ProductPageProps {
-    category: string;
     categoryPath: string[];
     title: string;
     subtitle: string;
@@ -17,129 +16,110 @@ interface ProductPageProps {
     features: Feature[];
     description: string;
     advantages?: string[];
+    applications?: string;
+    proTip?: string;
 }
 
 const ProductPage: React.FC<ProductPageProps> = ({
-    category,
     categoryPath,
     title,
     subtitle,
     image,
     features,
     description,
-    advantages
+    advantages,
+    applications,
+    proTip
 }) => {
-
-
     return (
-        <motion.div
-            className="product-page"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-        >
-            {/* Breadcrumb Navigation */}
-            <nav className="breadcrumb">
-                <Link to="/">🏠 Home</Link>
-                <span className="separator">›</span>
-                <Link to="/products" className="static-crumb">Products</Link>
-
-                {categoryPath.map((path, index) => (
-                    <React.Fragment key={index}>
-                        <span className="separator">›</span>
-                        <span className={index === categoryPath.length - 1 ? 'current' : ''}>
-                            {path}
-                        </span>
-                    </React.Fragment>
-                ))}
-            </nav>
-
-            {/* Category Badge */}
-            <motion.span
-                className="category-badge"
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-            >
-                {category}
-            </motion.span>
-
-            {/* Main Content */}
-            <div className="product-content">
-                {/* Product Image */}
-                <motion.div
-                    className="product-image-container"
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                >
-                    <img src={image} alt={title} className="product-image" />
-                </motion.div>
-
-                {/* Product Info */}
-                <div className="product-info">
+        <div className="product-page">
+            <header className="product-hero-section">
+                <img src={image} alt={title} className="product-hero-bg" />
+                <div className="product-hero-content">
                     <motion.h1
                         className="product-title"
-                        initial={{ y: 20, opacity: 0 }}
+                        initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4, duration: 0.6 }}
                     >
                         {title}
                     </motion.h1>
                     <motion.p
                         className="product-subtitle"
-                        initial={{ y: 20, opacity: 0 }}
+                        initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
+                        transition={{ delay: 0.2 }}
                     >
                         {subtitle}
                     </motion.p>
+                </div>
+            </header>
 
-                    {/* Feature Stats */}
-                    <motion.div
-                        className="product-features"
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.6 }}
-                    >
-                        {features.map((feature, index) => (
-                            <div key={index} className="feature-item">
-                                <span className="feature-value">{feature.value}</span>
-                                <span className="feature-label">{feature.label}</span>
-                            </div>
-                        ))}
-                    </motion.div>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 2rem' }}>
+                <Link to="/products" style={{ color: '#64748b', textDecoration: 'none' }}>Products</Link>
+                {categoryPath.map((path, index) => (
+                    <React.Fragment key={index}>
+                        <span style={{ margin: '0 0.5rem', color: '#94a3b8' }}>/</span>
+                        <span style={{ color: index === categoryPath.length - 1 ? '#0f172a' : '#64748b', fontWeight: index === categoryPath.length - 1 ? '500' : '400' }}>
+                            {path}
+                        </span>
+                    </React.Fragment>
+                ))}
+            </div>
 
-                    {/* Description */}
-                    <motion.p
-                        className="product-description"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8, duration: 0.8 }}
-                    >
-                        {description}
-                    </motion.p>
+            <section className="product-grid-layout">
+                {/* Specs Column */}
+                <motion.div
+                    className="product-specs-card"
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                >
+                    <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Technical Specs</h3>
+                    {features.map((feature, idx) => (
+                        <div key={idx} className="product-feature-row">
+                            <span className="spec-label">{feature.label}</span>
+                            <span className="spec-value">{feature.value}</span>
+                        </div>
+                    ))}
+                    {applications && (
+                        <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
+                            <span className="spec-label">Applications</span>
+                            <p style={{ color: '#334155', marginTop: '0.5rem', fontWeight: '500' }}>{applications}</p>
+                        </div>
+                    )}
+                </motion.div>
 
-                    {/* Advantages */}
-                    {advantages && (
-                        <motion.div
-                            className="product-advantages"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1, duration: 0.6 }}
-                        >
-                            <h3 className="advantages-title">Key Advantages</h3>
-                            <ul className="advantages-list">
-                                {advantages.map((adv, i) => (
-                                    <li key={i}>{adv}</li>
-                                ))}
-                            </ul>
-                        </motion.div>
+                {/* Description Column */}
+                <motion.div
+                    className="product-description-area"
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                >
+                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#0f172a' }}>Overview</h3>
+                    <p>{description}</p>
+
+                    {proTip && (
+                        <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '1.5rem', borderRadius: '16px', marginTop: '2rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                            <strong style={{ color: '#2563eb' }}>Pro Tip:</strong> {proTip}
+                        </div>
                     )}
 
-                </div>
-            </div>
-        </motion.div>
+                    {advantages && (
+                        <div style={{ marginTop: '2rem' }}>
+                            <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>Why Choose This?</h4>
+                            <ul style={{ listStyle: 'none', padding: 0 }}>
+                                {advantages.map((adv, i) => (
+                                    <li key={i} style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
+                                        <span style={{ color: '#3b82f6' }}>✓</span> {adv}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </motion.div>
+            </section>
+        </div>
     );
 };
 

@@ -9,6 +9,8 @@ export interface ProductData {
     description: string;
     advantages?: string[];
     solutionId: string;
+    applications?: string;
+    proTip?: string;
 }
 
 
@@ -28,7 +30,8 @@ export const productsData: ProductData[] = [
             { value: '25 Years', label: 'WARRANTY' }
         ],
         description: 'Mono Facial solar panels utilize single-crystalline silicon technology for maximum efficiency. These panels are ideal for residential and commercial installations, offering reliable power generation with a sleek, uniform appearance.',
-        solutionId: 'solar'
+        solutionId: 'solar',
+        applications: 'Residential, Commercial Roofs'
     },
     {
         id: 'bi-facial',
@@ -43,7 +46,8 @@ export const productsData: ProductData[] = [
             { value: 'Extended', label: 'WARRANTY' }
         ],
         description: 'Boost Your Solar Power: Bifacial solar panels capture sunlight on both sides, generating up to 30% more energy than traditional panels. Ideal for reflective surfaces, they maximize your investment in solar.',
-        solutionId: 'solar'
+        solutionId: 'solar',
+        proTip: 'Ideal for reflective surfaces like white rooftops, snow, or sand to capture back-side light.'
     },
     {
         id: 'topcon',
