@@ -10,7 +10,7 @@ const sections = [
         subtitle: 'Battery Energy Storage System',
         content: 'Grid-scale battery solutions for reliable, sustainable energy storage and distribution.',
         image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920',
-        vimeoId: '455325244' // Energy / Grid
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-blue-lines-high-tech-background-34351-large.mp4'
     },
     {
         id: 'application',
@@ -18,7 +18,7 @@ const sections = [
         subtitle: 'Power Solutions',
         content: 'From renewable integration to peak shaving, our batteries power diverse applications.',
         image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920',
-        vimeoId: '494252666' // Industrial Production
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-automated-production-line-in-a-factory-40076-large.mp4'
     },
     {
         id: 'innovation',
@@ -26,7 +26,7 @@ const sections = [
         subtitle: 'Next-Gen Technology',
         content: 'Cutting-edge lithium-ion and solid-state battery innovations for maximum efficiency.',
         image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920',
-        vimeoId: '343511874' // Digital Tech / Abstract
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-digital-transformation-concept-background-30470-large.mp4'
     },
     {
         id: 'about',
@@ -34,7 +34,7 @@ const sections = [
         subtitle: 'Our Mission',
         content: 'Powering a cleaner future through advanced energy storage technology.',
         image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920',
-        vimeoId: '312539655' // Wind Turbines
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-wind-turbines-in-a-field-1548-large.mp4'
     },
     {
         id: 'contact',
@@ -42,7 +42,7 @@ const sections = [
         subtitle: 'Get Connected',
         content: 'Partner with us to transform your energy infrastructure.',
         image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920',
-        vimeoId: '494252666' // Industrial
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-industrial-worker-in-a-factory-40081-large.mp4'
     }
 ];
 
@@ -120,17 +120,22 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                         scale: bgScale /* Parallax zoom sync */
                     }}
                 >
-                    {/* Vimeo Background Video */}
-                    <div className="vimeo-wrapper">
-                        <iframe
-                            src={`https://player.vimeo.com/video/${section.vimeoId}?autoplay=1&loop=1&muted=1&background=1&quality=1080p`}
-                            frameBorder="0"
-                            allow="autoplay; fullscreen"
-                            allowFullScreen
-                            className="bg-vimeo-iframe"
-                            title={section.title}
-                        ></iframe>
-                    </div>
+                    {/* Video Background */}
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="section-bg-video"
+                        poster={section.image}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                        }}
+                    >
+                        <source src={section.video} type="video/mp4" />
+                    </video>
 
                     {/* Industrial Dark Overlay */}
                     <div
@@ -138,7 +143,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                         style={{
                             position: 'absolute',
                             inset: 0,
-                            background: 'rgba(0,0,0,0.5)',
+                            background: 'rgba(0,0,0,0.5)', /* Increased for video text contrast */
                             zIndex: 1
                         }}
                     />

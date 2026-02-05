@@ -9,16 +9,16 @@ const ProductsOverview: React.FC = () => {
         <div className="products-overview-page">
             {/* Hero Section */}
             <section className="products-hero">
-                <div className="vimeo-wrapper">
-                    <iframe
-                        src="https://player.vimeo.com/video/328905206?autoplay=1&loop=1&muted=1&background=1"
-                        frameBorder="0"
-                        allow="autoplay; fullscreen"
-                        allowFullScreen
-                        className="bg-vimeo-iframe"
-                        title="Solar Farm"
-                    ></iframe>
-                </div>
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="hero-video-bg"
+                    poster="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920"
+                >
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-solar-panels-in-a-solar-farm-1547-large.mp4" type="video/mp4" />
+                </video>
                 <div className="products-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
