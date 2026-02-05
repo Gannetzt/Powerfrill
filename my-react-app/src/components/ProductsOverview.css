@@ -5,8 +5,9 @@
 }
 
 .products-hero {
-    height: 50vh;
-    min-height: 350px;
+    height: 70vh;
+    /* Increased for immersion */
+    min-height: 450px;
     background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920');
     background-size: cover;
     background-position: center;
@@ -16,22 +17,26 @@
 .products-hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    /* Move to bottom */
+    justify-content: flex-start;
+    /* Move to left */
+    padding: 0 0 5% 5%;
+    /* Spacing from edges */
 }
 
 .products-hero-title {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    /* Smaller size */
     color: #fff;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -1px;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-    text-align: center;
-    max-width: 900px;
-    padding: 0 2rem;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    text-align: left;
+    max-width: 800px;
 }
 
 /* Industrial Breadcrumbs */
