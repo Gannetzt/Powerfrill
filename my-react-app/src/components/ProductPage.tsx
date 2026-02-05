@@ -20,11 +20,24 @@ interface ProductPageProps {
     proTip?: string;
 }
 
-const PowerSignature = () => (
+const AnimatedSignature = () => (
     <div className="power-signature-backdrop">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor" />
-        </svg>
+        <motion.div
+            animate={{
+                scale: [1, 1.05, 1],
+                opacity: [0.3, 0.4, 0.3],
+            }}
+            transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }}
+            className="signature-icon-wrap"
+        >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        </motion.div>
     </div>
 );
 
@@ -53,7 +66,6 @@ const ProductPage: React.FC<ProductPageProps> = ({
             <header className="product-hero-section">
                 <img src={image} alt={title} className="product-hero-bg" />
                 <div className="product-hero-content">
-                    <PowerSignature />
                     <motion.h1
                         className="product-title"
                         initial={{ y: 30, opacity: 0 }}
@@ -85,6 +97,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
             </div>
 
             <div className="product-wizard-container">
+                <AnimatedSignature />
                 {/* Wizard Navigation */}
                 <nav className="product-wizard-nav">
                     {tabs.map((tab) => (
