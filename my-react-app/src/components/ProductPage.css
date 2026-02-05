@@ -20,6 +20,16 @@
     /* Spacing from edge */
 }
 
+@media (max-width: 768px) {
+    .product-hero-section {
+        height: auto;
+        min-height: 60vh;
+        align-items: center;
+        padding-left: 0;
+        margin-bottom: 2rem;
+    }
+}
+
 .product-hero-bg {
     position: absolute;
     top: 0;
@@ -119,9 +129,21 @@
     .product-grid-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
+        padding: 0 1.5rem 3rem;
     }
 
     .product-title {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
+        word-wrap: break-word;
+        /* Ensure clear wrapping */
+    }
+
+    .product-hero-content {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    .product-specs-card {
+        padding: 1.5rem;
     }
 }

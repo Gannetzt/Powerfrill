@@ -103,12 +103,8 @@
 
 @media (max-width: 768px) {
     .side-nav-wrapper {
-        left: 1rem;
-        background: rgba(0, 0, 0, 0.2);
-        /* Slight background to ensure visibility on mobile */
-        padding: 0.5rem;
-        border-radius: 10px;
-        backdrop-filter: blur(5px);
+        display: none;
+        /* Hide on mobile/tablet as requested */
     }
 
     .nav-label {
