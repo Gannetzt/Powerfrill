@@ -20,6 +20,14 @@ interface ProductPageProps {
     proTip?: string;
 }
 
+const PowerSignature = () => (
+    <div className="power-signature-backdrop">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor" />
+        </svg>
+    </div>
+);
+
 const ProductPage: React.FC<ProductPageProps> = ({
     categoryPath,
     title,
@@ -42,6 +50,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
     return (
         <div className="product-page">
+            <PowerSignature />
             <header className="product-hero-section">
                 <img src={image} alt={title} className="product-hero-bg" />
                 <div className="product-hero-content">

@@ -2,6 +2,26 @@
     min-height: 100vh;
     background: #ffffff;
     padding-bottom: 8rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.power-signature-backdrop {
+    position: absolute;
+    top: 40%;
+    left: -5%;
+    width: 600px;
+    height: 600px;
+    color: rgba(251, 191, 36, 0.04);
+    pointer-events: none;
+    z-index: 0;
+    transform: rotate(15deg);
+}
+
+.power-signature-backdrop svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
 }
 
 .solution-hero {
