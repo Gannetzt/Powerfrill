@@ -1,12 +1,12 @@
 .solution-detail-page {
     min-height: 100vh;
-    background: #ffffff;
-    padding-bottom: 8rem;
+    background: #f1f5f9;
+    padding-bottom: 4rem;
 }
 
 .solution-hero {
-    height: 60vh;
-    min-height: 400px;
+    height: 45vh;
+    min-height: 300px;
     background-size: cover;
     background-position: center;
     position: relative;

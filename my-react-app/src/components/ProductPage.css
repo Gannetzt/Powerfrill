@@ -1,48 +1,28 @@
 /* Product Page Specific Styling - Platinum Theme */
 .product-page {
-    padding-top: 110px;
+    padding-top: 100px;
+    /* Reduced */
     min-height: 100vh;
-    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    background: #f1f5f9;
+    /* Solid high-level platinum look */
     color: #1e293b;
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow-x: hidden;
 }
 
-.power-signature-backdrop {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    color: rgba(251, 191, 36, 0.08);
-    /* Light orange with low opacity */
-    pointer-events: none;
-    z-index: 0;
-}
-
-.signature-icon-wrap {
-    width: 100%;
-    height: 100%;
-}
-
-.power-signature-backdrop svg {
-    width: 100%;
-    height: 100%;
-}
-
 .product-hero-section {
     position: relative;
-    height: 70vh;
+    height: 55vh;
+    /* Reduced height */
+    min-height: 350px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* Align Left */
-    margin-bottom: 4rem;
+    margin-bottom: 2.5rem;
+    /* Reduced gap */
     padding-left: 5%;
-    /* Spacing from edge */
 }
 
 @media (max-width: 768px) {
@@ -137,11 +117,14 @@
 
 /* Wizard Container */
 .product-wizard-container {
-    max-width: 1200px;
-    margin: 0 auto 6rem;
+    max-width: 1100px;
+    /* Slightly tighter */
+    margin: 0 auto 4rem;
+    /* Reduced bottom gap */
     background: #ffffff;
-    border-radius: 32px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    /* Slightly tighter radius */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     position: relative;
     overflow: hidden;
     padding: 0;
@@ -160,30 +143,36 @@
 /* Wizard Navigation */
 .product-wizard-nav {
     display: flex;
-    gap: 3rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 3rem;
+    gap: 2rem;
+    /* Reduced gap */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+    /* Reduced gap */
     overflow-x: auto;
     scrollbar-width: none;
-    /* Hide scrollbar Firefox */
-}
-
-.product-wizard-nav::-webkit-scrollbar {
-    display: none;
-    /* Hide scrollbar Chrome/Safari */
 }
 
 .wizard-tab-btn {
     background: none;
     border: none;
-    padding: 1rem 0 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+    padding: 0.75rem 0 1rem;
+    /* Tighter padding */
+    font-size: 1rem;
+    /* Slightly smaller */
+    font-weight: 500;
     color: #64748b;
     cursor: pointer;
     position: relative;
+    transition: all 0.3s ease;
     white-space: nowrap;
-    transition: color 0.3s ease;
+}
+
+font-weight: 600;
+color: #64748b;
+cursor: pointer;
+position: relative;
+white-space: nowrap;
+transition: color 0.3s ease;
 }
 
 .wizard-tab-btn.active {
