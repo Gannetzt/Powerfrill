@@ -57,9 +57,9 @@ const ProductsOverview: React.FC = () => {
                                             <Link to={`/category/${category.id}`} className="card-link">
                                                 <div className="card-image-wrap">
                                                     <img src={category.image} alt={category.name} className="card-image" />
-                                                </div>
-                                                <div className="card-info">
-                                                    <h3 className="card-title">{category.name}</h3>
+                                                    <div className="card-info">
+                                                        <h3 className="card-title">{category.name}</h3>
+                                                    </div>
                                                 </div>
                                             </Link>
                                         </motion.div>
