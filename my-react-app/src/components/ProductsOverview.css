@@ -75,8 +75,7 @@
 
 /* Hub Selector Section */
 .hubs-selector-section {
-    padding-top: 0.5rem;
-    /* Tighter gap to cards */
+    padding-top: 0;
 }
 
 .hub-grid {
