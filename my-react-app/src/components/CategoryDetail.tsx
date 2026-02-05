@@ -64,11 +64,8 @@ const CategoryDetail: React.FC = () => {
                                 <Link to={`/product/${sub.id}`} className="card-link">
                                     <div className="card-image-wrap">
                                         <img src={sub.image} alt={sub.title} className="card-image" />
-                                    </div>
-                                    <div className="card-info">
-                                        <h3 className="card-title">{sub.title}</h3>
-                                        <div className="expand-indicator">
-                                            <span className="plus">+</span>
+                                        <div className="card-info">
+                                            <h3 className="card-title">{sub.title}</h3>
                                         </div>
                                     </div>
                                 </Link>
