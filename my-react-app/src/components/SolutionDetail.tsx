@@ -21,7 +21,17 @@ const SolutionDetail: React.FC = () => {
     return (
         <div className="solution-detail-page">
             {/* Hero Section */}
-            <section className="solution-hero" style={{ backgroundImage: `url(${solution.heroImage})` }}>
+            <section className="solution-hero">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="hero-video-bg"
+                    poster={solution.heroImage}
+                >
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-wind-turbines-on-a-sunny-day-1549-large.mp4" type="video/mp4" />
+                </video>
                 <div className="solution-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}

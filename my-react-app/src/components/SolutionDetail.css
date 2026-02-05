@@ -7,11 +7,21 @@
 .solution-hero {
     height: 45vh;
     min-height: 300px;
-    background-size: cover;
-    background-position: center;
+    background: #000;
     position: relative;
+    overflow: hidden;
     display: flex;
     align-items: flex-end;
+}
+
+.hero-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
 }
 
 .solution-hero-overlay {

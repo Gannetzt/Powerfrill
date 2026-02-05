@@ -21,7 +21,17 @@ const CategoryDetail: React.FC = () => {
     return (
         <div className="category-detail-page">
             {/* Hero Section */}
-            <section className="category-hero" style={{ backgroundImage: `url(${category.image})` }}>
+            <section className="category-hero">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="hero-video-bg"
+                    poster={category.image}
+                >
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-blue-lines-high-tech-background-34351-large.mp4" type="video/mp4" />
+                </video>
                 <div className="category-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
