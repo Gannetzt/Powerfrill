@@ -139,7 +139,22 @@
 .product-wizard-container {
     max-width: 1200px;
     margin: 0 auto 6rem;
-    padding: 0 2rem;
+    background: #ffffff;
+    border-radius: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    /* Remove horizontal padding here, use it in inner panels */
+}
+
+/* Inner panels padding */
+.product-wizard-nav,
+.product-wizard-content-wrap {
+    padding: 0 3rem;
+    position: relative;
+    z-index: 2;
+    /* Keep content above signature */
 }
 
 /* Wizard Navigation */
