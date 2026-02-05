@@ -15,7 +15,7 @@ const ProductsOverview: React.FC = () => {
                         animate={{ y: 0, opacity: 1 }}
                         className="products-hero-title"
                     >
-                        Our Industrial Solutions
+                        Our Products
                     </motion.h1>
                 </div>
             </section>
