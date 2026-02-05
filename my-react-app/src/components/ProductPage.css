@@ -59,8 +59,6 @@
     }
 }
 
-}
-
 /* Gradient Overlay to make left text readable */
 .product-hero-section::after {
     content: '';
