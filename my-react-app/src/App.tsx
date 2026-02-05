@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import Footer from './components/Footer'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
+import SolutionDetail from './components/SolutionDetail'
 import CategoryDetail from './components/CategoryDetail'
 import { getProductById } from './data/products'
 
@@ -56,6 +57,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsOverview />} />
+          <Route path="/hub/:solutionId" element={<SolutionDetail />} />
           <Route path="/category/:categoryId" element={<CategoryDetail />} />
 
           {/* Generic Product Route */}

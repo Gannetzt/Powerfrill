@@ -127,7 +127,7 @@
     }
 }
 
-.category-major-card {
+.hub-major-card {
     background: transparent;
     border: none;
     box-shadow: none;
@@ -135,6 +135,10 @@
     position: relative;
     cursor: pointer;
     overflow: visible;
+}
+
+.hub-major-card:hover {
+    transform: translateY(-10px);
 }
 
 .category-major-card:hover {
@@ -178,9 +182,23 @@
     transition: all 0.4s ease;
 }
 
-.category-major-card:hover .card-info {
-    padding-bottom: 1.5rem;
+.hub-major-card:hover .card-info {
+    padding-bottom: 2.5rem;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.card-cta {
+    margin-top: 1rem;
+    color: #3b82f6;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+.hub-major-card:hover .card-cta {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .card-title {
