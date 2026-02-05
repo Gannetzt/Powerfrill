@@ -167,16 +167,10 @@
     white-space: nowrap;
 }
 
-font-weight: 600;
-color: #64748b;
-cursor: pointer;
-position: relative;
-white-space: nowrap;
-transition: color 0.3s ease;
-}
-
+/* Active State */
 .wizard-tab-btn.active {
     color: #3b82f6;
+    font-weight: 600;
 }
 
 .tab-underline {

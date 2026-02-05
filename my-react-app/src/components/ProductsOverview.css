@@ -1,13 +1,15 @@
 .products-overview-page {
     min-height: 100vh;
-    background: #ffffff;
-    padding-bottom: 8rem;
+    background: #f1f5f9;
+    /* Platinum look */
+    padding-bottom: 4rem;
+    /* Reduced Gap */
 }
 
 .products-hero {
-    height: 70vh;
-    /* Increased for immersion */
-    min-height: 450px;
+    height: 50vh;
+    /* Tighter Hero */
+    min-height: 350px;
     background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920');
     background-size: cover;
     background-position: center;
@@ -41,7 +43,8 @@
 
 /* Industrial Breadcrumbs */
 .industrial-breadcrumb {
-    padding: 2.5rem 0;
+    padding: 1.5rem 0;
+    /* Reduced Vertical Space */
     font-size: 0.9rem;
     color: #6b7280;
     display: flex;
