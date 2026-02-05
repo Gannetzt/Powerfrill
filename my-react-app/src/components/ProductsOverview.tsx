@@ -29,47 +29,32 @@ const ProductsOverview: React.FC = () => {
                 </nav>
             </div>
 
-            {/* Hub Sections */}
-            <div className="portal-hubs-container">
-                {solutions.map((hub) => {
-                    const hubCategories = categories.filter(cat => cat.solutionId === hub.id);
-                    if (hubCategories.length === 0) return null;
-
-                    return (
-                        <section key={hub.id} className="hub-portfolio-section">
-                            <div className="container">
-                                <div className="hub-portfolio-header">
-                                    <h2 className="hub-portfolio-title">
-                                        {hub.title}
-                                        <div className="hub-underline" />
-                                    </h2>
-                                </div>
-
-                                <div className="category-grid">
-                                    {hubCategories.map((category, index) => (
-                                        <motion.div
-                                            key={category.id}
-                                            className="category-major-card"
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                        >
-                                            <Link to={`/category/${category.id}`} className="card-link">
-                                                <div className="card-image-wrap">
-                                                    <img src={category.image} alt={category.name} className="card-image" />
-                                                    <div className="card-info">
-                                                        <h3 className="card-title">{category.name}</h3>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-                        </section>
-                    );
-                })}
-            </div>
+            {/* Hub Selector Section */}
+            <section className="hubs-selector-section">
+                <div className="container">
+                    <div className="hub-grid">
+                        {solutions.map((hub, index) => (
+                            <motion.div
+                                key={hub.id}
+                                className="hub-major-card"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <Link to={`/hub/${hub.id}`} className="card-link">
+                                    <div className="card-image-wrap">
+                                        <img src={hub.heroImage} alt={hub.title} className="card-image" />
+                                        <div className="card-info">
+                                            <h3 className="card-title">{hub.title}</h3>
+                                            <div className="card-cta">Explore Division →</div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
         </div>
     );
 };
