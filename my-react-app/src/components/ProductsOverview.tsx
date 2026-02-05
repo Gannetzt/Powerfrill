@@ -9,6 +9,16 @@ const ProductsOverview: React.FC = () => {
         <div className="products-overview-page">
             {/* Hero Section */}
             <section className="products-hero">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="hero-video-bg"
+                    poster="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920"
+                >
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-solar-panels-in-a-solar-farm-1547-large.mp4" type="video/mp4" />
+                </video>
                 <div className="products-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}

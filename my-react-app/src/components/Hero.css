@@ -43,6 +43,17 @@
     /* Hardware acceleration hint */
 }
 
+.section-bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
+}
+
 
 .hero-sub-section .container.centered-content {
     width: 100%;

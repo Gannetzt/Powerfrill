@@ -9,35 +9,40 @@ const sections = [
         title: 'BESS',
         subtitle: 'Battery Energy Storage System',
         content: 'Grid-scale battery solutions for reliable, sustainable energy storage and distribution.',
-        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920'
+        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-blue-lines-high-tech-background-34351-large.mp4'
     },
     {
         id: 'application',
         title: 'Application',
         subtitle: 'Power Solutions',
         content: 'From renewable integration to peak shaving, our batteries power diverse applications.',
-        image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920'
+        image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-automated-production-line-in-a-factory-40076-large.mp4'
     },
     {
         id: 'innovation',
         title: 'Innovation',
         subtitle: 'Next-Gen Technology',
         content: 'Cutting-edge lithium-ion and solid-state battery innovations for maximum efficiency.',
-        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920'
+        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-digital-transformation-concept-background-30470-large.mp4'
     },
     {
         id: 'about',
         title: 'About',
         subtitle: 'Our Mission',
         content: 'Powering a cleaner future through advanced energy storage technology.',
-        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920'
+        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-wind-turbines-in-a-field-1548-large.mp4'
     },
     {
         id: 'contact',
         title: 'Contact',
         subtitle: 'Get Connected',
         content: 'Partner with us to transform your energy infrastructure.',
-        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920'
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920',
+        video: 'https://assets.mixkit.co/videos/preview/mixkit-industrial-worker-in-a-factory-40081-large.mp4'
     }
 ];
 
@@ -106,19 +111,43 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                 <motion.div
                     className="section-bg-overlay"
                     style={{
-                        backgroundImage: `url(${section.image})`,
                         position: 'absolute',
                         top: 0,
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
                         zIndex: 0,
-                        opacity: 0.4,
                         scale: bgScale /* Parallax zoom sync */
                     }}
-                />
+                >
+                    {/* Video Background */}
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="section-bg-video"
+                        poster={section.image}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                        }}
+                    >
+                        <source src={section.video} type="video/mp4" />
+                    </video>
+
+                    {/* Industrial Dark Overlay */}
+                    <div
+                        className="video-overlay"
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'rgba(0,0,0,0.5)', /* Increased for video text contrast */
+                            zIndex: 1
+                        }}
+                    />
+                </motion.div>
 
 
                 {/* Centered Storytelling Content */}
