@@ -7,13 +7,14 @@
 }
 
 .products-hero {
-    height: 50vh;
-    /* Tighter Hero */
-    min-height: 350px;
+    height: 65vh;
+    /* Larger, immersive banner */
+    min-height: 450px;
     background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920');
     background-size: cover;
     background-position: center;
     position: relative;
+    overflow: hidden;
 }
 
 .products-hero-overlay {
@@ -43,8 +44,8 @@
 
 /* Industrial Breadcrumbs */
 .industrial-breadcrumb {
-    padding: 1.5rem 0;
-    /* Reduced Vertical Space */
+    padding: 1rem 0;
+    /* Minimal Vertical Space */
     font-size: 0.9rem;
     color: #6b7280;
     display: flex;
@@ -74,7 +75,8 @@
 
 /* Hub Selector Section */
 .hubs-selector-section {
-    padding-top: 2rem;
+    padding-top: 0.5rem;
+    /* Tighter gap to cards */
 }
 
 .hub-grid {

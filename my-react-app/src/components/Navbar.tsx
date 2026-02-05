@@ -51,14 +51,19 @@ const Navbar: React.FC = () => {
         }
     }, [location, navigate]);
 
-    // Handle body scroll lock
+    // Handle body scroll lock and global blur
     React.useEffect(() => {
         if (isMenuOpen) {
             document.body.classList.add('no-scroll');
+            document.body.classList.add('menu-is-open');
         } else {
             document.body.classList.remove('no-scroll');
+            document.body.classList.remove('menu-is-open');
         }
-        return () => document.body.classList.remove('no-scroll');
+        return () => {
+            document.body.classList.remove('no-scroll');
+            document.body.classList.remove('menu-is-open');
+        };
     }, [isMenuOpen]);
 
 
