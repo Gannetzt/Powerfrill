@@ -1,85 +1,84 @@
-/* Product Page Specific Styling - Platinum Theme */
 .product-page {
     padding-top: 100px;
-    /* Reduced */
+    /* Space for Navbar */
     min-height: 100vh;
-    background: #f1f5f9;
-    /* Solid high-level platinum look */
-    color: #1e293b;
-    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    color: #1a1a2e;
+    font-family: 'Outfit', sans-serif;
     position: relative;
     overflow-x: hidden;
 }
 
 .product-hero-section {
     position: relative;
-    height: 55vh;
-    /* Reduced height */
-    min-height: 350px;
+    height: 80vh;
+    /* Immersive Cinematic Height */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    /* Force Full Width Breakout */
+    min-height: 500px;
     overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 2.5rem;
-    /* Reduced gap */
-    padding-left: 5%;
+    justify-content: center;
+    margin-bottom: 0;
+    /* Tight flow to breadcrumbs */
 }
 
 @media (max-width: 768px) {
     .product-hero-section {
-        height: auto;
-        min-height: 60vh;
-        align-items: center;
-        padding-left: 0;
-        margin-bottom: 2rem;
+        height: 60vh;
+        min-height: 400px;
+        margin-left: -1.5rem;
+        /* Mobile container compensation */
+        width: 100vw;
     }
 }
 
 .product-hero-bg {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: 1;
 }
 
-/* Gradient Overlay to make left text readable */
+/* Cinematic Bottom Gradient Overlay */
 .product-hero-section::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%);
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%);
     z-index: 2;
 }
 
 .product-hero-content {
     position: relative;
     z-index: 10;
-    text-align: left;
-    /* Align Text Left */
-    max-width: 600px;
+    text-align: center;
+    /* Center-aligned for cinematic impact */
+    max-width: 900px;
     padding: 2rem;
 }
 
 .product-title {
-    font-size: 4rem;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    /* Smaller, more sophisticated size */
     font-weight: 800;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
     color: #ffffff;
-    /* White text on dark hero overlay */
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 1rem;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
 }
 
 .product-subtitle {
-    font-size: 1.5rem;
-    color: #e2e8f0;
-    font-weight: 300;
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .product-breadcrumb-container {
@@ -118,37 +117,29 @@
 
 /* Wizard Container */
 .product-wizard-container {
-    max-width: 1100px;
-    /* Slightly tighter */
-    margin: 0 auto 4rem;
-    /* Reduced bottom gap */
+    max-width: 1200px;
+    margin: 2rem auto 6rem;
     background: #ffffff;
-    border-radius: 24px;
-    /* Slightly tighter radius */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border-radius: 32px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
     padding: 0;
-    /* Remove horizontal padding here, use it in inner panels */
 }
 
 /* Inner panels padding */
 .product-wizard-nav,
 .product-wizard-content-wrap {
-    padding: 0 3rem;
-    position: relative;
-    z-index: 2;
-    /* Keep content above signature */
+    padding: 0 4rem;
 }
 
 /* Wizard Navigation */
 .product-wizard-nav {
     display: flex;
-    gap: 2rem;
-    /* Reduced gap */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    margin-bottom: 2rem;
-    /* Reduced gap */
+    gap: 3rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 3rem;
+    padding-top: 1rem;
     overflow-x: auto;
     scrollbar-width: none;
 }
@@ -156,12 +147,12 @@
 .wizard-tab-btn {
     background: none;
     border: none;
-    padding: 0.75rem 0 1rem;
-    /* Tighter padding */
-    font-size: 1rem;
-    /* Slightly smaller */
-    font-weight: 500;
-    color: #64748b;
+    padding: 1.25rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     position: relative;
     transition: all 0.3s ease;
@@ -170,50 +161,50 @@
 
 /* Active State */
 .wizard-tab-btn.active {
-    color: #3b82f6;
-    font-weight: 600;
+    color: #1e293b;
 }
 
 .tab-underline {
     position: absolute;
-    bottom: -2px;
+    bottom: -1px;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 4px;
     background: #3b82f6;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 /* Tab Panes */
 .product-wizard-content-wrap {
-    min-height: 400px;
-    /* Prevent jumpy height transitions */
+    min-height: 450px;
+    padding-bottom: 4rem;
 }
 
 .pane-heading {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: #0f172a;
     margin-bottom: 2rem;
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
 }
 
 .pane-description {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     line-height: 1.8;
     color: #334155;
-    max-width: 800px;
+    max-width: 850px;
 }
 
 .pro-tip-box {
-    margin-top: 3rem;
-    padding: 2rem;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border: 1px solid #bfdbfe;
-    border-radius: 20px;
-    color: #1e40af;
-    font-size: 1.1rem;
+    margin-top: 4rem;
+    padding: 2.5rem;
+    background: #f8fafc;
+    border-left: 5px solid #3b82f6;
+    border-radius: 4px 24px 24px 4px;
+    color: #1e293b;
+    font-size: 1.15rem;
     line-height: 1.6;
+    font-style: italic;
 }
 
 /* Specs Pane */
