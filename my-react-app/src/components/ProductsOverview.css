@@ -121,26 +121,17 @@
 }
 
 .category-major-card {
-    background: #ffffff;
-    border-radius: 24px;
-    /* Slightly softer corners */
-    overflow: hidden;
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.05),
-        0 2px 4px -1px rgba(0, 0, 0, 0.03),
-        0 0 0 1px rgba(0, 0, 0, 0.05);
-    /* Subtle inner border */
+    background: transparent;
+    border: none;
+    box-shadow: none;
     transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
     position: relative;
     cursor: pointer;
+    overflow: visible;
 }
 
 .category-major-card:hover {
-    transform: translateY(-12px);
-    box-shadow:
-        0 30px 60px -12px rgba(0, 0, 0, 0.12),
-        0 18px 36px -18px rgba(0, 0, 0, 0.1);
-    border-color: transparent;
+    transform: translateY(-8px);
 }
 
 .card-image-wrap {
@@ -164,53 +155,18 @@
 }
 
 .card-info {
-    padding: 2rem;
-    position: relative;
-    background: #ffffff;
+    padding: 1.5rem 0.5rem;
+    text-align: center;
+    background: transparent;
 }
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #0f172a;
-    /* Darker slate */
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 0.85rem;
-    padding-right: 3rem;
-    letter-spacing: -0.5px;
-}
-
-.card-description {
-    font-size: 0.9rem;
-    color: #64748b;
-    line-height: 1.6;
-    margin-bottom: 0;
-}
-
-.expand-indicator {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    /* Circle for more elegance */
-    background: #f8fafc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #3b82f6;
-    font-size: 1.1rem;
-    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-    border: 1px solid #e2e8f0;
-}
-
-.category-major-card:hover .expand-indicator {
-    background: #3b82f6;
-    color: #fff;
-    transform: translate(4px, -4px);
-    /* Sophisticated movement */
-    border-color: #3b82f6;
+    margin: 0;
+    letter-spacing: -0.02em;
 }
 
 @media (max-width: 1024px) {
