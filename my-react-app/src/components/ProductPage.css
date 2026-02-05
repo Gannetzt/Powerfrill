@@ -77,24 +77,174 @@
     font-weight: 300;
 }
 
-.product-grid-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+.product-breadcrumb-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem 4rem;
-    align-items: start;
+    padding: 2rem 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
 }
 
-.product-specs-card {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
+.breadcrumb-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #3b82f6;
+}
+
+.breadcrumb-sep {
+    margin: 0 0.75rem;
+    color: #cbd5e1;
+}
+
+.breadcrumb-item {
+    color: #64748b;
+}
+
+.breadcrumb-item.active {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* Wizard Container */
+.product-wizard-container {
+    max-width: 1200px;
+    margin: 0 auto 6rem;
+    padding: 0 2rem;
+}
+
+/* Wizard Navigation */
+.product-wizard-nav {
+    display: flex;
+    gap: 3rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 3rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+}
+
+.product-wizard-nav::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+}
+
+.wizard-tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 0 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.wizard-tab-btn.active {
+    color: #3b82f6;
+}
+
+.tab-underline {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 2px;
+}
+
+/* Tab Panes */
+.product-wizard-content-wrap {
+    min-height: 400px;
+    /* Prevent jumpy height transitions */
+}
+
+.pane-heading {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+}
+
+.pane-description {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #334155;
+    max-width: 800px;
+}
+
+.pro-tip-box {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #bfdbfe;
+    border-radius: 20px;
+    color: #1e40af;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Specs Pane */
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem 4rem;
+    background: #ffffff;
     padding: 2.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    /* Soft light shadow */
-    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.features-list {
+    margin-top: 2rem;
+}
+
+/* Applications Pane */
+.applications-text {
+    font-size: 1.25rem;
+    color: #334155;
+    line-height: 1.7;
+    font-weight: 500;
+    background: #f8fafc;
+    padding: 2.5rem;
+    border-radius: 24px;
+    border-left: 6px solid #3b82f6;
+}
+
+/* Advantages Pane */
+.advantages-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+}
+
+.advantage-item {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    color: #334155;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    border: 1px solid #f1f5f9;
+}
+
+.check-icon {
+    font-weight: 800;
+    color: #3b82f6;
 }
 
 .product-feature-row {
@@ -145,5 +295,26 @@
 
     .product-specs-card {
         padding: 1.5rem;
+    }
+
+    .product-wizard-nav {
+        gap: 1.5rem;
+    }
+
+    .wizard-tab-btn {
+        font-size: 1rem;
+    }
+
+    .pane-heading {
+        font-size: 1.5rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+
+    .advantages-list {
+        grid-template-columns: 1fr;
     }
 }

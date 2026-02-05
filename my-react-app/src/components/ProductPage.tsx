@@ -31,6 +31,15 @@ const ProductPage: React.FC<ProductPageProps> = ({
     applications,
     proTip
 }) => {
+    const [activeTab, setActiveTab] = React.useState('overview');
+
+    const tabs = [
+        { id: 'overview', label: 'Overview' },
+        { id: 'specs', label: 'Technical Specs' },
+        { id: 'applications', label: 'Applications', show: !!applications },
+        { id: 'advantages', label: 'Why Choose This?', show: !!advantages }
+    ].filter(tab => tab.show !== false);
+
     return (
         <div className="product-page">
             <header className="product-hero-section">
@@ -54,71 +63,98 @@ const ProductPage: React.FC<ProductPageProps> = ({
                 </div>
             </header>
 
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 2rem' }}>
-                <Link to="/products" style={{ color: '#64748b', textDecoration: 'none' }}>Products</Link>
+            <div className="product-breadcrumb-container">
+                <Link to="/products" className="breadcrumb-link">Products</Link>
                 {categoryPath.map((path, index) => (
                     <React.Fragment key={index}>
-                        <span style={{ margin: '0 0.5rem', color: '#94a3b8' }}>/</span>
-                        <span style={{ color: index === categoryPath.length - 1 ? '#0f172a' : '#64748b', fontWeight: index === categoryPath.length - 1 ? '500' : '400' }}>
+                        <span className="breadcrumb-sep">/</span>
+                        <span className={`breadcrumb-item ${index === categoryPath.length - 1 ? 'active' : ''}`}>
                             {path}
                         </span>
                     </React.Fragment>
                 ))}
             </div>
 
-            <section className="product-grid-layout">
-                {/* Specs Column */}
-                <motion.div
-                    className="product-specs-card"
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                >
-                    <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Technical Specs</h3>
-                    {features.map((feature, idx) => (
-                        <div key={idx} className="product-feature-row">
-                            <span className="spec-label">{feature.label}</span>
-                            <span className="spec-value">{feature.value}</span>
-                        </div>
+            <div className="product-wizard-container">
+                {/* Wizard Navigation */}
+                <nav className="product-wizard-nav">
+                    {tabs.map((tab) => (
+                        <button
+                            key={tab.id}
+                            className={`wizard-tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                        >
+                            {tab.label}
+                            {activeTab === tab.id && (
+                                <motion.div
+                                    layoutId="tab-underline"
+                                    className="tab-underline"
+                                />
+                            )}
+                        </button>
                     ))}
-                    {applications && (
-                        <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
-                            <span className="spec-label">Applications</span>
-                            <p style={{ color: '#334155', marginTop: '0.5rem', fontWeight: '500' }}>{applications}</p>
-                        </div>
-                    )}
-                </motion.div>
+                </nav>
 
-                {/* Description Column */}
-                <motion.div
-                    className="product-description-area"
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                >
-                    <h3 style={{ marginBottom: '1rem', fontSize: '2rem', color: '#0f172a' }}>Overview</h3>
-                    <p>{description}</p>
+                {/* Wizard Content */}
+                <div className="product-wizard-content-wrap">
+                    <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="wizard-tab-pane"
+                    >
+                        {activeTab === 'overview' && (
+                            <div className="pane-overview">
+                                <h3 className="pane-heading">Overview</h3>
+                                <p className="pane-description">{description}</p>
+                                {proTip && (
+                                    <div className="pro-tip-box">
+                                        <strong>Pro Tip:</strong> {proTip}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                    {proTip && (
-                        <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '1.5rem', borderRadius: '16px', marginTop: '2rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-                            <strong style={{ color: '#2563eb' }}>Pro Tip:</strong> {proTip}
-                        </div>
-                    )}
+                        {activeTab === 'specs' && (
+                            <div className="pane-specs">
+                                <h3 className="pane-heading">Technical Specifications</h3>
+                                <div className="specs-grid">
+                                    {features.map((feature, idx) => (
+                                        <div key={idx} className="product-feature-row">
+                                            <span className="spec-label">{feature.label}</span>
+                                            <span className="spec-value">{feature.value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                    {advantages && (
-                        <div style={{ marginTop: '2rem' }}>
-                            <h4 style={{ color: '#3b82f6', marginBottom: '1rem' }}>Why Choose This?</h4>
-                            <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {advantages.map((adv, i) => (
-                                    <li key={i} style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '10px', color: '#334155' }}>
-                                        <span style={{ color: '#3b82f6' }}>✓</span> {adv}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </motion.div>
-            </section>
+                        {activeTab === 'applications' && (
+                            <div className="pane-applications">
+                                <h3 className="pane-heading">Applications</h3>
+                                <div className="applications-text">
+                                    {applications}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'advantages' && (
+                            <div className="pane-advantages">
+                                <h3 className="pane-heading">Why Choose This?</h3>
+                                <ul className="advantages-list">
+                                    {advantages?.map((adv, i) => (
+                                        <li key={i} className="advantage-item">
+                                            <span className="check-icon">✓</span> {adv}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </motion.div>
+                </div>
+            </div>
         </div>
     );
 };
