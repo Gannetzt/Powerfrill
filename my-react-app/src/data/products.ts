@@ -238,7 +238,7 @@ export const productsData: ProductData[] = [
             { value: 'Sync', label: 'GRID SYNC' }
         ],
         description: 'High-efficiency grid-tied inverters designed to seamlessly synchronize solar power with the utility grid for residential and commercial feed-in.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Net Metering Systems'
     },
     {
@@ -254,7 +254,7 @@ export const productsData: ProductData[] = [
             { value: 'Built-in', label: 'CHARGER' }
         ],
         description: 'Robust off-grid inverters that provide reliable power in remote locations, featuring built-in battery chargers and generator support.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Remote Homes, Cabins'
     },
     {
@@ -270,7 +270,7 @@ export const productsData: ProductData[] = [
             { value: 'Smart', label: 'CONTROL' }
         ],
         description: 'Versatile hybrid inverters that manage power flow between solar panels, batteries, the grid, and your loads for ultimate energy security.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Energy Independence'
     },
     {
@@ -286,7 +286,7 @@ export const productsData: ProductData[] = [
             { value: 'Precise', label: 'DATA' }
         ],
         description: 'Utility-grade bi-directional meters for accurate recording of energy imported from and exported to the grid.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Billing, Monitoring'
     },
     {
@@ -302,7 +302,7 @@ export const productsData: ProductData[] = [
             { value: 'Safety', label: 'STD' }
         ],
         description: 'Essential electrical safety components to protect your solar investment from lightning strikes and electrical faults.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'All Solar Plants'
     },
     {
@@ -318,7 +318,7 @@ export const productsData: ProductData[] = [
             { value: 'Remote', label: 'CONTROL' }
         ],
         description: 'Advanced monitoring systems that provide real-time insights into plant performance, fault detection, and reporting.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Plant O&M'
     },
 
@@ -336,7 +336,7 @@ export const productsData: ProductData[] = [
             { value: 'Custom', label: 'FIT' }
         ],
         description: 'Structural framing systems designed using advanced CAD software for optimal load distribution and material efficiency.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Complex Roofs'
     },
     {
@@ -352,7 +352,7 @@ export const productsData: ProductData[] = [
             { value: 'High', label: 'TRENGTH' }
         ],
         description: 'Hot-dip galvanized steel frames ensuring long-term structural integrity against rust and environmental corrosion.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Ground Mounts, Carports'
     },
     {
@@ -368,7 +368,7 @@ export const productsData: ProductData[] = [
             { value: 'Zero', label: 'WELDING' }
         ],
         description: 'Modular, bolt-together mounting kits that significantly reduce on-site installation time and labor costs.',
-        solutionId: 'miscellaneous',
+        solutionId: 'solar',
         applications: 'Rooftops, Quick Deploy'
     },
 
@@ -524,12 +524,6 @@ export const solutions: SolutionHub[] = [
         title: 'Battery Packs',
         heroImage: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920',
         path: 'Battery Packs'
-    },
-    {
-        id: 'miscellaneous',
-        title: 'Miscellaneous',
-        heroImage: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920',
-        path: 'Miscellaneous'
     }
 ];
 
@@ -585,14 +579,14 @@ export const categories: Category[] = [
         name: 'Inverters & Power Electronics',
         image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200',
         description: 'Advanced grid-tie, off-grid, and hybrid inverters along with essential power electronics.',
-        solutionId: 'miscellaneous'
+        solutionId: 'solar'
     },
     {
         id: 'panel-mounting-structures',
         name: 'Panel Mounting Structures',
         image: 'https://images.unsplash.com/photo-1521618755572-156ae0cdd74d?w=1200',
         description: 'Robust mounting solutions including computer-aided frames and prefabricated structures.',
-        solutionId: 'miscellaneous'
+        solutionId: 'solar'
     }
 ];
 
