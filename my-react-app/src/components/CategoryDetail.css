@@ -5,8 +5,8 @@
 }
 
 .category-hero {
-    height: 45vh;
-    min-height: 300px;
+    height: 60vh;
+    min-height: 400px;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -34,7 +34,7 @@
 
 /* Industrial Breadcrumbs */
 .industrial-breadcrumb {
-    padding: 2rem 0;
+    padding: 1.5rem 0 0.5rem;
     font-size: 0.95rem;
     color: #4b5563;
     display: flex;
@@ -63,7 +63,7 @@
 
 /* Category Content */
 .category-content {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .section-heading {

@@ -54,16 +54,17 @@ function App() {
     <BrowserRouter>
       <div className="app">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsOverview />} />
-          <Route path="/hub/:solutionId" element={<SolutionDetail />} />
-          <Route path="/category/:categoryId" element={<CategoryDetail />} />
+        <div className="main-content-wrapper">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsOverview />} />
+            <Route path="/hub/:solutionId" element={<SolutionDetail />} />
+            <Route path="/category/:categoryId" element={<CategoryDetail />} />
 
-          {/* Generic Product Route */}
-          <Route path="/product/:productId" element={<ProductPageWrapper />} />
-        </Routes>
-
+            {/* Generic Product Route */}
+            <Route path="/product/:productId" element={<ProductPageWrapper />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   )

@@ -85,7 +85,8 @@
 .product-breadcrumb-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 2rem 1.5rem;
+    padding: 1rem 2rem 0.5rem;
+    /* Tightened from 2rem 2rem 1.5rem */
     display: flex;
     align-items: center;
     font-size: 0.95rem;

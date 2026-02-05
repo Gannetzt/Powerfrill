@@ -5,8 +5,8 @@
 }
 
 .solution-hero {
-    height: 45vh;
-    min-height: 300px;
+    height: 60vh;
+    min-height: 400px;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -30,8 +30,14 @@
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
+.industrial-breadcrumb {
+    padding: 1.5rem 0 0.5rem;
+    /* Tight top and bottom */
+}
+
 .solution-content {
-    margin-top: 4rem;
+    margin-top: 1.5rem;
+    /* Reduced from 4rem */
 }
 
 /* Share Portfolio Card Styles */
