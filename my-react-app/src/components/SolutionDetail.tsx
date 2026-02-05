@@ -22,16 +22,16 @@ const SolutionDetail: React.FC = () => {
         <div className="solution-detail-page">
             {/* Hero Section */}
             <section className="solution-hero">
-                <div className="vimeo-wrapper">
-                    <iframe
-                        src="https://player.vimeo.com/video/455325244?autoplay=1&loop=1&muted=1&background=1"
-                        frameBorder="0"
-                        allow="autoplay; fullscreen"
-                        allowFullScreen
-                        className="bg-vimeo-iframe"
-                        title={solution.title}
-                    ></iframe>
-                </div>
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="hero-video-bg"
+                    poster={solution.heroImage}
+                >
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-wind-turbines-on-a-sunny-day-1549-large.mp4" type="video/mp4" />
+                </video>
                 <div className="solution-hero-overlay">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
