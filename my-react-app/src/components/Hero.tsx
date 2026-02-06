@@ -60,21 +60,17 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
     const offsetValue = isMobile ? "2vh" : "5vh";
 
     const springProgress = useSpring(scrollYProgress, {
-        stiffness: 45,
-        damping: 15,
+        stiffness: 100,
+        damping: 30,
         restDelta: 0.001
     });
 
     // ZOOM-OUT & EXPANSION LOGIC
-    // When in focus (0.5), scale is 1 (Full screen)
-    // When entering/exiting (0 or 1), scale is 0.85 (Zoomed out/Layered)
     const scale = useTransform(springProgress, [0, 0.5, 1], [startScale, 1, startScale]);
     const opacity = useTransform(springProgress, [0, 0.45, 0.55, 1], [0.4, 1, 1, 0.4]);
-    const blurValue = useTransform(springProgress, [0, 0.5, 1], [8, 0, 8]);
-    const blur = useTransform(blurValue, (v) => `blur(${v}px)`);
 
-    // Continuous vertical flow with parallax
-    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.3, 1, 1.3]);
+    // Enhanced Continuous vertical flow with parallax zoom
+    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.6, 1, 1.6]);
     const yOffset = useTransform(springProgress, [0, 0.5, 1], [offsetValue, "0vh", `-${offsetValue}`]);
 
     return (
@@ -88,7 +84,6 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                 style={{
                     scale,
                     opacity,
-                    filter: blur,
                     y: yOffset,
                     width: '100%',
                     height: '100%',

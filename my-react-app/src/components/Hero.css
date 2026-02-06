@@ -40,7 +40,16 @@
     align-items: center;
     justify-content: center;
     will-change: transform, opacity;
-    /* Hardware acceleration hint */
+    transform: translateZ(0);
+    /* Force 3D context */
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.section-bg-overlay {
+    filter: brightness(0.8) contrast(1.1);
+    transform-origin: center;
+    transition: filter 0.5s ease;
 }
 
 
