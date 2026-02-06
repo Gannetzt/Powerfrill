@@ -84,7 +84,7 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
                         <li
                             key={item.id}
                             className={`nav-item ${activeSection === item.id ? 'active' : ''}`}
-                            onClick={() => scrollToSection(item.id, index)}
+                            onClick={() => scrollToSection(index)}
                         >
                             <span className="nav-number">{(index + 1).toString().padStart(2, '0')}</span>
                             <span className="nav-label">{item.label}</span>
