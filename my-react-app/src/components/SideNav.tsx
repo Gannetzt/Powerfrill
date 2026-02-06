@@ -29,8 +29,9 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionC
                 const p = gsapTimeline.current.progress();
                 setProgress(p);
 
+                // Use a small buffer to ensure the correct section is active at snap points
                 const index = Math.round(p * steps);
-                if (navItems[index]) {
+                if (navItems[index] && navItems[index].id !== activeSectionId) {
                     setActiveSectionId(navItems[index].id);
                 }
             }
@@ -38,7 +39,7 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionC
 
         gsap.ticker.add(sync);
         return () => gsap.ticker.remove(sync);
-    }, [gsapTimeline, navItems, steps]);
+    }, [gsapTimeline, navItems, steps, activeSectionId]);
 
     // Indicator Top position
     const indicatorTop = `${progress * totalHeightRem}rem`;

@@ -56,8 +56,8 @@
 .hero-gradient-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    /* Solid cinematic darkening for white text */
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+    /* Better depth and legibility */
     pointer-events: none;
     z-index: 5;
 }
