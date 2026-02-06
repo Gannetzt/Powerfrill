@@ -65,12 +65,13 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         restDelta: 0.001
     });
 
-    // ZOOM-IN LOGIC: From Medium (0.7) to Full Screen (1.0)
-    const scale = useTransform(springProgress, [0, 0.5, 1], [startScale, 1, startScale]);
-    const opacity = useTransform(springProgress, [0, 0.4, 0.6, 1], [0.1, 1, 1, 0.1]);
-    const borderRadius = useTransform(springProgress, [0, 0.5, 1], ["40px", "0px", "40px"]);
+    // 3D CIRCULAR WHEEL LOGIC: Rotation + Depth
+    // Sections form a vertical 3D wheel/cylinder
+    const rotateX = useTransform(springProgress, [0, 0.5, 1], [60, 0, -60]);
+    const z = useTransform(springProgress, [0, 0.5, 1], [-1500, 0, -1500]);
+    const opacity = useTransform(springProgress, [0, 0.4, 0.5, 0.6, 1], [0, 0, 1, 0, 0]);
 
-    // Parallax logic - subtle movement, no pulse/breathe
+    // Parallax logic for content
     const yOffset = useTransform(springProgress, [0, 0.5, 1], [offsetValue, "0vh", `-${offsetValue}`]);
 
     return (
@@ -78,14 +79,15 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
             id={section.id}
             ref={ref}
             className="hero-sub-section"
+            style={{ perspective: '2000px' }}
         >
             <motion.div
                 className="section-container-expanding"
                 style={{
-                    scale,
+                    rotateX,
+                    z,
                     opacity,
                     y: yOffset,
-                    borderRadius,
                     width: '100%',
                     height: '100%',
                     position: 'absolute',
@@ -95,24 +97,21 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                     alignItems: 'center',
                     justifyContent: 'center',
                     zIndex: useTransform(springProgress, [0, 0.5, 1], [0, 10, 0]),
-                    overflow: 'hidden'
+                    transformOrigin: '50% 50% -1000px', // Center of the 3D wheel
+                    backfaceVisibility: 'hidden'
                 }}
             >
-                {/* Full-Width Background Visual - Stronger impact */}
+                {/* Full-Width Background Visual - Solid Hub Look */}
                 <motion.div
                     className="section-bg-overlay"
                     style={{
                         backgroundImage: `url(${section.image})`,
                         position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
+                        inset: 0,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         zIndex: 0,
-                        opacity: 0.8, // Bold image impact
-                        scale: 1.1 // Static slight zoom for depth
+                        opacity: 1, // Full clarity on selected item
                     }}
                 />
 
