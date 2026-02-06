@@ -78,7 +78,8 @@ const Hero: React.FC = () => {
             const planeHeight = 2 * Math.tan(vFov / 2) * camera.position.z;
             const planeWidth = planeHeight * aspect;
 
-            plane.scale.set(planeWidth, planeHeight, 1);
+            // Apply 1.25x scale buffer to ensure full-bleed even during recession (z: -0.3)
+            plane.scale.set(planeWidth * 1.25, planeHeight * 1.25, 1);
 
             // Adjust texture UVs to handle "cover"
             if (imageAspect > aspect) {
@@ -94,22 +95,19 @@ const Hero: React.FC = () => {
         sectionsData.forEach((section, index) => {
             const texture = textureLoader.load(section.image, (tex) => {
                 updatePlaneSize(planes[index], tex);
-                // Apply a 5% buffer to cover size to allow for the 0.95 scale shrink while staying full-width
-                planes[index].scale.multiplyScalar(1.05);
 
-                // Initial state multiplier
+                // Final initial scale adjustment
+                // Incoming planes (index > 0) start at 1.1x their base size
                 if (index > 0) {
                     planes[index].scale.multiplyScalar(1.1);
                 }
             });
-            texture.generateMipmaps = false;
-            texture.minFilter = THREE.LinearFilter;
-
             const geometry = new THREE.PlaneGeometry(1, 1);
             const material = new THREE.MeshBasicMaterial({
                 map: texture,
                 transparent: true,
-                opacity: index === 0 ? 1 : 0
+                opacity: index === 0 ? 1 : 0,
+                color: 0xeeeeee // Subtle darkening to help white/light text pop
             });
             const plane = new THREE.Mesh(geometry, material);
 
@@ -153,7 +151,7 @@ const Hero: React.FC = () => {
                 // Outgoing Logic (Plane)
                 // Mandatory values: scale 1 -> 0.95, Z 0 -> -0.3
                 tl.to(outgoing.scale, {
-                    x: "-=5%", // Relative shrink by 5%
+                    x: "-=5%",
                     y: "-=5%",
                     duration: transitionDuration
                 }, startTime)
@@ -163,15 +161,15 @@ const Hero: React.FC = () => {
                 // Outgoing Logic (Text)
                 tl.to(`#text-${index}`, {
                     opacity: 0,
-                    y: -60,
-                    duration: transitionDuration * 0.45
+                    y: -100, // Stronger vertical separation
+                    duration: transitionDuration * 0.4
                 }, startTime);
 
                 // Incoming Logic (Plane)
                 const incomingStartTime = startTime + (1 - overlap);
                 // Mandatory values: scale 1.1 -> 1, Z 0.3 -> 0
                 tl.to(incoming.scale, {
-                    x: "/=1.1", // Scale down from 1.1x base to 1.0x base
+                    x: "/=1.1",
                     y: "/=1.1",
                     duration: transitionDuration
                 }, incomingStartTime)
@@ -182,8 +180,8 @@ const Hero: React.FC = () => {
                 tl.to(`#text-${index + 1}`, {
                     opacity: 1,
                     y: 0,
-                    duration: transitionDuration * 0.7
-                }, incomingStartTime + (transitionDuration * 0.15));
+                    duration: transitionDuration * 0.75
+                }, incomingStartTime + (transitionDuration * 0.1));
             }
         });
 

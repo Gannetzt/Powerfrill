@@ -72,9 +72,11 @@ const Navbar: React.FC = () => {
             <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
 
                 <div className="header-container">
-                    <Link to="/" onClick={() => window.scrollTo(0, 0)}>
-                        <img src={logo} alt="Powerfrill" className="logo-img" />
-                    </Link>
+                    <div className="logo-wrapper">
+                        <Link to="/" onClick={() => window.scrollTo(0, 0)}>
+                            <img src={logo} alt="Powerfrill" className="logo-img" />
+                        </Link>
+                    </div>
                     <button
                         className="menu-toggle"
                         onClick={() => { setIsMenuOpen(!isMenuOpen); }}

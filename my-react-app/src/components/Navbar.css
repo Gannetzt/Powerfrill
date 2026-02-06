@@ -11,13 +11,22 @@
 
 
 .header-container {
-    max-width: 1400px;
+    max-width: 2000px;
+    /* Wider for full cinematic feel */
     margin: 0 auto;
-    padding: 0 3rem 0 180px;
+    padding: 0 48px;
     height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+}
+
+.logo-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @media (max-width: 768px) {
