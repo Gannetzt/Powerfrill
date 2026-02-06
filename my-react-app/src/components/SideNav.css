@@ -82,7 +82,7 @@
 }
 
 .nav-item.active {
-    transform: translateX(10px);
+    /* Kept clean for text-only look */
 }
 
 .nav-item:hover .nav-label,

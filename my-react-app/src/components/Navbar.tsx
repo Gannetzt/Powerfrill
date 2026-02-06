@@ -82,7 +82,12 @@ const Navbar: React.FC = () => {
                         onClick={() => { setIsMenuOpen(!isMenuOpen); }}
                         aria-label="Toggle Menu"
                     >
-                        <span className={`hamburger ${isMenuOpen ? 'active' : ''}`}></span>
+                        <div className={`battery-icon-wrapper ${isMenuOpen ? 'active' : ''}`}>
+                            <div className="battery-body">
+                                <div className="battery-fill" />
+                            </div>
+                            <div className="battery-tip" />
+                        </div>
                     </button>
                 </div>
             </header>
