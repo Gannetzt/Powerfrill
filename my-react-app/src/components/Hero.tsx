@@ -73,16 +73,29 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
             <div className="section-overlay" />
 
             <div className="hero-content">
-                <motion.div
-                    initial={{ opacity: 0, y: 60 }}
+                <motion.h1
+                    className="hero-title"
+                    initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.5 }}
+                    viewport={{ once: false, amount: 0.8 }}
                     transition={{
                         duration: 1.2,
                         ease: PREMIUM_EASE
                     }}
                 >
-                    <h1 className="hero-title">{section.title}</h1>
+                    {section.title}
+                </motion.h1>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.8 }}
+                    transition={{
+                        duration: 1.2,
+                        delay: 0.2, // Staggered entry for content
+                        ease: PREMIUM_EASE
+                    }}
+                >
                     <p className="hero-subtitle">{section.content}</p>
                     <div className="hero-actions">
                         <button className="btn btn-primary btn-lg">Learn More</button>
