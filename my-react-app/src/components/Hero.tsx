@@ -122,17 +122,17 @@ const Hero: React.FC = () => {
 
             const { scrollTop, scrollHeight, clientHeight } = container;
 
-            // Loop logic: When the clone section starts
-            if (scrollTop + clientHeight >= scrollHeight - 5) {
+            // Loop logic: When the clone section is fully landed
+            if (scrollTop >= scrollHeight - clientHeight - 2) {
                 isLoopingRef.current = true;
 
-                // Jump to top instantly or with silent scroll
+                // Jump to top instantly
                 container.style.scrollSnapType = 'none';
-                container.scrollTo({ top: 0, behavior: 'auto' });
+                container.scrollTop = 0;
 
-                // Small timeout to prevent scroll snap fighting
+                // Small timeout to restore snap
                 setTimeout(() => {
-                    container.style.scrollSnapType = 'y mandatory';
+                    if (container) container.style.scrollSnapType = 'y mandatory';
                     isLoopingRef.current = false;
                 }, 50);
             }

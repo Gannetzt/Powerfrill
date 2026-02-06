@@ -33,28 +33,24 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
     const totalHeight = (navItems.length - 1) * 3.5;
     const indicatorTop = useTransform(smoothProgress, [0, 1], ["0rem", `${totalHeight}rem`]);
 
-    // IntersectionObserver for "Perfect" Active Highlighting
+    // Precise Active Highlighting using scrollTop
     useEffect(() => {
-        const options = {
-            root: containerRef.current,
-            threshold: 0.5,
-            rootMargin: "0px"
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const { scrollTop, clientHeight } = container;
+            // Get index by rounding current scroll position
+            const index = Math.round(scrollTop / clientHeight);
+            // Map index to nav items (handles cloned sections)
+            const activeIndex = index % navItems.length;
+            if (navItems[activeIndex]) {
+                setActiveSection(navItems[activeIndex].id);
+            }
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setActiveSection(entry.target.id);
-                }
-            });
-        }, options);
-
-        navItems.forEach((item) => {
-            const el = document.getElementById(item.id);
-            if (el) observer.observe(el);
-        });
-
-        return () => observer.disconnect();
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        return () => container.removeEventListener('scroll', handleScroll);
     }, [containerRef, navItems]);
 
     const scrollToSection = (index: number) => {
