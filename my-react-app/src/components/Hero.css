@@ -2,37 +2,34 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    height: 100svh;
     overflow: hidden;
     background: #000;
-    perspective: 1200px;
 }
 
-.hero-sub-section {
-    position: absolute;
-    inset: 0;
+.hero-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
+}
+
+.hero-content-fixed {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    z-index: 1;
-    transform-style: preserve-3d;
-    pointer-events: none;
-    opacity: 0;
 }
 
-.hero-sub-section.active {
-    pointer-events: auto;
-}
-
-.section-bg-parallax {
+.hero-text-overlay {
     position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    will-change: transform, opacity, scale;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
 }
 
 .section-overlay {

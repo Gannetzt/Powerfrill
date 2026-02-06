@@ -1,229 +1,213 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, animate } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import SideNav from './SideNav';
 import './Hero.css';
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const sectionsData = [
     {
         id: 'bess',
         title: 'BESS',
         subtitle: 'Battery Energy Storage System',
-        content: 'Grid-scale battery solutions for reliable, sustainable energy storage and distribution.',
         image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920'
     },
     {
         id: 'application',
         title: 'Application',
         subtitle: 'Power Solutions',
-        content: 'From renewable integration to peak shaving, our batteries power diverse applications.',
         image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920'
     },
     {
         id: 'innovation',
         title: 'Innovation',
         subtitle: 'Next-Gen Technology',
-        content: 'Cutting-edge lithium-ion and solid-state battery innovations for maximum efficiency.',
         image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920'
     },
     {
         id: 'about',
         title: 'About',
         subtitle: 'Our Mission',
-        content: 'Powering a cleaner future through advanced energy storage technology.',
         image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920'
     },
     {
         id: 'contact',
         title: 'Contact',
         subtitle: 'Get Connected',
-        content: 'Partner with us to transform your energy infrastructure.',
         image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920'
     }
 ];
 
 const Hero: React.FC = () => {
-    const rawProgress = useMotionValue(0);
-    const touchYRef = useRef<number | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-    // Momentum Easing for the premium feel
-    // Matches the "resistant, not free-flowing" requirement
-    const smoothProgress = useSpring(rawProgress, {
-        stiffness: 40,
-        damping: 20,
-        restDelta: 0.0001
-    });
-
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    // Track active index based on smooth progress
     useEffect(() => {
-        const unsubscribe = smoothProgress.on("change", (v) => {
-            const index = Math.round(v * (sectionsData.length - 1));
-            setActiveIndex(index);
+        if (!canvasRef.current) return;
+
+        // --- Three.js Setup ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvasRef.current,
+            antialias: true,
+            alpha: true
         });
-        return unsubscribe;
-    }, [smoothProgress]);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Handle Wheel & Touch events to drive the virtual timeline
-    useEffect(() => {
-        const handleWheel = (e: WheelEvent) => {
-            e.preventDefault();
-            // Resistant scroll
-            const delta = e.deltaY * 0.0008;
-            const newProgress = Math.max(0, Math.min(1, rawProgress.get() + delta));
-            rawProgress.set(newProgress);
+        camera.position.z = 2;
+
+        const textureLoader = new THREE.TextureLoader();
+        const planes: THREE.Mesh[] = [];
+
+        // Create planes for each section
+        sectionsData.forEach((section, index) => {
+            const texture = textureLoader.load(section.image);
+            const geometry = new THREE.PlaneGeometry(5, 3); // Aspect ratio adjusted
+            const material = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+                opacity: index === 0 ? 1 : 0
+            });
+            const plane = new THREE.Mesh(geometry, material);
+
+            // Initial states
+            plane.scale.set(index === 0 ? 1 : 1.12, index === 0 ? 1 : 1.12, 1);
+            plane.position.z = index === 0 ? 0 : 0.3;
+
+            scene.add(plane);
+            planes.push(plane);
+        });
+
+        // --- GSAP Master Timeline ---
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top top",
+                end: `+=${sectionsData.length * 100}%`,
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1
+            }
+        });
+        timelineRef.current = tl;
+
+        // Build transitions for Planes & Text
+        sectionsData.forEach((_, index) => {
+            const outgoing = planes[index];
+            const incoming = planes[index + 1];
+            // Text elements are queried by ID
+            // const textCurrent = document.querySelector(`#text-${index}`); // Not directly used in tl.to, but good for reference
+            // const textNext = document.querySelector(`#text-${index + 1}`); // Not directly used in tl.to, but good for reference
+
+            const transitionDuration = 1;
+            const overlap = 0.5; // 50% overlap for smoother crossfade
+            const startTime = index * transitionDuration;
+
+            // Initial text states
+            if (index === 0) gsap.set(`#text-${index}`, { opacity: 1, y: 0 });
+            else gsap.set(`#text-${index}`, { opacity: 0, y: 30 });
+
+            if (incoming) {
+                // Outgoing Logic (Plane)
+                tl.to(outgoing.scale, { x: 0.92, y: 0.92, duration: transitionDuration }, startTime)
+                    .to(outgoing.material, { opacity: 0, duration: transitionDuration }, startTime)
+                    .to(outgoing.position, { z: -0.3, duration: transitionDuration }, startTime);
+
+                // Outgoing Logic (Text)
+                tl.to(`#text-${index}`, {
+                    opacity: 0,
+                    y: -30,
+                    duration: transitionDuration * 0.4
+                }, startTime);
+
+                // Incoming Logic (Plane)
+                const incomingStartTime = startTime + (1 - overlap);
+                tl.to(incoming.scale, { x: 1, y: 1, duration: transitionDuration }, incomingStartTime)
+                    .to(incoming.material, { opacity: 1, duration: transitionDuration }, incomingStartTime)
+                    .to(incoming.position, { z: 0, duration: transitionDuration }, incomingStartTime);
+
+                // Incoming Logic (Text)
+                tl.to(`#text-${index + 1}`, {
+                    opacity: 1,
+                    y: 0,
+                    duration: transitionDuration * 0.6
+                }, incomingStartTime + (transitionDuration * 0.2));
+            }
+        });
+
+        // Animation Loop
+        const animate = () => {
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
         };
+        animate();
 
-        const handleTouchStart = (e: TouchEvent) => {
-            touchYRef.current = e.touches[0].clientY;
+        // Handle Resize
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            if (touchYRef.current === null) return;
-            e.preventDefault();
-
-            const currentY = e.touches[0].clientY;
-            const deltaY = touchYRef.current - currentY;
-            touchYRef.current = currentY;
-
-            const delta = deltaY * 0.0015;
-            const newProgress = Math.max(0, Math.min(1, rawProgress.get() + delta));
-            rawProgress.set(newProgress);
-        };
-
-        const handleTouchEnd = () => {
-            touchYRef.current = null;
-        };
-
-        window.addEventListener('wheel', handleWheel, { passive: false });
-        window.addEventListener('touchstart', handleTouchStart, { passive: false });
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
-        window.addEventListener('touchend', handleTouchEnd);
+        window.addEventListener('resize', handleResize);
 
         return () => {
-            window.removeEventListener('wheel', handleWheel);
-            window.removeEventListener('touchstart', handleTouchStart);
-            window.removeEventListener('touchmove', handleTouchMove);
-            window.removeEventListener('touchend', handleTouchEnd);
+            window.removeEventListener('resize', handleResize);
+            renderer.dispose();
+            planes.forEach(p => {
+                p.geometry.dispose();
+                if (p.material instanceof THREE.MeshBasicMaterial && p.material.map) {
+                    p.material.map.dispose();
+                }
+                (p.material as THREE.Material).dispose();
+            });
+            tl.kill();
+            ScrollTrigger.getAll().forEach(st => st.kill());
         };
-    }, [rawProgress]);
+    }, []);
 
     const scrollToSection = (index: number) => {
-        const target = index / (sectionsData.length - 1);
-        animate(rawProgress, target, {
-            duration: 1.2,
-            ease: [0.33, 1, 0.68, 1] // Specified premium easing
+        if (!timelineRef.current) return;
+        const trigger = timelineRef.current.scrollTrigger;
+        if (!trigger) return;
+
+        const targetScroll = trigger.start + (trigger.end - trigger.start) * (index / (sectionsData.length - 1));
+        gsap.to(window, {
+            scrollTo: targetScroll,
+            duration: 1.5,
+            ease: "power2.inOut"
         });
     };
 
-    // Map sections for SideNav compatibility
-    const navItems = sectionsData.map(s => ({ id: s.id, label: s.title }));
-
     return (
-        <div className="hero-wrapper" style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
+        <div ref={containerRef} className="hero-wrapper" style={{ background: '#000' }}>
+            <canvas ref={canvasRef} className="hero-canvas" />
             <SideNav
-                customItems={navItems}
-                activeProgress={smoothProgress}
+                customItems={sectionsData.map(s => ({ id: s.id, label: s.title }))}
+                gsapTimeline={timelineRef}
                 onSectionClick={scrollToSection}
             />
 
-            <div className="hero-container-main">
+            {/* HTML Overlays synced to timeline if needed, or simple absolute content */}
+            <div className="hero-content-fixed">
                 {sectionsData.map((section, index) => (
-                    <AnimatedSection
+                    <div
                         key={section.id}
-                        section={section}
-                        index={index}
-                        total={sectionsData.length}
-                        progress={smoothProgress}
-                    />
+                        id={`text-${index}`}
+                        className="hero-text-overlay"
+                        style={{ opacity: index === 0 ? 1 : 0 }}
+                    >
+                        <h1 className="hero-title">{section.title}</h1>
+                        <p className="hero-subtitle">{section.subtitle}</p>
+                    </div>
                 ))}
             </div>
         </div>
-    );
-};
-
-interface AnimatedSectionProps {
-    section: typeof sectionsData[0];
-    index: number;
-    total: number;
-    progress: any;
-}
-
-const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, index, total, progress }) => {
-    const focalPoint = index / (total - 1);
-    const segmentWidth = 1 / (total - 1);
-
-    // 40% Overlap Rule:
-    // Stability = 60%, Transition = 40%
-    const transHalf = (segmentWidth * 0.4) / 2; // 20% of segmentWidth for transition
-    const stableHalf = (segmentWidth * 0.6) / 2; // 30% of segmentWidth for stability
-
-    // Calculate key points for transitions
-    // A section is fully stable when progress is within [focalPoint - stableHalf, focalPoint + stableHalf]
-    // It transitions in from (focalPoint - stableHalf - transHalf) to (focalPoint - stableHalf)
-    // It transitions out from (focalPoint + stableHalf) to (focalPoint + stableHalf + transHalf)
-
-    const enterStart = focalPoint - stableHalf - transHalf;
-    const enterEnd = focalPoint - stableHalf;
-
-    const exitStart = focalPoint + stableHalf;
-    const exitEnd = focalPoint + stableHalf + transHalf;
-
-    // Opacity Mapping
-    const opacity = useTransform(progress,
-        [enterStart, enterEnd, exitStart, exitEnd],
-        [0, 1, 1, 0]
-    );
-
-    // Scale Mapping: Incoming (1.12 -> 1.0), Outgoing (1.0 -> 0.92)
-    const scale = useTransform(progress,
-        [enterStart, enterEnd, exitStart, exitEnd],
-        [1.12, 1.0, 1.0, 0.92]
-    );
-
-    // Z Mapping: Incoming (400 -> 0), Outgoing (0 -> -400)
-    const z = useTransform(progress,
-        [enterStart, enterEnd, exitStart, exitEnd],
-        [400, 0, 0, -400]
-    );
-
-    // Text Animation: Center-aligned, delayed fade-in, early fade-out
-    // Text should fully appear ONLY when section is stable
-    const textOpacity = useTransform(progress,
-        [enterEnd, focalPoint, exitStart],
-        [0, 1, 0]
-    );
-    const textY = useTransform(progress,
-        [enterEnd, focalPoint, exitStart],
-        [20, 0, -20]
-    );
-
-    return (
-        <motion.section
-            className="hero-sub-section"
-            style={{
-                opacity,
-                z,
-                scale,
-                display: useTransform(opacity, (v) => v > 0 ? 'flex' : 'none')
-            }}
-        >
-            <div
-                className="section-bg-parallax"
-                style={{ backgroundImage: `url(${section.image})` }}
-            />
-            <div className="section-overlay" />
-
-            <div className="hero-content">
-                <motion.div style={{ opacity: textOpacity, y: textY }}>
-                    <h1 className="hero-title">{section.title}</h1>
-                    <p className="hero-subtitle">{section.subtitle}</p>
-                    <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">Explore</button>
-                    </div>
-                </motion.div>
-            </div>
-        </motion.section>
     );
 };
 

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useTransform, cubicBezier } from 'framer-motion';
+import { motion } from 'framer-motion';
+import gsap from 'gsap';
 import './SideNav.css';
-
-const RIMAC_EASE_FUNC = cubicBezier(0.4, 0, 0.2, 1);
 
 interface NavItem {
     id: string;
@@ -11,44 +10,50 @@ interface NavItem {
 
 interface SideNavProps {
     customItems?: NavItem[];
-    activeProgress: any; // MotionValue<number>
+    gsapTimeline: React.MutableRefObject<gsap.core.Timeline | null>;
     onSectionClick: (index: number) => void;
 }
 
-const SideNav: React.FC<SideNavProps> = ({ customItems, activeProgress, onSectionClick }) => {
+const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionClick }) => {
     const navItems = customItems || [];
     const [activeSectionId, setActiveSectionId] = useState(navItems[0]?.id);
+    const [progress, setProgress] = useState(0);
 
     const steps = navItems.length - 1;
     const totalHeightRem = steps * 4;
 
-    // Indicator follows the virtual progress
-    const indicatorTop = useTransform(activeProgress, [0, 1], ["0rem", `${totalHeightRem}rem`]);
-
-    // Slide & Expand Effect
-    const range: number[] = [];
-    const heightMap: number[] = [];
-    for (let i = 0; i <= steps; i++) {
-        range.push(i / steps);
-        heightMap.push(1);
-        if (i < steps) {
-            range.push((i + 0.5) / steps);
-            heightMap.push(1.6);
-        }
-    }
-
-    const dynamicScaleY = useTransform(activeProgress, range, heightMap);
-
-    // Sync active section state for CSS classes if needed
+    // Sync with GSAP progress
     useEffect(() => {
-        const unsubscribe = activeProgress.on("change", (v: number) => {
-            const index = Math.round(v * steps);
-            if (navItems[index]) {
-                setActiveSectionId(navItems[index].id);
+        const sync = () => {
+            if (gsapTimeline.current) {
+                const p = gsapTimeline.current.progress();
+                setProgress(p);
+
+                const index = Math.round(p * steps);
+                if (navItems[index]) {
+                    setActiveSectionId(navItems[index].id);
+                }
             }
-        });
-        return unsubscribe;
-    }, [activeProgress, navItems, steps]);
+        };
+
+        gsap.ticker.add(sync);
+        return () => gsap.ticker.remove(sync);
+    }, [gsapTimeline, navItems, steps]);
+
+    // Indicator Top position
+    const indicatorTop = `${progress * totalHeightRem}rem`;
+
+    // Dynamic Scale for the line expansion
+    // (Simulating the logic from Framer Motion)
+    const getScaleY = () => {
+        const pInRange = progress * steps;
+        const index = Math.floor(pInRange);
+        const fraction = pInRange - index;
+
+        // Expansion peaks at 0.5 between indices
+        const expansion = Math.sin(fraction * Math.PI) * 0.6;
+        return 1 + expansion;
+    };
 
     return (
         <div className="side-nav-wrapper">
@@ -59,29 +64,41 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, activeProgress, onSectio
                         className="nav-active-indicator"
                         style={{
                             top: indicatorTop,
-                            scaleY: dynamicScaleY,
+                            scaleY: getScaleY(),
                             originY: 0
                         }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                 </div>
 
                 <ul className="nav-list">
                     {navItems.map((item, index) => {
-                        const segmentProgress = index / steps;
-                        const r1 = Math.max(0, segmentProgress - 0.1);
-                        const r2 = segmentProgress;
-                        const r3 = Math.min(1, segmentProgress + 0.1);
+                        const isActive = activeSectionId === item.id;
 
                         return (
                             <li
                                 key={item.id}
-                                className={`nav-item ${activeSectionId === item.id ? 'active' : ''}`}
+                                className={`nav-item ${isActive ? 'active' : ''}`}
                                 onClick={() => onSectionClick(index)}
                             >
-                                <ItemIndicator activeProgress={activeProgress} range={[r1, r2, r3]} />
+                                <div className="nav-item-indicator-expand" style={{
+                                    width: isActive ? "32px" : "12px",
+                                    backgroundColor: isActive ? "#ffffff" : "rgba(255,255,255,0.2)"
+                                }} />
                                 <div className="nav-text-content">
-                                    <ItemNumber activeProgress={activeProgress} range={[r1, r2, r3]} index={index} />
-                                    <ItemLabel activeProgress={activeProgress} range={[r1, r2, r3]} label={item.label} />
+                                    <span className="nav-number" style={{
+                                        opacity: isActive ? 1 : 0.4,
+                                        transform: isActive ? "scale(1.25)" : "scale(1)"
+                                    }}>
+                                        {(index + 1).toString().padStart(2, '0')}
+                                    </span>
+                                    <span className="nav-label" style={{
+                                        opacity: isActive ? 1 : 0.3,
+                                        color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)",
+                                        transform: isActive ? "translateX(8px)" : "translateX(0)"
+                                    }}>
+                                        {item.label}
+                                    </span>
                                 </div>
                             </li>
                         );
@@ -89,33 +106,6 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, activeProgress, onSectio
                 </ul>
             </div>
         </div>
-    );
-};
-
-const ItemIndicator = ({ activeProgress, range }: { activeProgress: any, range: number[] }) => {
-    const width = useTransform(activeProgress, range, ["12px", "32px", "12px"], { ease: RIMAC_EASE_FUNC });
-    const bg = useTransform(activeProgress, range, ["rgba(255,255,255,0.2)", "#ffffff", "rgba(255,255,255,0.2)"], { ease: RIMAC_EASE_FUNC });
-    return <motion.div className="nav-item-indicator-expand" style={{ width, backgroundColor: bg }} />;
-};
-
-const ItemNumber = ({ activeProgress, range, index }: { activeProgress: any, range: number[], index: number }) => {
-    const scale = useTransform(activeProgress, range, [1, 1.25, 1], { ease: RIMAC_EASE_FUNC });
-    const opacity = useTransform(activeProgress, range, [0.4, 1, 0.4], { ease: RIMAC_EASE_FUNC });
-    return (
-        <motion.span className="nav-number" style={{ scale, opacity }}>
-            {(index + 1).toString().padStart(2, '0')}
-        </motion.span>
-    );
-};
-
-const ItemLabel = ({ activeProgress, range, label }: { activeProgress: any, range: number[], label: string }) => {
-    const x = useTransform(activeProgress, range, [0, 8, 0], { ease: RIMAC_EASE_FUNC });
-    const opacity = useTransform(activeProgress, range, [0.3, 1, 0.3], { ease: RIMAC_EASE_FUNC });
-    const color = useTransform(activeProgress, range, ["rgba(255,255,255,0.3)", "#ffffff", "rgba(255,255,255,0.3)"], { ease: RIMAC_EASE_FUNC });
-    return (
-        <motion.span className="nav-label" style={{ x, opacity, color }}>
-            {label}
-        </motion.span>
     );
 };
 
