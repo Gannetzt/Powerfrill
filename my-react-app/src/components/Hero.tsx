@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import SideNav from './SideNav';
 import './Hero.css';
 
@@ -44,7 +44,7 @@ const sectionsData = [
 // Combine with clone for loop
 const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
 
-const PREMIUM_EASE = [0.22, 1, 0.36, 1];
+const RIMAC_EASE = [0.4, 0.0, 0.2, 1] as any;
 
 interface AnimatedSectionProps {
     section: typeof sectionsData[0];
@@ -59,16 +59,16 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         offset: ["start end", "end start"]
     });
 
-    // Zoom-Out Stacking Logic
-    // Progress 0-0.5 is entering and snapping
-    // Progress 0.5-1.0 is being covered by the NEXT section
-    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 0.9]);
-    const opacity = useTransform(scrollYProgress, [0, 0.1, 0.5, 0.9, 1], [0, 1, 1, 0.5, 0]);
-    const blur = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], ["blur(10px)", "blur(0px)", "blur(5px)", "blur(10px)"]);
+    // Rimac Zoom-Out / Stacking Logic
+    // Incoming (0 -> 0.5): Scale 1.15 -> 1.0, Y 80 -> 0, Opacity 0 -> 1
+    // Outgoing (0.5 -> 1.0): Opacity 1 -> 0
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1.15, 1]);
+    const y = useTransform(scrollYProgress, [0, 0.5], [80, 0]);
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0, 1, 1, 0.5, 0]);
 
-    // Content parallax
-    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
-    const contentOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
+    // Text Fade-Up (Staggered)
+    const textY = useTransform(scrollYProgress, [0, 0.45, 0.5, 0.6], [40, 40, 0, -20]);
+    const textOpacity = useTransform(scrollYProgress, [0, 0.45, 0.5, 0.6], [0, 0, 1, 0]);
 
     return (
         <section id={section.id} ref={ref} className="hero-sub-section">
@@ -77,8 +77,12 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                 style={{
                     backgroundImage: `url(${section.image})`,
                     scale,
-                    opacity,
-                    filter: blur
+                    y,
+                    opacity
+                }}
+                transition={{
+                    duration: 1.2,
+                    ease: RIMAC_EASE
                 }}
             />
             <div className="section-overlay" />
@@ -86,15 +90,18 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
             <div className="hero-content">
                 <motion.div
                     style={{
-                        opacity: contentOpacity,
-                        y: contentY,
-                        scale: useTransform(scrollYProgress, [0.4, 0.5, 1], [0.8, 1, 0.9])
+                        opacity: textOpacity,
+                        y: textY
+                    }}
+                    transition={{
+                        duration: 1.2,
+                        ease: RIMAC_EASE
                     }}
                 >
                     <h1 className="hero-title">{section.title}</h1>
                     <p className="hero-subtitle">{section.content}</p>
                     <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">Explore Solutions</button>
+                        <button className="btn btn-primary btn-lg">View Details</button>
                     </div>
                 </motion.div>
             </div>
