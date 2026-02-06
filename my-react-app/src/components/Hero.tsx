@@ -140,18 +140,34 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
 const Hero: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const isLoopingRef = useRef(false);
+
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
         const handleScroll = () => {
+            if (isLoopingRef.current) return;
+
             const { scrollTop, scrollHeight, clientHeight } = container;
 
-            // If we reach the bottom (the start of the cloned section)
-            // silently jump back to top.
-            // Using a threshold to account for snap points
-            if (scrollTop + clientHeight >= scrollHeight - 5) {
-                container.scrollTo({ top: 0, behavior: 'instant' as any });
+            // If we reach the bottom (cloned section start)
+            if (scrollTop + clientHeight >= scrollHeight - 10) {
+                isLoopingRef.current = true;
+
+                // Temporarily disable snap to allow smooth flyback
+                container.style.scrollSnapType = 'none';
+
+                container.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                // Re-enable snap after the smooth scroll is expected to finish
+                setTimeout(() => {
+                    container.style.scrollSnapType = 'y mandatory';
+                    isLoopingRef.current = false;
+                }, 1000); // Matches standard smooth scroll duration
             }
         };
 
