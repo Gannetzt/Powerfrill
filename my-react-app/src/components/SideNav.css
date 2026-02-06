@@ -92,16 +92,52 @@
 
 @media (max-width: 768px) {
     .side-nav-wrapper {
-        left: 2rem;
-        display: none;
-        /* Hide on mobile/tablet as requested */
+        position: fixed;
+        left: auto;
+        right: 20px;
+        /* Move to right side for easier thumb access or less obstruction */
+        top: 50%;
+        transform: translateY(-50%);
+        display: block;
+        /* SHOW IT */
+        z-index: 90;
+    }
+
+    .side-nav-content {
+        flex-direction: column;
+        gap: 0;
     }
 
     .nav-label {
-        letter-spacing: 1.5px;
+        display: none;
+        /* Hide text labels on mobile to save space */
     }
 
-    .nav-vertical-line {
+    .nav-number {
+        display: none;
+        /* Hide numbers too, keep it clean */
+    }
+
+    .nav-vertical-line-container {
+        display: block;
+        /* Keep the line/indicator */
         height: 12rem;
+    }
+
+    .nav-item {
+        padding: 0.5rem 0;
+        /* Increase touch target area */
+        justify-content: flex-end;
+    }
+
+    .nav-text-content {
+        display: none;
+        /* Hide text wrapper */
+    }
+
+    /* Ensure the active indicator and line are visible */
+    .nav-vertical-line-container {
+        margin-left: 1rem;
+        /* Spacing from screen edge if needed */
     }
 }
