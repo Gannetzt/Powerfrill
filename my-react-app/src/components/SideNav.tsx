@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './SideNav.css';
 
@@ -8,73 +7,74 @@ interface NavItem {
     label: string;
 }
 
+export interface SideNavHandle {
+    setProgress: (progress: number) => void;
+}
+
 interface SideNavProps {
     customItems?: NavItem[];
-    gsapTimeline: React.MutableRefObject<gsap.core.Timeline | null>;
     onSectionClick: (index: number) => void;
 }
 
-const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionClick }) => {
+const SideNav = forwardRef<SideNavHandle, SideNavProps>(({ customItems, onSectionClick }, ref) => {
     const navItems = customItems || [];
-    const [activeSectionId, setActiveSectionId] = useState(navItems[0]?.id);
-    const [progress, setProgress] = useState(0);
+    const indicatorRef = useRef<HTMLDivElement>(null);
+    const [activeId, setActiveId] = useState(navItems[0]?.id);
+    const lastActiveRef = useRef(navItems[0]?.id);
 
-    const steps = navItems.length - 1;
-    const totalHeightRem = steps * 4;
+    useImperativeHandle(ref, () => ({
+        setProgress: (p: number) => {
+            if (!indicatorRef.current) return;
 
-    // Sync with GSAP progress
-    useEffect(() => {
-        const sync = () => {
-            if (gsapTimeline.current) {
-                const p = gsapTimeline.current.progress();
-                setProgress(p);
+            const steps = navItems.length - 1;
+            const totalHeightRem = steps * 4;
+            const indicatorTop = p * totalHeightRem; // rem value
 
-                // Use a small buffer to ensure the correct section is active at snap points
-                const index = Math.round(p * steps);
-                if (navItems[index] && navItems[index].id !== activeSectionId) {
-                    setActiveSectionId(navItems[index].id);
-                }
+            // Scale logic simulating the previous spring effect but deterministic
+            const pInRange = p * steps;
+            const fraction = pInRange - Math.floor(pInRange);
+            // Expansion peaks at 0.5 between indices
+            const expansion = Math.sin(fraction * Math.PI) * 0.6;
+            const scaleY = 1 + expansion;
+
+            gsap.to(indicatorRef.current, {
+                top: `${indicatorTop}rem`,
+                scaleY: scaleY,
+                duration: 0.6,
+                ease: "power2.out",
+                overwrite: true
+            });
+
+            // Update active item logic
+            const index = Math.round(pInRange);
+            const newItem = navItems[index];
+            if (newItem && newItem.id !== lastActiveRef.current) {
+                lastActiveRef.current = newItem.id;
+                setActiveId(newItem.id);
             }
-        };
+        }
+    }));
 
-        gsap.ticker.add(sync);
-        return () => gsap.ticker.remove(sync);
-    }, [gsapTimeline, navItems, steps, activeSectionId]);
-
-    // Indicator Top position
-    const indicatorTop = `${progress * totalHeightRem}rem`;
-
-    // Dynamic Scale for the line expansion
-    // (Simulating the logic from Framer Motion)
-    const getScaleY = () => {
-        const pInRange = progress * steps;
-        const index = Math.floor(pInRange);
-        const fraction = pInRange - index;
-
-        // Expansion peaks at 0.5 between indices
-        const expansion = Math.sin(fraction * Math.PI) * 0.6;
-        return 1 + expansion;
-    };
+    const totalHeightRem = (navItems.length - 1) * 4;
 
     return (
         <div className="side-nav-wrapper">
             <div className="side-nav-content">
                 <div className="nav-vertical-line-container" style={{ height: `${totalHeightRem}rem` }}>
                     <div className="nav-base-line" />
-                    <motion.div
+                    <div
+                        ref={indicatorRef}
                         className="nav-active-indicator"
                         style={{
-                            top: indicatorTop,
-                            scaleY: getScaleY(),
-                            originY: 0
+                            top: 0,
+                            transformOrigin: 'top center'
                         }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                 </div>
 
                 <ul className="nav-list">
                     {navItems.map((item, index) => {
-                        const isActive = activeSectionId === item.id;
+                        const isActive = activeId === item.id;
 
                         return (
                             <li
@@ -97,6 +97,6 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionC
             </div>
         </div>
     );
-};
+});
 
 export default SideNav;

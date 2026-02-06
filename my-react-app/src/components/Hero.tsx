@@ -3,10 +3,15 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { Observer } from 'gsap/all';
 import SideNav from './SideNav';
+import type { SideNavHandle } from './SideNav';
 import './Hero.css';
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
+
+
+
 
 const sectionsData = [
     {
@@ -44,10 +49,12 @@ const sectionsData = [
 const Hero: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const timelineRef = useRef<gsap.core.Timeline | null>(null);
+    const navRef = useRef<SideNavHandle>(null);
+    const animating = useRef(false);
+    const currentIndex = useRef(0);
 
     useEffect(() => {
-        if (!canvasRef.current) return;
+        if (!canvasRef.current || !containerRef.current) return;
 
         // --- Three.js Setup ---
         const scene = new THREE.Scene();
@@ -70,7 +77,6 @@ const Hero: React.FC = () => {
         const planeMeshes: THREE.Mesh[] = [];
 
         // Function to calculate plane size that replicates "background-size: cover"
-        // Applies to the GROUP to handle window layout
         const updatePlaneSize = (group: THREE.Group, texture: THREE.Texture) => {
             if (!texture.image) return;
             const img = texture.image as HTMLImageElement;
@@ -81,8 +87,8 @@ const Hero: React.FC = () => {
             const planeHeight = 2 * Math.tan(vFov / 2) * camera.position.z;
             const planeWidth = planeHeight * aspect;
 
-            // We use 1.1x base for group to ensure we have bleed margin
-            group.scale.set(planeWidth * 1.1, planeHeight * 1.1, 1);
+            // We use 1.05x scale to avoid any edge bleeding during transitions
+            group.scale.set(planeWidth * 1.05, planeHeight * 1.05, 1);
 
             if (imageAspect > aspect) {
                 texture.repeat.set(aspect / imageAspect, 1);
@@ -111,12 +117,10 @@ const Hero: React.FC = () => {
             });
             const mesh = new THREE.Mesh(geometry, material);
 
-            // Animation start states on MESH
+            // Initial state: first one visible, others hidden
+            // All start at scale 1.1 (zoomed in slightly) waiting to settle to 1, or 1 if active
             const startScale = index === 0 ? 1 : 1.1;
             mesh.scale.set(startScale, startScale, 1);
-
-            // Position Z on GROUP - mandatory values
-            group.position.z = index === 0 ? 0 : 0.3;
 
             group.add(mesh);
             scene.add(group);
@@ -126,7 +130,6 @@ const Hero: React.FC = () => {
 
         const fadeToVisible = () => {
             if (containerRef.current && containerRef.current.style.opacity === '0') {
-                initTimeline();
                 gsap.to(containerRef.current, { opacity: 1, duration: 0.8, ease: "power2.out" });
             }
         };
@@ -138,96 +141,90 @@ const Hero: React.FC = () => {
             fadeToVisible();
         };
 
-        loadingManager.onError = (url) => {
-            console.error('Error loading:', url);
-            // Don't clear timeout, let safety trigger if too many errors
-        };
+        // --- Observer Logic ---
 
-        const initTimeline = () => {
-            if (!containerRef.current) return;
+        // Helper to animate to a specific section
+        const gotoSection = (index: number, direction: number) => {
+            if (animating.current) return;
+            if (index < 0 || index >= sectionsData.length) return;
 
-            // Normalize scroll can be problematic on some windows setups, disabling as per previous lag feedback
-            // ScrollTrigger.normalizeScroll(true); 
+            animating.current = true;
+            const prevIndex = currentIndex.current;
+            currentIndex.current = index;
+
+            // const outgoingGroup = planeGroups[prevIndex];
+            const outgoingMesh = planeMeshes[prevIndex];
+            // const incomingGroup = planeGroups[index];
+            const incomingMesh = planeMeshes[index];
 
             const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top top",
-                    end: `+=${sectionsData.length * 150}%`, // Reduced from 200% for punchier feel
-                    scrub: true,
-                    pin: true,
-                    anticipatePin: 1,
-                    snap: {
-                        snapTo: 1 / (sectionsData.length - 1),
-                        duration: { min: 0.1, max: 0.4 },
-                        delay: 0,
-                        ease: "power2.inOut"
-                    },
-                    onUpdate: (self) => {
-                        // Optional: extra sync safety
-                    }
-                }
-            });
-            timelineRef.current = tl;
-
-            sectionsData.forEach((_, index) => {
-                const outgoingMesh = planeMeshes[index];
-                const outgoingGroup = planeGroups[index];
-                const incomingMesh = planeMeshes[index + 1];
-                const incomingGroup = planeGroups[index + 1];
-
-                // Each section transition occupies 1 unit of time in the timeline
-                const transitionDuration = 1;
-                const startTime = index * transitionDuration;
-
-                // Initial states
-                if (index === 0) {
-                    gsap.set(`#text-0`, { opacity: 1, y: 0 });
-                } else {
-                    gsap.set(`#text-${index}`, { opacity: 0, y: 60 });
-                }
-
-                if (incomingMesh) {
-                    // --- OUTGOING ---
-                    // Outgoing: Scale 1 -> 0.95, Z 0 -> -0.4 (slightly deeper)
-                    tl.to(outgoingMesh.scale, { x: 0.95, y: 0.95, duration: transitionDuration }, startTime)
-                        .to(outgoingMesh.material, { opacity: 0, duration: transitionDuration }, startTime)
-                        .to(outgoingGroup.position, { z: -0.4, duration: transitionDuration }, startTime);
-
-                    // Text Exit: Fade and move UP
-                    tl.to(`#text-${index}`, { opacity: 0, y: -60, duration: transitionDuration * 0.4 }, startTime);
-
-                    // --- INCOMING ---
-                    // Incoming: Scale 1.2 -> 1, Z 0.5 -> 0
-                    tl.fromTo(incomingMesh.scale,
-                        { x: 1.2, y: 1.2 },
-                        { x: 1, y: 1, duration: transitionDuration },
-                        startTime
-                    )
-                        .fromTo(incomingMesh.material,
-                            { opacity: 0 },
-                            { opacity: 1, duration: transitionDuration },
-                            startTime
-                        )
-                        .fromTo(incomingGroup.position,
-                            { z: 0.5 },
-                            { z: 0, duration: transitionDuration },
-                            startTime
-                        );
-
-                    // Text Entry: Fade and move UP from bottom
-                    tl.to(`#text-${index + 1}`, {
-                        opacity: 1,
-                        y: 0,
-                        duration: transitionDuration * 0.6,
-                        ease: "power2.out"
-                    }, startTime + transitionDuration * 0.4);
+                onComplete: () => {
+                    animating.current = false;
                 }
             });
 
-            // Final refresh to ensure everything is measured correctly
-            ScrollTrigger.refresh();
+            // Update Nav immediately for responsiveness
+            if (navRef.current) {
+                // Calculate discrete progress for nav
+                const p = index / (sectionsData.length - 1);
+                navRef.current.setProgress(p);
+            }
+
+            // TEXT TRANSITIONS
+            // Outgoing text: Fade out & move slightly
+            tl.to(`#text-${prevIndex}`, {
+                yPercent: -10 * direction,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.inOut"
+            }, 0);
+
+            // Incoming text: From opposite side
+            gsap.set(`#text-${index}`, { yPercent: 10 * direction, opacity: 0 });
+            tl.to(`#text-${index}`, {
+                yPercent: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out"
+            }, 0.2); // slight overlap
+
+            // IMAGE TRANSITIONS (Crossfade with Scale)
+            // Ensure incoming is rendered on top if needed, or just handle via opacity
+            // Three.js doesn't support z-index, relies on render order or depth test. 
+            // We disable depth write for background planes usually, but here distinct opacity handles it.
+
+            // Outgoing: Scale down slightly + Fade Out
+            tl.to(outgoingMesh.scale, { x: 0.95, y: 0.95, duration: 1.2, ease: "power2.inOut" }, 0);
+            tl.to(outgoingMesh.material, { opacity: 0, duration: 1.0, ease: "power2.inOut" }, 0);
+
+            // Incoming: Start Scaled Up (1.1) -> Scale to 1 + Fade In
+            // Reset incoming props first just in case
+            incomingMesh.scale.set(1.1, 1.1, 1);
+            tl.to(incomingMesh.scale, { x: 1, y: 1, duration: 1.2, ease: "power2.inOut" }, 0);
+            tl.to(incomingMesh.material, { opacity: 1, duration: 1.0, ease: "power2.inOut" }, 0);
+
         };
+
+        // Expose gotoSection to the parent scope or ref if needed, 
+        // but for now we bind it to the observer and nav.
+
+        // We attach this to the window/ref so nav can call it? 
+        // Better: We define the nav callback in the render, but it needs access to this scope.
+        // We can use a ref to store the function.
+        (containerRef.current as any).gotoSection = (i: number) => {
+            const dir = i > currentIndex.current ? 1 : -1;
+            gotoSection(i, dir);
+        };
+
+        Observer.create({
+            target: window, // Capture global scroll events
+            type: "wheel,touch,pointer",
+            wheelSpeed: -1,
+            onDown: () => !animating.current && gotoSection(currentIndex.current - 1, -1),
+            onUp: () => !animating.current && gotoSection(currentIndex.current + 1, 1),
+            tolerance: 10,
+            preventDefault: true
+        });
 
         // Animation Loop
         let animationFrameId: number;
@@ -237,11 +234,9 @@ const Hero: React.FC = () => {
         };
         animate();
 
-        // Handle Resize
         const handleResize = () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
@@ -252,7 +247,6 @@ const Hero: React.FC = () => {
                     updatePlaneSize(group, mesh.material.map);
                 }
             });
-            ScrollTrigger.refresh();
         };
         window.addEventListener('resize', handleResize);
 
@@ -260,30 +254,19 @@ const Hero: React.FC = () => {
             window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
             renderer.dispose();
+            Observer.getAll().forEach((o: any) => o.kill());
+            // Cleanup meshes/materials...
             planeMeshes.forEach(p => {
                 p.geometry.dispose();
-                if (p.material instanceof THREE.MeshBasicMaterial && p.material.map) {
-                    p.material.map.dispose();
-                }
                 (p.material as THREE.Material).dispose();
             });
-            if (timelineRef.current) timelineRef.current.kill();
-            ScrollTrigger.refresh();
-            ScrollTrigger.getAll().forEach(st => st.kill());
         };
     }, []);
 
-    const scrollToSection = (index: number) => {
-        if (!timelineRef.current) return;
-        const trigger = timelineRef.current.scrollTrigger;
-        if (!trigger) return;
-
-        const targetScroll = trigger.start + (trigger.end - trigger.start) * (index / (sectionsData.length - 1));
-        gsap.to(window, {
-            scrollTo: targetScroll,
-            duration: 1.5,
-            ease: "power2.inOut"
-        });
+    const handleNavClick = (index: number) => {
+        if (containerRef.current && (containerRef.current as any).gotoSection) {
+            (containerRef.current as any).gotoSection(index);
+        }
     };
 
     return (
@@ -291,12 +274,11 @@ const Hero: React.FC = () => {
             <div className="hero-gradient-overlay" />
             <canvas ref={canvasRef} className="hero-canvas" />
             <SideNav
+                ref={navRef}
                 customItems={sectionsData.map(s => ({ id: s.id, label: s.title }))}
-                gsapTimeline={timelineRef}
-                onSectionClick={scrollToSection}
+                onSectionClick={handleNavClick}
             />
 
-            {/* HTML Overlays synced to timeline if needed, or simple absolute content */}
             <div className="hero-content-fixed">
                 {sectionsData.map((section, index) => (
                     <div
