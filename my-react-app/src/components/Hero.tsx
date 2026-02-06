@@ -1,154 +1,180 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LocomotiveScroll from 'locomotive-scroll';
 import SideNav from './SideNav';
 import './Hero.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const sections = [
     {
         id: 'bess',
+        number: '01',
         title: 'BESS',
-        subtitle: 'Battery Energy Storage System',
-        content: 'Grid-scale battery solutions for reliable, sustainable energy storage and distribution.',
-        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920'
+        subtitle: 'Battery Energy Storage',
+        content: 'Grid-scale solutions for a sustainable energy future.',
+        image: 'https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=1920',
+        midImage: 'https://images.unsplash.com/photo-1548332965-211a68ba2c82?w=1000' // Mid layer accent
     },
     {
         id: 'application',
-        title: 'Application',
-        subtitle: 'Power Solutions',
-        content: 'From renewable integration to peak shaving, our batteries power diverse applications.',
-        image: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1920'
+        number: '02',
+        title: 'APPLICATION',
+        subtitle: 'Power Anywhere',
+        content: 'From microgrids to industrial complexes, we power the world.',
+        image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920',
+        midImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1000'
     },
     {
         id: 'innovation',
-        title: 'Innovation',
-        subtitle: 'Next-Gen Technology',
-        content: 'Cutting-edge lithium-ion and solid-state battery innovations for maximum efficiency.',
-        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1920'
+        number: '03',
+        title: 'INNOVATION',
+        subtitle: 'Next-Gen Tech',
+        content: 'Pushing the boundaries of solid-state storage.',
+        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920',
+        midImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000'
     },
     {
         id: 'about',
-        title: 'About',
-        subtitle: 'Our Mission',
-        content: 'Powering a cleaner future through advanced energy storage technology.',
-        image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1920'
+        number: '04',
+        title: 'ABOUT',
+        subtitle: 'Our Legacy',
+        content: 'Driven by excellence and mechanical precision.',
+        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920',
+        midImage: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1000'
     },
     {
         id: 'contact',
-        title: 'Contact',
-        subtitle: 'Get Connected',
-        content: 'Partner with us to transform your energy infrastructure.',
-        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920'
+        number: '05',
+        title: 'CONTACT',
+        subtitle: 'Join Us',
+        content: 'Partner with the leaders in clean energy infrastructure.',
+        image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1920',
+        midImage: 'https://images.unsplash.com/photo-1557426282-08ee02bd5044?w=1000'
     }
 ];
 
-interface AnimatedSectionProps {
-    section: typeof sections[0];
-    containerRef: React.RefObject<HTMLDivElement | null>;
-}
-
-const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef }) => {
-    const ref = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        container: containerRef,
-        offset: ["start end", "end start"]
-    });
-
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
-    const springProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // CINEMATIC FADE-SCALE LOGIC
-    const contentOpacity = useTransform(springProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
-    const contentScale = useTransform(springProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]);
-
-    // Parallax background: Slower movement
-    const bgY = useTransform(springProgress, [0, 1], ["-10%", "10%"]);
-    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
-
-    // Transition effects: Blur and Overlay
-    const blurAmount = useTransform(springProgress, [0.3, 0.5, 0.7], [10, 0, 10]);
-    const blur = useTransform(blurAmount, (v) => `blur(${v}px)`);
-    const overlayOpacity = useTransform(springProgress, [0, 0.5, 1], [0.8, 0.4, 0.8]);
-
-    return (
-        <section
-            id={section.id}
-            ref={ref}
-            className="hero-sub-section"
-        >
-            {/* Parallax Background Layer */}
-            <motion.div
-                className="section-bg-parallax"
-                style={{
-                    backgroundImage: `url(${section.image})`,
-                    y: bgY,
-                    scale: bgScale,
-                    filter: blur,
-                    position: 'absolute',
-                    inset: '-10%', // Bleed for parallax
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    zIndex: 0
-                }}
-            />
-
-            {/* Cross-fade Overlay */}
-            <motion.div
-                className="section-overlay"
-                style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: '#000',
-                    opacity: overlayOpacity,
-                    zIndex: 1
-                }}
-            />
-
-            {/* Cinematic Center Content */}
-            <div className="container centered-content">
-                <motion.div
-                    className="hero-content"
-                    style={{
-                        opacity: contentOpacity,
-                        scale: contentScale,
-                        zIndex: 10,
-                        textAlign: 'center'
-                    }}
-                >
-                    <h1 className="hero-title">
-                        <span className="gradient-text">{section.subtitle}</span>
-                    </h1>
-
-                    <p className="hero-subtitle">
-                        {section.content}
-                    </p>
-                    <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">Explore Solution</button>
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
-};
-
 const Hero: React.FC = () => {
+    const scrollRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        if (!scrollRef.current) return;
+
+        // Initialize Locomotive Scroll v5
+        const locoScroll = new LocomotiveScroll();
+
+        // Horizontal Parallax & 3D Transitions
+        const sectionsEl = gsap.utils.toArray('.hero-sub-section');
+
+        sectionsEl.forEach((section: any) => {
+            const bg = section.querySelector('.bg-layer');
+            const mid = section.querySelector('.mid-layer');
+            const title = section.querySelector('.hero-title');
+
+            // Background Parallax
+            gsap.to(bg, {
+                x: '-15%',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'left right',
+                    end: 'right left',
+                    scrub: true,
+                    horizontal: true
+                }
+            });
+
+            // Mid-range Parallax
+            gsap.to(mid, {
+                x: '10%',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'left right',
+                    end: 'right left',
+                    scrub: true,
+                    horizontal: true
+                }
+            });
+
+            // 3D Perspective Animation
+            gsap.fromTo(section,
+                { rotateY: 10, opacity: 0, scale: 0.95 },
+                {
+                    rotateY: 0, opacity: 1, scale: 1,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'left right',
+                        end: 'left left',
+                        scrub: 1,
+                        horizontal: true
+                    }
+                }
+            );
+
+            // Staggered Title Letters
+            if (title) {
+                const text = title.innerText;
+                title.innerHTML = '';
+                text.split('').forEach((char: string) => {
+                    const span = document.createElement('span');
+                    span.innerText = char;
+                    span.style.display = 'inline-block';
+                    if (char === ' ') span.style.width = '2rem';
+                    title.appendChild(span);
+                });
+
+                gsap.from(title.querySelectorAll('span'), {
+                    y: 100,
+                    opacity: 0,
+                    stagger: 0.03,
+                    duration: 1.5,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'left 80%',
+                        horizontal: true
+                    }
+                });
+            }
+        });
+
+        return () => {
+            locoScroll.destroy();
+            ScrollTrigger.getAll().forEach(t => t.kill());
+        };
+    }, []);
+
     return (
-        <div className="hero-container-main" ref={containerRef}>
-            <SideNav containerRef={containerRef} />
-            {sections.map((section) => (
-                <AnimatedSection
-                    key={section.id}
-                    section={section}
-                    containerRef={containerRef}
-                />
-            ))}
+        <div className="hero-viewport" ref={containerRef}>
+            <div className="scroll-wrapper" ref={scrollRef}>
+                <div className="hero-horizontal-container">
+                    <SideNav containerRef={containerRef} />
+                    {sections.map((section) => (
+                        <div
+                            key={section.id}
+                            id={section.id}
+                            className="hero-sub-section"
+                        >
+                            {/* Layered Parallax Background */}
+                            <div className="parallax-layer bg-layer" style={{ backgroundImage: `url(${section.image})` }} />
+                            <div className="parallax-layer mid-layer" style={{ backgroundImage: `url(${section.midImage})` }} />
+                            <div className="section-overlay" />
+
+                            <div className="container centered-content">
+                                <div className="hero-content">
+                                    <h4 className="section-number-top">{section.number} {section.subtitle}</h4>
+                                    <h1 className="hero-title">{section.title}</h1>
+                                    <p className="hero-subtitle">{section.content}</p>
+                                    <div className="hero-actions">
+                                        <button className="btn btn-primary btn-lg">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

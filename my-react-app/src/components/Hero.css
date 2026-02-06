@@ -1,99 +1,114 @@
-.hero-container-main {
-    scroll-snap-type: y mandatory;
-    overflow-y: auto;
+.hero-viewport {
     height: 100vh;
-    height: 100svh;
-    scrollbar-width: none;
-    scroll-behavior: smooth;
-    background: #000;
-    -webkit-overflow-scrolling: touch;
+    width: 100vw;
+    overflow: hidden;
+    background: #050b1a;
+    /* Dark Luxury Blue */
+    position: relative;
 }
 
-
-.hero-container-main::-webkit-scrollbar {
-    display: none;
+.hero-horizontal-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 500vw;
+    /* 5 sections */
+    perspective: 1200px;
 }
 
 .hero-sub-section {
     height: 100vh;
-    height: 100svh;
     width: 100vw;
+    min-width: 100vw;
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    scroll-snap-align: center;
-    position: relative;
-    overflow: hidden;
-    background: #000;
+    transform-style: preserve-3d;
 }
 
-.section-bg-parallax {
-    will-change: transform, filter;
-    pointer-events: none;
-}
-
-.section-bg-overlay {
-    filter: brightness(0.8) contrast(1.1);
-    transform-origin: center;
+/* Layered Parallax Scaling */
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
     transition: filter 0.5s ease;
 }
 
+.bg-layer {
+    z-index: 1;
+    filter: brightness(0.6) contrast(1.1) blur(2px);
+}
 
-.hero-sub-section .container.centered-content {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    padding: 0;
+.mid-layer {
+    z-index: 2;
+    filter: brightness(0.4) contrast(1.2);
+    /* Focus on an accent or blurred foreground texture */
+    opacity: 0.3;
+    mix-blend-mode: screen;
+}
+
+.section-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(5, 11, 26, 0.9) 0%, rgba(5, 11, 26, 0.4) 100%);
+    z-index: 3;
 }
 
 .hero-content {
-    width: 100%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
+    z-index: 10;
     text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.section-number-top {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.2rem;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5rem;
+    opacity: 0.8;
 }
 
 .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
+    font-size: 8rem;
+    font-weight: 900;
+    line-height: 0.9;
+    margin-bottom: 2rem;
     color: #ffffff;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+}
+
+.hero-title span {
+    display: inline-block;
+    will-change: transform, opacity;
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
     max-width: 600px;
-    line-height: 1.6;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (max-width: 1024px) {
     .hero-title {
-        font-size: 3rem;
+        font-size: 5rem;
     }
 }
 
 @media (max-width: 768px) {
     .hero-title {
-        font-size: 2.25rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
+        font-size: 3.5rem;
     }
 }
