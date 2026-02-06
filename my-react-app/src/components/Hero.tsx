@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import SideNav from './SideNav';
 import './Hero.css';
 
-const sections = [
+const sectionsData = [
     {
         id: 'bess',
         title: 'BESS',
@@ -41,10 +41,11 @@ const sections = [
     }
 ];
 
-const PREMIUM_EASE = [0.22, 1, 0.36, 1];
+// Combine with clone for loop
+const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
 
 interface AnimatedSectionProps {
-    section: typeof sections[0];
+    section: typeof sectionsData[0];
     containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -53,39 +54,82 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
     const { scrollYProgress } = useScroll({
         target: ref,
         container: containerRef,
-        offset: ["start end", "start start"]
+        offset: ["start end", "end start"]
     });
 
-    // Scale-down background parallax (1.1 -> 1.0)
-    const bgScale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
-    const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 1]);
+    const springProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // CINEMATIC FADE-SCALE LOGIC
+    const contentOpacity = useTransform(springProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
+    const contentScale = useTransform(springProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]);
+
+    // Parallax background: Slower movement
+    const bgY = useTransform(springProgress, [0, 1], ["-10%", "10%"]);
+    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
+
+    // Transition effects: Blur and Overlay
+    const blurAmount = useTransform(springProgress, [0.3, 0.5, 0.7], [10, 0, 10]);
+    const blur = useTransform(blurAmount, (v) => `blur(${v}px)`);
+    const overlayOpacity = useTransform(springProgress, [0, 0.5, 1], [0.8, 0.4, 0.8]);
 
     return (
-        <section id={section.id} ref={ref} className="hero-sub-section">
+        <section
+            id={section.id}
+            ref={ref}
+            className="hero-sub-section"
+        >
+            {/* Parallax Background Layer */}
             <motion.div
                 className="section-bg-parallax"
                 style={{
                     backgroundImage: `url(${section.image})`,
+                    y: bgY,
                     scale: bgScale,
-                    opacity: bgOpacity
+                    filter: blur,
+                    position: 'absolute',
+                    inset: '-10%', // Bleed for parallax
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
                 }}
             />
-            <div className="section-overlay" />
 
-            <div className="hero-content">
+            {/* Cross-fade Overlay */}
+            <motion.div
+                className="section-overlay"
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: '#000',
+                    opacity: overlayOpacity,
+                    zIndex: 1
+                }}
+            />
+
+            {/* Cinematic Center Content */}
+            <div className="container centered-content">
                 <motion.div
-                    initial={{ opacity: 0, y: 60 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.5 }}
-                    transition={{
-                        duration: 1.2,
-                        ease: PREMIUM_EASE
+                    className="hero-content"
+                    style={{
+                        opacity: contentOpacity,
+                        scale: contentScale,
+                        zIndex: 10,
+                        textAlign: 'center'
                     }}
                 >
-                    <h1 className="hero-title">{section.title}</h1>
-                    <p className="hero-subtitle">{section.content}</p>
+                    <h1 className="hero-title">
+                        <span className="gradient-text">{section.subtitle}</span>
+                    </h1>
+
+                    <p className="hero-subtitle">
+                        {section.content}
+                    </p>
                     <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">Learn More</button>
+                        <button className="btn btn-primary btn-lg">Explore Solution</button>
                     </div>
                 </motion.div>
             </div>
@@ -96,10 +140,45 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
 const Hero: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const isLoopingRef = useRef(false);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            if (isLoopingRef.current) return;
+
+            const { scrollTop, scrollHeight, clientHeight } = container;
+
+            // If we reach the bottom (cloned section start)
+            if (scrollTop + clientHeight >= scrollHeight - 10) {
+                isLoopingRef.current = true;
+
+                // Temporarily disable snap to allow smooth flyback
+                container.style.scrollSnapType = 'none';
+
+                container.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                // Re-enable snap after the smooth scroll is expected to finish
+                setTimeout(() => {
+                    container.style.scrollSnapType = 'y mandatory';
+                    isLoopingRef.current = false;
+                }, 1000); // Matches standard smooth scroll duration
+            }
+        };
+
+        container.addEventListener('scroll', handleScroll);
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div className="hero-container-main" ref={containerRef}>
             <SideNav containerRef={containerRef} />
-            {sections.map((section) => (
+            {allSections.map((section) => (
                 <AnimatedSection
                     key={section.id}
                     section={section}
