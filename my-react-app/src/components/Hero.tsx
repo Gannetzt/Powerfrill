@@ -54,10 +54,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         offset: ["start end", "end start"]
     });
 
-    // Responsive offsets/scales
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const startScale = isMobile ? 0.8 : 0.7; // "Medium" card look
-    const offsetValue = isMobile ? "2vh" : "5vh";
 
     const springProgress = useSpring(scrollYProgress, {
         stiffness: 100,
@@ -65,80 +62,76 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         restDelta: 0.001
     });
 
-    // 3D CIRCULAR WHEEL LOGIC: Rotation + Depth
-    // Sections form a vertical 3D wheel/cylinder
-    const rotateX = useTransform(springProgress, [0, 0.5, 1], [60, 0, -60]);
-    const z = useTransform(springProgress, [0, 0.5, 1], [-1500, 0, -1500]);
-    const opacity = useTransform(springProgress, [0, 0.4, 0.5, 0.6, 1], [0, 0, 1, 0, 0]);
+    // CINEMATIC FADE-SCALE LOGIC
+    const contentOpacity = useTransform(springProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
+    const contentScale = useTransform(springProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]);
 
-    // Parallax logic for content
-    const yOffset = useTransform(springProgress, [0, 0.5, 1], [offsetValue, "0vh", `-${offsetValue}`]);
+    // Parallax background: Slower movement
+    const bgY = useTransform(springProgress, [0, 1], ["-10%", "10%"]);
+    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.1, 1, 1.1]);
+
+    // Transition effects: Blur and Overlay
+    const blurAmount = useTransform(springProgress, [0.3, 0.5, 0.7], [10, 0, 10]);
+    const blur = useTransform(blurAmount, (v) => `blur(${v}px)`);
+    const overlayOpacity = useTransform(springProgress, [0, 0.5, 1], [0.8, 0.4, 0.8]);
 
     return (
         <section
             id={section.id}
             ref={ref}
             className="hero-sub-section"
-            style={{ perspective: '2000px' }}
         >
+            {/* Parallax Background Layer */}
             <motion.div
-                className="section-container-expanding"
+                className="section-bg-parallax"
                 style={{
-                    rotateX,
-                    z,
-                    opacity,
-                    y: yOffset,
-                    width: '100%',
-                    height: '100%',
+                    backgroundImage: `url(${section.image})`,
+                    y: bgY,
+                    scale: bgScale,
+                    filter: blur,
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: useTransform(springProgress, [0, 0.5, 1], [0, 10, 0]),
-                    transformOrigin: '50% 50% -1000px', // Center of the 3D wheel
-                    backfaceVisibility: 'hidden'
+                    inset: '-10%', // Bleed for parallax
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
                 }}
-            >
-                {/* Full-Width Background Visual - Solid Hub Look */}
+            />
+
+            {/* Cross-fade Overlay */}
+            <motion.div
+                className="section-overlay"
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: '#000',
+                    opacity: overlayOpacity,
+                    zIndex: 1
+                }}
+            />
+
+            {/* Cinematic Center Content */}
+            <div className="container centered-content">
                 <motion.div
-                    className="section-bg-overlay"
+                    className="hero-content"
                     style={{
-                        backgroundImage: `url(${section.image})`,
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        zIndex: 0,
-                        opacity: 1, // Full clarity on selected item
+                        opacity: contentOpacity,
+                        scale: contentScale,
+                        zIndex: 10,
+                        textAlign: 'center'
                     }}
-                />
+                >
+                    <h1 className="hero-title">
+                        <span className="gradient-text">{section.subtitle}</span>
+                    </h1>
 
-
-                {/* Centered Storytelling Content */}
-                <div className="container centered-content">
-                    <motion.div
-                        className="hero-content"
-                        style={{
-                            opacity: useTransform(springProgress, [0.3, 0.5, 0.7], [0, 1, 0]),
-                            scale: useTransform(springProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]),
-                            textAlign: 'center'
-                        }}
-                    >
-                        <h1 className="hero-title">
-                            <span className="gradient-text">{section.subtitle}</span>
-                        </h1>
-
-                        <p className="hero-subtitle">
-                            {section.content}
-                        </p>
-                        <div className="hero-actions">
-                            <button className="btn btn-primary btn-lg">Learn More</button>
-                        </div>
-                    </motion.div>
-                </div>
-            </motion.div>
+                    <p className="hero-subtitle">
+                        {section.content}
+                    </p>
+                    <div className="hero-actions">
+                        <button className="btn btn-primary btn-lg">Explore Solution</button>
+                    </div>
+                </motion.div>
+            </div>
         </section>
     );
 };

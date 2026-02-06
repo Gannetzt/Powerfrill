@@ -67,6 +67,14 @@
     opacity: 1;
 }
 
+.nav-number {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+
 .nav-label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -76,13 +84,21 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-    /* BETTER READABILITY */
+}
+
+.nav-item.active .nav-number {
+    color: #3b82f6;
+    transform: scale(1.1);
 }
 
 .nav-item.active .nav-label {
     color: #ffffff;
     font-weight: 800;
-    transform: translateX(10px);
+    transform: translateX(5px);
+}
+
+.nav-item:hover .nav-number {
+    color: #ffffff;
 }
 
 .nav-item:hover .nav-label {
