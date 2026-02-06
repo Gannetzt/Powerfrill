@@ -94,6 +94,13 @@ const Hero: React.FC = () => {
         sectionsData.forEach((section, index) => {
             const texture = textureLoader.load(section.image, (tex) => {
                 updatePlaneSize(planes[index], tex);
+                // Apply a 5% buffer to cover size to allow for the 0.95 scale shrink while staying full-width
+                planes[index].scale.multiplyScalar(1.05);
+
+                // Initial state multiplier
+                if (index > 0) {
+                    planes[index].scale.multiplyScalar(1.1);
+                }
             });
             texture.generateMipmaps = false;
             texture.minFilter = THREE.LinearFilter;
@@ -106,8 +113,7 @@ const Hero: React.FC = () => {
             });
             const plane = new THREE.Mesh(geometry, material);
 
-            // Mandatory start states
-            plane.scale.set(index === 0 ? 1 : 1.1, index === 0 ? 1 : 1.1, 1);
+            // Initial position Z - mandatory
             plane.position.z = index === 0 ? 0 : 0.3;
 
             scene.add(plane);
@@ -122,8 +128,8 @@ const Hero: React.FC = () => {
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${sectionsData.length * 200}%`, // Longer scroll for ultra-smooth feel
-                scrub: 1.8, // More momentum
+                end: `+=${sectionsData.length * 200}%`,
+                scrub: 1.8,
                 pin: true,
                 anticipatePin: 1
             }
@@ -145,7 +151,12 @@ const Hero: React.FC = () => {
 
             if (incoming) {
                 // Outgoing Logic (Plane)
-                tl.to(outgoing.scale, { x: 0.95, y: 0.95, duration: transitionDuration }, startTime)
+                // Mandatory values: scale 1 -> 0.95, Z 0 -> -0.3
+                tl.to(outgoing.scale, {
+                    x: "-=5%", // Relative shrink by 5%
+                    y: "-=5%",
+                    duration: transitionDuration
+                }, startTime)
                     .to(outgoing.material, { opacity: 0, duration: transitionDuration }, startTime)
                     .to(outgoing.position, { z: -0.3, duration: transitionDuration }, startTime);
 
@@ -158,7 +169,12 @@ const Hero: React.FC = () => {
 
                 // Incoming Logic (Plane)
                 const incomingStartTime = startTime + (1 - overlap);
-                tl.to(incoming.scale, { x: 1, y: 1, duration: transitionDuration }, incomingStartTime)
+                // Mandatory values: scale 1.1 -> 1, Z 0.3 -> 0
+                tl.to(incoming.scale, {
+                    x: "/=1.1", // Scale down from 1.1x base to 1.0x base
+                    y: "/=1.1",
+                    duration: transitionDuration
+                }, incomingStartTime)
                     .to(incoming.material, { opacity: 1, duration: transitionDuration }, incomingStartTime)
                     .to(incoming.position, { z: 0, duration: transitionDuration }, incomingStartTime);
 
@@ -224,7 +240,7 @@ const Hero: React.FC = () => {
     };
 
     return (
-        <div ref={containerRef} className="hero-wrapper" style={{ background: '#000' }}>
+        <div ref={containerRef} className="hero-wrapper" style={{ background: '#f5f5f7' }}>
             <canvas ref={canvasRef} className="hero-canvas" />
             <SideNav
                 customItems={sectionsData.map(s => ({ id: s.id, label: s.title }))}
