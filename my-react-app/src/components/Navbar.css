@@ -55,36 +55,16 @@
     height: 100px;
     width: auto;
     object-fit: contain;
+    filter: brightness(0) invert(1);
+    /* Pure white logo */
     transition: filter 0.3s ease;
 }
 
-
-
-/* Hamburger Menu Toggle - No background */
-.menu-toggle {
-    width: 48px;
-    height: 48px;
-    background: transparent;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3001;
-    /* Above header and menu */
-    transition: all 0.3s ease;
-}
-
-
-.menu-toggle:hover {
-    transform: scale(1.1);
-}
-
+/* Hamburger color to white */
 .hamburger {
     width: 24px;
     height: 2px;
-    background: #1d1d1f;
+    background: #ffffff;
     position: relative;
     transition: all 0.3s ease;
 }
@@ -95,7 +75,7 @@
     position: absolute;
     width: 24px;
     height: 2px;
-    background: #1d1d1f;
+    background: #ffffff;
     transition: all 0.3s ease;
 }
 

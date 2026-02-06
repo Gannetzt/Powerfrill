@@ -264,6 +264,10 @@ const Hero: React.FC = () => {
                     >
                         <h1 className="hero-title">{section.title}</h1>
                         <p className="hero-subtitle">{section.subtitle}</p>
+                        <div className="hero-explore-container">
+                            <span className="hero-explore-text">EXPLORE</span>
+                            <div className="hero-explore-line" />
+                        </div>
                     </div>
                 ))}
             </div>

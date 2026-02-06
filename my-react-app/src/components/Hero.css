@@ -27,10 +27,12 @@
 
 .hero-text-overlay {
     position: absolute;
-    bottom: 12%;
-    /* Relocated to bottom-center */
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Rimac Centering */
     width: 100%;
+    max-width: 1200px;
     padding: 0 48px;
     z-index: 20;
     display: flex;
@@ -38,14 +40,83 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    pointer-events: none;
 }
 
 .hero-gradient-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 40%);
+    background: rgba(0, 0, 0, 0.4);
+    /* Solid cinematic darkening for white text */
     pointer-events: none;
     z-index: 5;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    color: #ffffff;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.hero-subtitle {
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4rem;
+    max-width: 700px;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    font-weight: 400;
+}
+
+.hero-explore-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.hero-explore-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: #ffffff;
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+}
+
+.hero-explore-line {
+    width: 15rem;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-explore-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-explore-container:hover .hero-explore-line::after {
+    transform: scaleX(1);
+}
+
+.hero-explore-container:hover .hero-explore-text {
+    transform: translateY(-5px);
 }
 
 .section-overlay {
