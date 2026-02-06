@@ -44,7 +44,7 @@ const sectionsData = [
 // Combine with clone for loop
 const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
 
-const RIMAC_EASE = [0.4, 0.0, 0.2, 1] as any;
+const RIMAC_EASE = [0.4, 0, 0.2, 1];
 
 interface AnimatedSectionProps {
     section: typeof sectionsData[0];
@@ -59,16 +59,15 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         offset: ["start end", "end start"]
     });
 
-    // Rimac Zoom-Out / Stacking Logic
-    // Incoming (0 -> 0.5): Scale 1.15 -> 1.0, Y 80 -> 0, Opacity 0 -> 1
-    // Outgoing (0.5 -> 1.0): Opacity 1 -> 0
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1.15, 1]);
-    const y = useTransform(scrollYProgress, [0, 0.5], [80, 0]);
-    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0, 1, 1, 0.5, 0]);
+    // SCRUBBED MAPPING: [0 = Below, 0.5 = Active, 1 = Above]
+    // Background Transforms
+    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.12, 1, 1], { ease: RIMAC_EASE as any });
+    const bgOpacity = useTransform(scrollYProgress, [0, 0.1, 0.5, 0.9, 1], [0, 1, 1, 0, 0]);
+    const parallaxY = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -50], { ease: RIMAC_EASE as any });
 
-    // Text Fade-Up (Staggered)
-    const textY = useTransform(scrollYProgress, [0, 0.45, 0.5, 0.6], [40, 40, 0, -20]);
-    const textOpacity = useTransform(scrollYProgress, [0, 0.45, 0.5, 0.6], [0, 0, 1, 0]);
+    // Content Transforms (Scrubbed)
+    const contentOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
+    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [40, 0, -30], { ease: RIMAC_EASE as any });
 
     return (
         <section id={section.id} ref={ref} className="hero-sub-section">
@@ -77,12 +76,8 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                 style={{
                     backgroundImage: `url(${section.image})`,
                     scale,
-                    y,
-                    opacity
-                }}
-                transition={{
-                    duration: 1.2,
-                    ease: RIMAC_EASE
+                    y: parallaxY,
+                    opacity: bgOpacity
                 }}
             />
             <div className="section-overlay" />
@@ -90,18 +85,14 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
             <div className="hero-content">
                 <motion.div
                     style={{
-                        opacity: textOpacity,
-                        y: textY
-                    }}
-                    transition={{
-                        duration: 1.2,
-                        ease: RIMAC_EASE
+                        opacity: contentOpacity,
+                        y: contentY
                     }}
                 >
                     <h1 className="hero-title">{section.title}</h1>
                     <p className="hero-subtitle">{section.content}</p>
                     <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">View Details</button>
+                        <button className="btn btn-primary btn-lg">View Model</button>
                     </div>
                 </motion.div>
             </div>
