@@ -69,10 +69,9 @@ const Hero: React.FC = () => {
 
         // Function to calculate plane size that replicates "background-size: cover"
         const updatePlaneSize = (plane: THREE.Mesh, texture: THREE.Texture) => {
-            if (!texture.image) return;
-
+            const img = texture.image as HTMLImageElement;
             const aspect = window.innerWidth / window.innerHeight;
-            const imageAspect = texture.image.width / texture.image.height;
+            const imageAspect = img.width / img.height;
 
             // Get visible height/width at distance 2
             const vFov = (camera.fov * Math.PI) / 180;
@@ -107,28 +106,31 @@ const Hero: React.FC = () => {
             });
             const plane = new THREE.Mesh(geometry, material);
 
-            // Initial states for GSAP
-            plane.scale.set(1, 1, 1);
+            // Mandatory start states
+            plane.scale.set(index === 0 ? 1 : 1.1, index === 0 ? 1 : 1.1, 1);
             plane.position.z = index === 0 ? 0 : 0.3;
 
             scene.add(plane);
             planes.push(plane);
         });
 
+        // Enable high-fidelity touch normalization
+        ScrollTrigger.normalizeScroll(true);
+
         // --- GSAP Master Timeline ---
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${sectionsData.length * 150}%`, // Longer scroll for better feel
-                scrub: 1.5, // Smoother scrub
+                end: `+=${sectionsData.length * 200}%`, // Longer scroll for ultra-smooth feel
+                scrub: 1.8, // More momentum
                 pin: true,
                 anticipatePin: 1
             }
         });
         timelineRef.current = tl;
 
-        // Build transitions for Planes & Text
+        // Build transitions
         sectionsData.forEach((_, index) => {
             const outgoing = planes[index];
             const incoming = planes[index + 1];
@@ -137,21 +139,21 @@ const Hero: React.FC = () => {
             const overlap = 0.5;
             const startTime = index * transitionDuration;
 
-            // Initial text states
-            if (index === 0) gsap.set(`#text-${index}`, { opacity: 1, y: 0 });
-            else gsap.set(`#text-${index}`, { opacity: 0, y: 40 });
+            // Text initial states
+            if (index === 0) gsap.set(`#text-0`, { opacity: 1, y: 0 });
+            else gsap.set(`#text-${index}`, { opacity: 0, y: 60 });
 
             if (incoming) {
                 // Outgoing Logic (Plane)
-                tl.to(outgoing.scale, { x: "-=0.08", y: "-=0.08", duration: transitionDuration }, startTime)
+                tl.to(outgoing.scale, { x: 0.95, y: 0.95, duration: transitionDuration }, startTime)
                     .to(outgoing.material, { opacity: 0, duration: transitionDuration }, startTime)
-                    .to(outgoing.position, { z: -0.5, duration: transitionDuration }, startTime);
+                    .to(outgoing.position, { z: -0.3, duration: transitionDuration }, startTime);
 
                 // Outgoing Logic (Text)
                 tl.to(`#text-${index}`, {
                     opacity: 0,
-                    y: -50,
-                    duration: transitionDuration * 0.4
+                    y: -60,
+                    duration: transitionDuration * 0.45
                 }, startTime);
 
                 // Incoming Logic (Plane)
@@ -164,8 +166,8 @@ const Hero: React.FC = () => {
                 tl.to(`#text-${index + 1}`, {
                     opacity: 1,
                     y: 0,
-                    duration: transitionDuration * 0.6
-                }, incomingStartTime + (transitionDuration * 0.2));
+                    duration: transitionDuration * 0.7
+                }, incomingStartTime + (transitionDuration * 0.15));
             }
         });
 
@@ -185,7 +187,7 @@ const Hero: React.FC = () => {
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
 
-            planes.forEach((plane, i) => {
+            planes.forEach((plane) => {
                 if (plane.material instanceof THREE.MeshBasicMaterial && plane.material.map) {
                     updatePlaneSize(plane, plane.material.map);
                 }
