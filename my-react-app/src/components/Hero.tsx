@@ -1,9 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, cubicBezier } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, animate } from 'framer-motion';
 import SideNav from './SideNav';
 import './Hero.css';
-
-const RIMAC_EASE_FUNC = cubicBezier(0.4, 0, 0.2, 1);
 
 const sectionsData = [
     {
@@ -43,108 +41,189 @@ const sectionsData = [
     }
 ];
 
-// Combine with clone for loop
-const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
+const Hero: React.FC = () => {
+    const rawProgress = useMotionValue(0);
+    const touchYRef = useRef<number | null>(null);
 
-interface AnimatedSectionProps {
-    section: typeof sectionsData[0];
-    containerRef: React.RefObject<HTMLDivElement | null>;
-}
-
-const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef }) => {
-    const ref = useRef<HTMLElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        container: containerRef,
-        offset: ["start end", "end start"]
+    // Momentum Easing for the premium feel
+    // Matches the "resistant, not free-flowing" requirement
+    const smoothProgress = useSpring(rawProgress, {
+        stiffness: 40,
+        damping: 20,
+        restDelta: 0.0001
     });
 
-    // Bidirectional Scrub Mappings
-    // [0 = Below, 0.5 = Active, 1 = Above]
-    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.12, 1, 1], { ease: RIMAC_EASE_FUNC });
-    const bgOpacity = useTransform(scrollYProgress, [0.2, 0.35, 0.5, 0.65, 0.8], [0, 1, 1, 1, 0]);
-    const parallaxY = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -50], { ease: RIMAC_EASE_FUNC });
+    const [activeIndex, setActiveIndex] = useState(0);
 
-    const contentOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
-    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [40, 0, -30], { ease: RIMAC_EASE_FUNC });
-
-    return (
-        <section id={section.id} ref={ref} className="hero-sub-section">
-            <motion.div
-                className="section-bg-parallax"
-                style={{
-                    backgroundImage: `url(${section.image})`,
-                    scale,
-                    y: parallaxY,
-                    opacity: bgOpacity
-                }}
-            />
-            <div className="section-overlay" />
-
-            <div className="hero-content">
-                <motion.div
-                    style={{
-                        opacity: contentOpacity,
-                        y: contentY
-                    }}
-                >
-                    <h1 className="hero-title">{section.title}</h1>
-                    <p className="hero-subtitle">{section.content}</p>
-                    <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">View Model</button>
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
-};
-
-const Hero: React.FC = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const isLoopingRef = useRef(false);
-
+    // Track active index based on smooth progress
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
+        const unsubscribe = smoothProgress.on("change", (v) => {
+            const index = Math.round(v * (sectionsData.length - 1));
+            setActiveIndex(index);
+        });
+        return unsubscribe;
+    }, [smoothProgress]);
 
-        const handleScroll = () => {
-            if (isLoopingRef.current) return;
-
-            const { scrollTop, scrollHeight, clientHeight } = container;
-
-            // Loop logic: When the clone section is fully landed
-            if (scrollTop >= scrollHeight - clientHeight - 2) {
-                isLoopingRef.current = true;
-
-                // Jump to top instantly
-                container.style.scrollSnapType = 'none';
-                container.scrollTop = 0;
-
-                // Small timeout to restore snap
-                setTimeout(() => {
-                    if (container) container.style.scrollSnapType = 'y mandatory';
-                    isLoopingRef.current = false;
-                }, 50);
-            }
+    // Handle Wheel & Touch events to drive the virtual timeline
+    useEffect(() => {
+        const handleWheel = (e: WheelEvent) => {
+            e.preventDefault();
+            // Resistant scroll
+            const delta = e.deltaY * 0.0008;
+            const newProgress = Math.max(0, Math.min(1, rawProgress.get() + delta));
+            rawProgress.set(newProgress);
         };
 
-        container.addEventListener('scroll', handleScroll);
-        return () => container.removeEventListener('scroll', handleScroll);
-    }, []);
+        const handleTouchStart = (e: TouchEvent) => {
+            touchYRef.current = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (touchYRef.current === null) return;
+            e.preventDefault();
+
+            const currentY = e.touches[0].clientY;
+            const deltaY = touchYRef.current - currentY;
+            touchYRef.current = currentY;
+
+            const delta = deltaY * 0.0015;
+            const newProgress = Math.max(0, Math.min(1, rawProgress.get() + delta));
+            rawProgress.set(newProgress);
+        };
+
+        const handleTouchEnd = () => {
+            touchYRef.current = null;
+        };
+
+        window.addEventListener('wheel', handleWheel, { passive: false });
+        window.addEventListener('touchstart', handleTouchStart, { passive: false });
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd);
+
+        return () => {
+            window.removeEventListener('wheel', handleWheel);
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, [rawProgress]);
+
+    const scrollToSection = (index: number) => {
+        const target = index / (sectionsData.length - 1);
+        animate(rawProgress, target, {
+            duration: 1.2,
+            ease: [0.33, 1, 0.68, 1] // Specified premium easing
+        });
+    };
+
+    // Map sections for SideNav compatibility
+    const navItems = sectionsData.map(s => ({ id: s.id, label: s.title }));
 
     return (
-        <div className="hero-wrapper" style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
-            <SideNav containerRef={containerRef} />
-            <div className="hero-container-main" ref={containerRef}>
-                {allSections.map((section) => (
+        <div className="hero-wrapper" style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
+            <SideNav
+                customItems={navItems}
+                activeProgress={smoothProgress}
+                onSectionClick={scrollToSection}
+            />
+
+            <div className="hero-container-main">
+                {sectionsData.map((section, index) => (
                     <AnimatedSection
                         key={section.id}
                         section={section}
-                        containerRef={containerRef}
+                        index={index}
+                        total={sectionsData.length}
+                        progress={smoothProgress}
                     />
                 ))}
             </div>
         </div>
+    );
+};
+
+interface AnimatedSectionProps {
+    section: typeof sectionsData[0];
+    index: number;
+    total: number;
+    progress: any;
+}
+
+const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, index, total, progress }) => {
+    const focalPoint = index / (total - 1);
+    const segmentWidth = 1 / (total - 1);
+
+    // 40% Overlap Rule:
+    // Stability = 60%, Transition = 40%
+    const transHalf = (segmentWidth * 0.4) / 2; // 20% of segmentWidth for transition
+    const stableHalf = (segmentWidth * 0.6) / 2; // 30% of segmentWidth for stability
+
+    // Calculate key points for transitions
+    // A section is fully stable when progress is within [focalPoint - stableHalf, focalPoint + stableHalf]
+    // It transitions in from (focalPoint - stableHalf - transHalf) to (focalPoint - stableHalf)
+    // It transitions out from (focalPoint + stableHalf) to (focalPoint + stableHalf + transHalf)
+
+    const enterStart = focalPoint - stableHalf - transHalf;
+    const enterEnd = focalPoint - stableHalf;
+
+    const exitStart = focalPoint + stableHalf;
+    const exitEnd = focalPoint + stableHalf + transHalf;
+
+    // Opacity Mapping
+    const opacity = useTransform(progress,
+        [enterStart, enterEnd, exitStart, exitEnd],
+        [0, 1, 1, 0]
+    );
+
+    // Scale Mapping: Incoming (1.12 -> 1.0), Outgoing (1.0 -> 0.92)
+    const scale = useTransform(progress,
+        [enterStart, enterEnd, exitStart, exitEnd],
+        [1.12, 1.0, 1.0, 0.92]
+    );
+
+    // Z Mapping: Incoming (400 -> 0), Outgoing (0 -> -400)
+    const z = useTransform(progress,
+        [enterStart, enterEnd, exitStart, exitEnd],
+        [400, 0, 0, -400]
+    );
+
+    // Text Animation: Center-aligned, delayed fade-in, early fade-out
+    // Text should fully appear ONLY when section is stable
+    const textOpacity = useTransform(progress,
+        [enterEnd, focalPoint, exitStart],
+        [0, 1, 0]
+    );
+    const textY = useTransform(progress,
+        [enterEnd, focalPoint, exitStart],
+        [20, 0, -20]
+    );
+
+    return (
+        <motion.section
+            className="hero-sub-section"
+            style={{
+                opacity,
+                z,
+                scale,
+                display: useTransform(opacity, (v) => v > 0 ? 'flex' : 'none')
+            }}
+        >
+            <div
+                className="section-bg-parallax"
+                style={{ backgroundImage: `url(${section.image})` }}
+            />
+            <div className="section-overlay" />
+
+            <div className="hero-content">
+                <motion.div style={{ opacity: textOpacity, y: textY }}>
+                    <h1 className="hero-title">{section.title}</h1>
+                    <p className="hero-subtitle">{section.subtitle}</p>
+                    <div className="hero-actions">
+                        <button className="btn btn-primary btn-lg">Explore</button>
+                    </div>
+                </motion.div>
+            </div>
+        </motion.section>
     );
 };
 
