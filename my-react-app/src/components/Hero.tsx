@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import SideNav from './SideNav';
 import './Hero.css';
 
-const sections = [
+const sectionsData = [
     {
         id: 'bess',
         title: 'BESS',
@@ -41,8 +41,11 @@ const sections = [
     }
 ];
 
+// Combine with clone for loop
+const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
+
 interface AnimatedSectionProps {
-    section: typeof sections[0];
+    section: typeof sectionsData[0];
     containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -53,8 +56,6 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         container: containerRef,
         offset: ["start end", "end start"]
     });
-
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     const springProgress = useSpring(scrollYProgress, {
         stiffness: 100,
@@ -139,10 +140,29 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
 const Hero: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const { scrollTop, scrollHeight, clientHeight } = container;
+
+            // If we reach the bottom (the start of the cloned section)
+            // silently jump back to top.
+            // Using a threshold to account for snap points
+            if (scrollTop + clientHeight >= scrollHeight - 5) {
+                container.scrollTo({ top: 0, behavior: 'instant' as any });
+            }
+        };
+
+        container.addEventListener('scroll', handleScroll);
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div className="hero-container-main" ref={containerRef}>
             <SideNav containerRef={containerRef} />
-            {sections.map((section) => (
+            {allSections.map((section) => (
                 <AnimatedSection
                     key={section.id}
                     section={section}

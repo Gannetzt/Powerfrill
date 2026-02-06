@@ -2,7 +2,7 @@ import './index.css'
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Footer from './components/Footer'
+import Hero from './components/Hero'
 import ProductPage from './components/ProductPage'
 import ProductsOverview from './components/ProductsOverview'
 import SolutionDetail from './components/SolutionDetail'
@@ -44,7 +44,6 @@ function HomePage() {
       <main>
         <Hero />
       </main>
-      <Footer />
     </>
   );
 }
