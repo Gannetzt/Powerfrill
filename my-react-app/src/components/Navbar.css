@@ -11,8 +11,7 @@
 
 
 .header-container {
-    max-width: 2000px;
-    /* Wider for full cinematic feel */
+    max-width: 2500px;
     margin: 0 auto;
     padding: 0 48px;
     height: 100%;
@@ -23,10 +22,8 @@
 }
 
 .logo-wrapper {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    /* Removed absolute centering */
 }
 
 @media (max-width: 768px) {
@@ -87,7 +84,7 @@
 .hamburger {
     width: 24px;
     height: 2px;
-    background: #3b82f6;
+    background: #1d1d1f;
     position: relative;
     transition: all 0.3s ease;
 }
@@ -98,7 +95,7 @@
     position: absolute;
     width: 24px;
     height: 2px;
-    background: #3b82f6;
+    background: #1d1d1f;
     transition: all 0.3s ease;
 }
 

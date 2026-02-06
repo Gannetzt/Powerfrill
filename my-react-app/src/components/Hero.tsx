@@ -231,6 +231,7 @@ const Hero: React.FC = () => {
 
     return (
         <div ref={containerRef} className="hero-wrapper" style={{ background: '#f5f5f7', opacity: 0 }}>
+            <div className="hero-gradient-overlay" />
             <canvas ref={canvasRef} className="hero-canvas" />
             <SideNav
                 customItems={sectionsData.map(s => ({ id: s.id, label: s.title }))}
