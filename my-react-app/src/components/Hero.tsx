@@ -151,9 +151,15 @@ const Hero: React.FC = () => {
                     trigger: containerRef.current,
                     start: "top top",
                     end: `+=${sectionsData.length * 200}%`,
-                    scrub: 1.8,
+                    scrub: 1,
                     pin: true,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    snap: {
+                        snapTo: 1 / (sectionsData.length - 1),
+                        duration: { min: 0.2, max: 0.8 },
+                        delay: 0.1,
+                        ease: "power1.inOut"
+                    }
                 }
             });
             timelineRef.current = tl;

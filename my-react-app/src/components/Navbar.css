@@ -55,53 +55,76 @@
     height: 100px;
     width: auto;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-    /* Pure white logo */
-    transition: filter 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
-/* Hamburger color to white */
-.hamburger {
-    width: 24px;
-    height: 2px;
-    background: #ffffff;
-    position: relative;
-    transition: all 0.3s ease;
+.logo-img:hover {
+    transform: scale(1.05);
 }
 
-.hamburger::before,
-.hamburger::after {
-    content: '';
-    position: absolute;
-    width: 24px;
-    height: 2px;
-    background: #ffffff;
-    transition: all 0.3s ease;
-}
-
-.hamburger::before {
-    top: -8px;
-}
-
-.hamburger::after {
-    top: 8px;
-}
-
-.hamburger.active {
+/* Battery Menu Toggle */
+.menu-toggle {
+    width: 60px;
+    height: 48px;
     background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3001;
+    position: relative;
+    padding: 0;
 }
 
-.hamburger.active::before {
-    top: 0;
-    transform: rotate(45deg);
-    background: #ffffff;
-    /* White for contrast on dark menu */
+.battery-icon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.hamburger.active::after {
-    top: 0;
-    transform: rotate(-45deg);
+.battery-icon-wrapper.active {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.battery-body {
+    width: 32px;
+    height: 18px;
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    padding: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.battery-fill {
+    width: 30%;
+    height: 100%;
     background: #ffffff;
+    border-radius: 1px;
+    transition: width 0.5s ease, background-color 0.3s ease;
+}
+
+.battery-icon-wrapper.active .battery-fill {
+    width: 100%;
+    background: #4ade80;
+}
+
+.battery-tip {
+    width: 3px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 0 2px 2px 0;
+}
+
+.menu-toggle:hover .battery-icon-wrapper {
+    transform: scale(1.1);
+}
+
+.menu-toggle:hover .battery-fill {
+    width: 60%;
 }
 
 
