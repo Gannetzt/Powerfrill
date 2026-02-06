@@ -56,7 +56,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
 
     // Responsive offsets/scales
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const startScale = isMobile ? 0.92 : 0.85;
+    const startScale = isMobile ? 0.8 : 0.7; // "Medium" card look
     const offsetValue = isMobile ? "2vh" : "5vh";
 
     const springProgress = useSpring(scrollYProgress, {
@@ -65,12 +65,12 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         restDelta: 0.001
     });
 
-    // ZOOM-OUT & EXPANSION LOGIC
+    // ZOOM-IN LOGIC: From Medium (0.7) to Full Screen (1.0)
     const scale = useTransform(springProgress, [0, 0.5, 1], [startScale, 1, startScale]);
-    const opacity = useTransform(springProgress, [0, 0.45, 0.55, 1], [0.4, 1, 1, 0.4]);
+    const opacity = useTransform(springProgress, [0, 0.4, 0.6, 1], [0.1, 1, 1, 0.1]);
+    const borderRadius = useTransform(springProgress, [0, 0.5, 1], ["40px", "0px", "40px"]);
 
-    // Enhanced Continuous vertical flow with parallax zoom
-    const bgScale = useTransform(springProgress, [0, 0.5, 1], [1.6, 1, 1.6]);
+    // Parallax logic - subtle movement, no pulse/breathe
     const yOffset = useTransform(springProgress, [0, 0.5, 1], [offsetValue, "0vh", `-${offsetValue}`]);
 
     return (
@@ -85,6 +85,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                     scale,
                     opacity,
                     y: yOffset,
+                    borderRadius,
                     width: '100%',
                     height: '100%',
                     position: 'absolute',
@@ -93,11 +94,11 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    zIndex: useTransform(springProgress, [0, 0.5, 1], [0, 10, 0])
+                    zIndex: useTransform(springProgress, [0, 0.5, 1], [0, 10, 0]),
+                    overflow: 'hidden'
                 }}
-
             >
-                {/* Full-Width Background Visual */}
+                {/* Full-Width Background Visual - Stronger impact */}
                 <motion.div
                     className="section-bg-overlay"
                     style={{
@@ -110,8 +111,8 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         zIndex: 0,
-                        opacity: 0.4,
-                        scale: bgScale /* Parallax zoom sync */
+                        opacity: 0.8, // Bold image impact
+                        scale: 1.1 // Static slight zoom for depth
                     }}
                 />
 
