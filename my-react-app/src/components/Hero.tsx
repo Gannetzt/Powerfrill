@@ -64,24 +64,26 @@ const Hero: React.FC = () => {
 
         camera.position.z = 2;
 
-        const textureLoader = new THREE.TextureLoader();
-        const planes: THREE.Mesh[] = [];
+        const loadingManager = new THREE.LoadingManager();
+        const textureLoader = new THREE.TextureLoader(loadingManager);
+        const planeGroups: THREE.Group[] = [];
+        const planeMeshes: THREE.Mesh[] = [];
 
         // Function to calculate plane size that replicates "background-size: cover"
-        const updatePlaneSize = (plane: THREE.Mesh, texture: THREE.Texture) => {
+        // Applies to the GROUP to handle window layout
+        const updatePlaneSize = (group: THREE.Group, texture: THREE.Texture) => {
+            if (!texture.image) return;
             const img = texture.image as HTMLImageElement;
             const aspect = window.innerWidth / window.innerHeight;
             const imageAspect = img.width / img.height;
 
-            // Get visible height/width at distance 2
             const vFov = (camera.fov * Math.PI) / 180;
             const planeHeight = 2 * Math.tan(vFov / 2) * camera.position.z;
             const planeWidth = planeHeight * aspect;
 
-            // Apply 1.25x scale buffer to ensure full-bleed even during recession (z: -0.3)
-            plane.scale.set(planeWidth * 1.25, planeHeight * 1.25, 1);
+            // We use 1.1x base for group to ensure we have bleed margin
+            group.scale.set(planeWidth * 1.1, planeHeight * 1.1, 1);
 
-            // Adjust texture UVs to handle "cover"
             if (imageAspect > aspect) {
                 texture.repeat.set(aspect / imageAspect, 1);
                 texture.offset.set((1 - aspect / imageAspect) / 2, 0);
@@ -93,97 +95,86 @@ const Hero: React.FC = () => {
 
         // Create planes for each section
         sectionsData.forEach((section, index) => {
+            const group = new THREE.Group();
             const texture = textureLoader.load(section.image, (tex) => {
-                updatePlaneSize(planes[index], tex);
-
-                // Final initial scale adjustment
-                // Incoming planes (index > 0) start at 1.1x their base size
-                if (index > 0) {
-                    planes[index].scale.multiplyScalar(1.1);
-                }
+                updatePlaneSize(group, tex);
             });
+            texture.generateMipmaps = false;
+            texture.minFilter = THREE.LinearFilter;
+
             const geometry = new THREE.PlaneGeometry(1, 1);
             const material = new THREE.MeshBasicMaterial({
                 map: texture,
                 transparent: true,
                 opacity: index === 0 ? 1 : 0,
-                color: 0xeeeeee // Subtle darkening to help white/light text pop
+                color: 0xeeeeee
             });
-            const plane = new THREE.Mesh(geometry, material);
+            const mesh = new THREE.Mesh(geometry, material);
 
-            // Initial position Z - mandatory
-            plane.position.z = index === 0 ? 0 : 0.3;
+            // Animation start states on MESH
+            const startScale = index === 0 ? 1 : 1.1;
+            mesh.scale.set(startScale, startScale, 1);
 
-            scene.add(plane);
-            planes.push(plane);
+            // Position Z on GROUP - mandatory values
+            group.position.z = index === 0 ? 0 : 0.3;
+
+            group.add(mesh);
+            scene.add(group);
+            planeGroups.push(group);
+            planeMeshes.push(mesh);
         });
 
-        // Enable high-fidelity touch normalization
-        ScrollTrigger.normalizeScroll(true);
+        loadingManager.onLoad = () => {
+            initTimeline();
+            gsap.to(containerRef.current, { opacity: 1, duration: 1, ease: "power2.out" });
+        };
 
-        // --- GSAP Master Timeline ---
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top top",
-                end: `+=${sectionsData.length * 200}%`,
-                scrub: 1.8,
-                pin: true,
-                anticipatePin: 1
-            }
-        });
-        timelineRef.current = tl;
+        const initTimeline = () => {
+            ScrollTrigger.normalizeScroll(true);
 
-        // Build transitions
-        sectionsData.forEach((_, index) => {
-            const outgoing = planes[index];
-            const incoming = planes[index + 1];
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: `+=${sectionsData.length * 200}%`,
+                    scrub: 1.8,
+                    pin: true,
+                    anticipatePin: 1
+                }
+            });
+            timelineRef.current = tl;
 
-            const transitionDuration = 1;
-            const overlap = 0.5;
-            const startTime = index * transitionDuration;
+            sectionsData.forEach((_, index) => {
+                const outgoingMesh = planeMeshes[index];
+                const outgoingGroup = planeGroups[index];
+                const incomingMesh = planeMeshes[index + 1];
+                const incomingGroup = planeGroups[index + 1];
 
-            // Text initial states
-            if (index === 0) gsap.set(`#text-0`, { opacity: 1, y: 0 });
-            else gsap.set(`#text-${index}`, { opacity: 0, y: 60 });
+                const transitionDuration = 1;
+                const overlap = 0.5;
+                const startTime = index * transitionDuration;
 
-            if (incoming) {
-                // Outgoing Logic (Plane)
-                // Mandatory values: scale 1 -> 0.95, Z 0 -> -0.3
-                tl.to(outgoing.scale, {
-                    x: "-=5%",
-                    y: "-=5%",
-                    duration: transitionDuration
-                }, startTime)
-                    .to(outgoing.material, { opacity: 0, duration: transitionDuration }, startTime)
-                    .to(outgoing.position, { z: -0.3, duration: transitionDuration }, startTime);
+                if (index === 0) gsap.set(`#text-0`, { opacity: 1, y: 0 });
+                else gsap.set(`#text-${index}`, { opacity: 0, y: 60 });
 
-                // Outgoing Logic (Text)
-                tl.to(`#text-${index}`, {
-                    opacity: 0,
-                    y: -100, // Stronger vertical separation
-                    duration: transitionDuration * 0.4
-                }, startTime);
+                if (incomingMesh) {
+                    // Outgoing: Scale 1 -> 0.95, Z 0 -> -0.3
+                    tl.to(outgoingMesh.scale, { x: 0.95, y: 0.95, duration: transitionDuration }, startTime)
+                        .to(outgoingMesh.material, { opacity: 0, duration: transitionDuration }, startTime)
+                        .to(outgoingGroup.position, { z: -0.3, duration: transitionDuration }, startTime);
 
-                // Incoming Logic (Plane)
-                const incomingStartTime = startTime + (1 - overlap);
-                // Mandatory values: scale 1.1 -> 1, Z 0.3 -> 0
-                tl.to(incoming.scale, {
-                    x: "/=1.1",
-                    y: "/=1.1",
-                    duration: transitionDuration
-                }, incomingStartTime)
-                    .to(incoming.material, { opacity: 1, duration: transitionDuration }, incomingStartTime)
-                    .to(incoming.position, { z: 0, duration: transitionDuration }, incomingStartTime);
+                    tl.to(`#text-${index}`, { opacity: 0, y: -100, duration: transitionDuration * 0.45 }, startTime);
 
-                // Incoming Logic (Text)
-                tl.to(`#text-${index + 1}`, {
-                    opacity: 1,
-                    y: 0,
-                    duration: transitionDuration * 0.75
-                }, incomingStartTime + (transitionDuration * 0.1));
-            }
-        });
+                    // Incoming: Scale 1.1 -> 1, Z 0.3 -> 0
+                    const incomingStartTime = startTime + (1 - overlap);
+                    tl.to(incomingMesh.scale, { x: 1, y: 1, duration: transitionDuration }, incomingStartTime)
+                        .to(incomingMesh.material, { opacity: 1, duration: transitionDuration }, incomingStartTime)
+                        .to(incomingGroup.position, { z: 0, duration: transitionDuration }, incomingStartTime);
+
+                    tl.to(`#text-${index + 1}`, { opacity: 1, y: 0, duration: transitionDuration * 0.75 }, incomingStartTime + (transitionDuration * 0.1));
+                }
+            });
+        };
 
         // Animation Loop
         const animate = () => {
@@ -201,9 +192,10 @@ const Hero: React.FC = () => {
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
 
-            planes.forEach((plane) => {
-                if (plane.material instanceof THREE.MeshBasicMaterial && plane.material.map) {
-                    updatePlaneSize(plane, plane.material.map);
+            planeGroups.forEach((group, idx) => {
+                const mesh = planeMeshes[idx];
+                if (mesh.material instanceof THREE.MeshBasicMaterial && mesh.material.map) {
+                    updatePlaneSize(group, mesh.material.map);
                 }
             });
         };
@@ -212,14 +204,14 @@ const Hero: React.FC = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
             renderer.dispose();
-            planes.forEach(p => {
+            planeMeshes.forEach(p => {
                 p.geometry.dispose();
                 if (p.material instanceof THREE.MeshBasicMaterial && p.material.map) {
                     p.material.map.dispose();
                 }
                 (p.material as THREE.Material).dispose();
             });
-            tl.kill();
+            if (timelineRef.current) timelineRef.current.kill();
             ScrollTrigger.getAll().forEach(st => st.kill());
         };
     }, []);
@@ -238,7 +230,7 @@ const Hero: React.FC = () => {
     };
 
     return (
-        <div ref={containerRef} className="hero-wrapper" style={{ background: '#f5f5f7' }}>
+        <div ref={containerRef} className="hero-wrapper" style={{ background: '#f5f5f7', opacity: 0 }}>
             <canvas ref={canvasRef} className="hero-canvas" />
             <SideNav
                 customItems={sectionsData.map(s => ({ id: s.id, label: s.title }))}
