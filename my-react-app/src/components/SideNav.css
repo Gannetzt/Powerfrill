@@ -15,11 +15,21 @@
 }
 
 .nav-vertical-line-container {
-    display: none;
+    position: relative;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-active-indicator {
-    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 1.2rem;
+    /* Aligned to text height */
+    background: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    will-change: top;
 }
 
 .nav-list {
