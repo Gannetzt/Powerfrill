@@ -5,8 +5,8 @@
     height: 100svh;
     scrollbar-width: none;
     background: #000;
-    perspective: 1500px;
-    /* Enhanced 3D depth */
+    perspective: 2000px;
+    transform-style: preserve-3d;
 }
 
 .hero-container-main::-webkit-scrollbar {
@@ -26,7 +26,7 @@
     overflow: hidden;
     background: #000;
     z-index: 1;
-    /* Dynamic z-index will be set via nth-child */
+    transform-style: preserve-3d;
 }
 
 .hero-sub-section:nth-child(1) {

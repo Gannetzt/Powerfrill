@@ -56,12 +56,19 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
     const { scrollYProgress } = useScroll({
         target: ref,
         container: containerRef,
-        offset: ["start end", "start start"]
+        offset: ["start end", "end start"]
     });
 
-    // Scale-down background effect as section covers the screen
-    const bgScale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
-    const bgOpacity = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
+    // Zoom-Out Stacking Logic
+    // Progress 0-0.5 is entering and snapping
+    // Progress 0.5-1.0 is being covered by the NEXT section
+    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 0.9]);
+    const opacity = useTransform(scrollYProgress, [0, 0.1, 0.5, 0.9, 1], [0, 1, 1, 0.5, 0]);
+    const blur = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], ["blur(10px)", "blur(0px)", "blur(5px)", "blur(10px)"]);
+
+    // Content parallax
+    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]);
+    const contentOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
 
     return (
         <section id={section.id} ref={ref} className="hero-sub-section">
@@ -69,39 +76,25 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
                 className="section-bg-parallax"
                 style={{
                     backgroundImage: `url(${section.image})`,
-                    scale: bgScale,
-                    opacity: bgOpacity
+                    scale,
+                    opacity,
+                    filter: blur
                 }}
             />
             <div className="section-overlay" />
 
             <div className="hero-content">
-                <motion.h1
-                    className="hero-title"
-                    initial={{ opacity: 0, y: 70 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.8 }}
-                    transition={{
-                        duration: 1.5,
-                        ease: PREMIUM_EASE
-                    }}
-                >
-                    {section.title}
-                </motion.h1>
-
                 <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.8 }}
-                    transition={{
-                        duration: 1.5,
-                        delay: 0.2,
-                        ease: PREMIUM_EASE
+                    style={{
+                        opacity: contentOpacity,
+                        y: contentY,
+                        scale: useTransform(scrollYProgress, [0.4, 0.5, 1], [0.8, 1, 0.9])
                     }}
                 >
+                    <h1 className="hero-title">{section.title}</h1>
                     <p className="hero-subtitle">{section.content}</p>
                     <div className="hero-actions">
-                        <button className="btn btn-primary btn-lg">Explore Technology</button>
+                        <button className="btn btn-primary btn-lg">Explore Solutions</button>
                     </div>
                 </motion.div>
             </div>
@@ -143,15 +136,17 @@ const Hero: React.FC = () => {
     }, []);
 
     return (
-        <div className="hero-container-main" ref={containerRef}>
+        <div className="hero-wrapper" style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
             <SideNav containerRef={containerRef} />
-            {allSections.map((section) => (
-                <AnimatedSection
-                    key={section.id}
-                    section={section}
-                    containerRef={containerRef}
-                />
-            ))}
+            <div className="hero-container-main" ref={containerRef}>
+                {allSections.map((section) => (
+                    <AnimatedSection
+                        key={section.id}
+                        section={section}
+                        containerRef={containerRef}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
