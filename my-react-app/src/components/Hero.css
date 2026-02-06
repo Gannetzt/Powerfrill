@@ -4,11 +4,10 @@
     height: 100vh;
     height: 100svh;
     scrollbar-width: none;
-    scroll-behavior: smooth;
     background: #000;
-    -webkit-overflow-scrolling: touch;
+    perspective: 1500px;
+    /* Enhanced 3D depth */
 }
-
 
 .hero-container-main::-webkit-scrollbar {
     display: none;
@@ -18,82 +17,112 @@
     height: 100vh;
     height: 100svh;
     width: 100vw;
+    position: sticky;
+    top: 0;
+    scroll-snap-align: start;
     display: flex;
     align-items: center;
     justify-content: center;
-    scroll-snap-align: center;
-    position: relative;
     overflow: hidden;
     background: #000;
+    z-index: 1;
+    /* Dynamic z-index will be set via nth-child */
+}
+
+.hero-sub-section:nth-child(1) {
+    z-index: 1;
+}
+
+.hero-sub-section:nth-child(2) {
+    z-index: 2;
+}
+
+.hero-sub-section:nth-child(3) {
+    z-index: 3;
+}
+
+.hero-sub-section:nth-child(4) {
+    z-index: 4;
+}
+
+.hero-sub-section:nth-child(5) {
+    z-index: 5;
+}
+
+/* Cloned section */
+.hero-sub-section:nth-child(6) {
+    z-index: 6;
 }
 
 .section-bg-parallax {
-    will-change: transform, filter;
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    will-change: transform, filter, scale;
     pointer-events: none;
 }
 
-.section-bg-overlay {
-    filter: brightness(0.8) contrast(1.1);
-    transform-origin: center;
-    transition: filter 0.5s ease;
-}
-
-
-.hero-sub-section .container.centered-content {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    padding: 0;
+.section-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.1) 50%,
+            rgba(0, 0, 0, 0.6) 100%);
+    z-index: 1;
 }
 
 .hero-content {
-    width: 100%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
+    z-index: 10;
     text-align: center;
+    max-width: 1000px;
 }
 
 .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
+    font-size: 6rem;
+    font-weight: 900;
+    line-height: 0.9;
+    margin-bottom: 2rem;
     color: #ffffff;
+    letter-spacing: 0.6rem;
+    text-transform: uppercase;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2.5rem;
-    max-width: 600px;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 3.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    line-height: 1.8;
 }
 
 .hero-actions {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     justify-content: center;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .hero-title {
-        font-size: 3rem;
+        font-size: 4.5rem;
     }
 }
 
 @media (max-width: 768px) {
     .hero-title {
-        font-size: 2.25rem;
+        font-size: 3rem;
+        letter-spacing: 0.3rem;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.2rem;
     }
 }
