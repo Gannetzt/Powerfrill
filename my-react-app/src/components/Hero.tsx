@@ -124,9 +124,23 @@ const Hero: React.FC = () => {
             planeMeshes.push(mesh);
         });
 
+        const fadeToVisible = () => {
+            if (containerRef.current && containerRef.current.style.opacity === '0') {
+                initTimeline();
+                gsap.to(containerRef.current, { opacity: 1, duration: 0.8, ease: "power2.out" });
+            }
+        };
+
+        const safetyTimeout = setTimeout(fadeToVisible, 3000);
+
         loadingManager.onLoad = () => {
-            initTimeline();
-            gsap.to(containerRef.current, { opacity: 1, duration: 1, ease: "power2.out" });
+            clearTimeout(safetyTimeout);
+            fadeToVisible();
+        };
+
+        loadingManager.onError = (url) => {
+            console.error('Error loading:', url);
+            // Don't clear timeout, let safety trigger if too many errors
         };
 
         const initTimeline = () => {
