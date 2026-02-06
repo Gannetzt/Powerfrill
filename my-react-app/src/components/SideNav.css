@@ -9,7 +9,7 @@
 
 .side-nav-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 3rem;
     pointer-events: auto;
 }
@@ -17,13 +17,13 @@
 .nav-vertical-line-container {
     position: relative;
     width: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .nav-base-line {
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .nav-active-indicator {
@@ -32,8 +32,8 @@
     top: 0;
     width: 2px;
     height: 4rem;
-    background: #ffffff;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    background: #1d1d1f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     will-change: top;
 }
 
@@ -55,7 +55,7 @@
 
 .nav-item-indicator-expand {
     height: 2px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 1px;
 }
 
@@ -69,7 +69,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.4);
     letter-spacing: 0.1rem;
 }
 
@@ -78,17 +78,17 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.2rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.4);
     white-space: nowrap;
     transition: color 0.3s ease;
 }
 
 .nav-item.active .nav-label {
-    color: #ffffff;
+    color: #1d1d1f;
 }
 
 .nav-item:hover .nav-label {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.8);
 }
 
 @media (max-width: 768px) {

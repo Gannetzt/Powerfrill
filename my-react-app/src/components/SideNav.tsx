@@ -83,18 +83,19 @@ const SideNav: React.FC<SideNavProps> = ({ customItems, gsapTimeline, onSectionC
                             >
                                 <div className="nav-item-indicator-expand" style={{
                                     width: isActive ? "32px" : "12px",
-                                    backgroundColor: isActive ? "#ffffff" : "rgba(255,255,255,0.2)"
+                                    backgroundColor: isActive ? "#1d1d1f" : "rgba(0,0,0,0.1)"
                                 }} />
                                 <div className="nav-text-content">
                                     <span className="nav-number" style={{
                                         opacity: isActive ? 1 : 0.4,
-                                        transform: isActive ? "scale(1.25)" : "scale(1)"
+                                        transform: isActive ? "scale(1.25)" : "scale(1)",
+                                        color: "#1d1d1f"
                                     }}>
                                         {(index + 1).toString().padStart(2, '0')}
                                     </span>
                                     <span className="nav-label" style={{
-                                        opacity: isActive ? 1 : 0.3,
-                                        color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)",
+                                        opacity: isActive ? 1 : 0.4,
+                                        color: isActive ? "#1d1d1f" : "rgba(0,0,0,0.4)",
                                         transform: isActive ? "translateX(8px)" : "translateX(0)"
                                     }}>
                                         {item.label}

@@ -51,6 +51,8 @@ const Hero: React.FC = () => {
 
         // --- Three.js Setup ---
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#f5f5f7');
+
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
@@ -65,10 +67,39 @@ const Hero: React.FC = () => {
         const textureLoader = new THREE.TextureLoader();
         const planes: THREE.Mesh[] = [];
 
+        // Function to calculate plane size that replicates "background-size: cover"
+        const updatePlaneSize = (plane: THREE.Mesh, texture: THREE.Texture) => {
+            if (!texture.image) return;
+
+            const aspect = window.innerWidth / window.innerHeight;
+            const imageAspect = texture.image.width / texture.image.height;
+
+            // Get visible height/width at distance 2
+            const vFov = (camera.fov * Math.PI) / 180;
+            const planeHeight = 2 * Math.tan(vFov / 2) * camera.position.z;
+            const planeWidth = planeHeight * aspect;
+
+            plane.scale.set(planeWidth, planeHeight, 1);
+
+            // Adjust texture UVs to handle "cover"
+            if (imageAspect > aspect) {
+                texture.repeat.set(aspect / imageAspect, 1);
+                texture.offset.set((1 - aspect / imageAspect) / 2, 0);
+            } else {
+                texture.repeat.set(1, imageAspect / aspect);
+                texture.offset.set(0, (1 - imageAspect / aspect) / 2);
+            }
+        };
+
         // Create planes for each section
         sectionsData.forEach((section, index) => {
-            const texture = textureLoader.load(section.image);
-            const geometry = new THREE.PlaneGeometry(5, 3); // Aspect ratio adjusted
+            const texture = textureLoader.load(section.image, (tex) => {
+                updatePlaneSize(planes[index], tex);
+            });
+            texture.generateMipmaps = false;
+            texture.minFilter = THREE.LinearFilter;
+
+            const geometry = new THREE.PlaneGeometry(1, 1);
             const material = new THREE.MeshBasicMaterial({
                 map: texture,
                 transparent: true,
@@ -76,8 +107,8 @@ const Hero: React.FC = () => {
             });
             const plane = new THREE.Mesh(geometry, material);
 
-            // Initial states
-            plane.scale.set(index === 0 ? 1 : 1.12, index === 0 ? 1 : 1.12, 1);
+            // Initial states for GSAP
+            plane.scale.set(1, 1, 1);
             plane.position.z = index === 0 ? 0 : 0.3;
 
             scene.add(plane);
@@ -89,8 +120,8 @@ const Hero: React.FC = () => {
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top top",
-                end: `+=${sectionsData.length * 100}%`,
-                scrub: 1,
+                end: `+=${sectionsData.length * 150}%`, // Longer scroll for better feel
+                scrub: 1.5, // Smoother scrub
                 pin: true,
                 anticipatePin: 1
             }
@@ -101,28 +132,25 @@ const Hero: React.FC = () => {
         sectionsData.forEach((_, index) => {
             const outgoing = planes[index];
             const incoming = planes[index + 1];
-            // Text elements are queried by ID
-            // const textCurrent = document.querySelector(`#text-${index}`); // Not directly used in tl.to, but good for reference
-            // const textNext = document.querySelector(`#text-${index + 1}`); // Not directly used in tl.to, but good for reference
 
             const transitionDuration = 1;
-            const overlap = 0.5; // 50% overlap for smoother crossfade
+            const overlap = 0.5;
             const startTime = index * transitionDuration;
 
             // Initial text states
             if (index === 0) gsap.set(`#text-${index}`, { opacity: 1, y: 0 });
-            else gsap.set(`#text-${index}`, { opacity: 0, y: 30 });
+            else gsap.set(`#text-${index}`, { opacity: 0, y: 40 });
 
             if (incoming) {
                 // Outgoing Logic (Plane)
-                tl.to(outgoing.scale, { x: 0.92, y: 0.92, duration: transitionDuration }, startTime)
+                tl.to(outgoing.scale, { x: "-=0.08", y: "-=0.08", duration: transitionDuration }, startTime)
                     .to(outgoing.material, { opacity: 0, duration: transitionDuration }, startTime)
-                    .to(outgoing.position, { z: -0.3, duration: transitionDuration }, startTime);
+                    .to(outgoing.position, { z: -0.5, duration: transitionDuration }, startTime);
 
                 // Outgoing Logic (Text)
                 tl.to(`#text-${index}`, {
                     opacity: 0,
-                    y: -30,
+                    y: -50,
                     duration: transitionDuration * 0.4
                 }, startTime);
 
@@ -150,9 +178,18 @@ const Hero: React.FC = () => {
 
         // Handle Resize
         const handleResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(width, height);
+
+            planes.forEach((plane, i) => {
+                if (plane.material instanceof THREE.MeshBasicMaterial && plane.material.map) {
+                    updatePlaneSize(plane, plane.material.map);
+                }
+            });
         };
         window.addEventListener('resize', handleResize);
 
