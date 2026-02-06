@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, cubicBezier } from 'framer-motion';
 import SideNav from './SideNav';
 import './Hero.css';
+
+const RIMAC_EASE_FUNC = cubicBezier(0.4, 0, 0.2, 1);
 
 const sectionsData = [
     {
@@ -44,8 +46,6 @@ const sectionsData = [
 // Combine with clone for loop
 const allSections = [...sectionsData, { ...sectionsData[0], id: 'bess-clone' }];
 
-const RIMAC_EASE = [0.4, 0, 0.2, 1];
-
 interface AnimatedSectionProps {
     section: typeof sectionsData[0];
     containerRef: React.RefObject<HTMLDivElement | null>;
@@ -59,15 +59,14 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({ section, containerRef
         offset: ["start end", "end start"]
     });
 
-    // SCRUBBED MAPPING: [0 = Below, 0.5 = Active, 1 = Above]
-    // Background Transforms
-    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.12, 1, 1], { ease: RIMAC_EASE as any });
-    const bgOpacity = useTransform(scrollYProgress, [0, 0.1, 0.5, 0.9, 1], [0, 1, 1, 0, 0]);
-    const parallaxY = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -50], { ease: RIMAC_EASE as any });
+    // Bidirectional Scrub Mappings
+    // [0 = Below, 0.5 = Active, 1 = Above]
+    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.12, 1, 1], { ease: RIMAC_EASE_FUNC });
+    const bgOpacity = useTransform(scrollYProgress, [0.2, 0.35, 0.5, 0.65, 0.8], [0, 1, 1, 1, 0]);
+    const parallaxY = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -50], { ease: RIMAC_EASE_FUNC });
 
-    // Content Transforms (Scrubbed)
     const contentOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0, 1, 0]);
-    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [40, 0, -30], { ease: RIMAC_EASE as any });
+    const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [40, 0, -30], { ease: RIMAC_EASE_FUNC });
 
     return (
         <section id={section.id} ref={ref} className="hero-sub-section">

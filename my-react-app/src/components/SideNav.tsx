@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, cubicBezier } from 'framer-motion';
 import './SideNav.css';
+
+const RIMAC_EASE_FUNC = cubicBezier(0.4, 0, 0.2, 1);
 
 const defaultNavItems = [
     { id: 'bess', label: 'BESS' },
@@ -14,8 +16,6 @@ interface SideNavProps {
     containerRef: React.RefObject<HTMLDivElement | null>;
     customItems?: { id: string; label: string }[];
 }
-
-const RIMAC_EASE = [0.4, 0, 0.2, 1];
 
 const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
     const navItems = customItems || defaultNavItems;
@@ -98,9 +98,9 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
                         const segmentProgress = index / steps;
 
                         // Active range for item scrub
-                        const r1 = Math.max(0, segmentProgress - 0.15);
+                        const r1 = Math.max(0, segmentProgress - 0.1);
                         const r2 = segmentProgress;
-                        const r3 = Math.min(1, segmentProgress + 0.15);
+                        const r3 = Math.min(1, segmentProgress + 0.1);
 
                         return (
                             <li
@@ -125,14 +125,14 @@ const SideNav: React.FC<SideNavProps> = ({ containerRef, customItems }) => {
 // Sub-components to avoid useTransform in loop issues if needed
 // (Though useTransform is fine if handled correctly, but this is cleaner)
 const ItemIndicator = ({ smoothProgress, range }: { smoothProgress: any, range: number[] }) => {
-    const width = useTransform(smoothProgress, range, ["12px", "32px", "12px"], { ease: RIMAC_EASE as any });
-    const bg = useTransform(smoothProgress, range, ["rgba(255,255,255,0.2)", "#ffffff", "rgba(255,255,255,0.2)"], { ease: RIMAC_EASE as any });
+    const width = useTransform(smoothProgress, range, ["12px", "32px", "12px"], { ease: RIMAC_EASE_FUNC });
+    const bg = useTransform(smoothProgress, range, ["rgba(255,255,255,0.2)", "#ffffff", "rgba(255,255,255,0.2)"], { ease: RIMAC_EASE_FUNC });
     return <motion.div className="nav-item-indicator-expand" style={{ width, backgroundColor: bg }} />;
 };
 
 const ItemNumber = ({ smoothProgress, range, index }: { smoothProgress: any, range: number[], index: number }) => {
-    const scale = useTransform(smoothProgress, range, [1, 1.25, 1], { ease: RIMAC_EASE as any });
-    const opacity = useTransform(smoothProgress, range, [0.4, 1, 0.4], { ease: RIMAC_EASE as any });
+    const scale = useTransform(smoothProgress, range, [1, 1.25, 1], { ease: RIMAC_EASE_FUNC });
+    const opacity = useTransform(smoothProgress, range, [0.4, 1, 0.4], { ease: RIMAC_EASE_FUNC });
     return (
         <motion.span className="nav-number" style={{ scale, opacity }}>
             {(index + 1).toString().padStart(2, '0')}
@@ -141,9 +141,9 @@ const ItemNumber = ({ smoothProgress, range, index }: { smoothProgress: any, ran
 };
 
 const ItemLabel = ({ smoothProgress, range, label }: { smoothProgress: any, range: number[], label: string }) => {
-    const x = useTransform(smoothProgress, range, [0, 8, 0], { ease: RIMAC_EASE as any });
-    const opacity = useTransform(smoothProgress, range, [0.3, 1, 0.3], { ease: RIMAC_EASE as any });
-    const color = useTransform(smoothProgress, range, ["rgba(255,255,255,0.3)", "#ffffff", "rgba(255,255,255,0.3)"], { ease: RIMAC_EASE as any });
+    const x = useTransform(smoothProgress, range, [0, 8, 0], { ease: RIMAC_EASE_FUNC });
+    const opacity = useTransform(smoothProgress, range, [0.3, 1, 0.3], { ease: RIMAC_EASE_FUNC });
+    const color = useTransform(smoothProgress, range, ["rgba(255,255,255,0.3)", "#ffffff", "rgba(255,255,255,0.3)"], { ease: RIMAC_EASE_FUNC });
     return (
         <motion.span className="nav-label" style={{ x, opacity, color }}>
             {label}
