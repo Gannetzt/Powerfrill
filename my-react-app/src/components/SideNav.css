@@ -25,9 +25,9 @@
     left: 0;
     top: 0;
     width: 2px;
-    height: 4rem;
+    height: 1.2rem;
+    /* Shortened to text size */
     background: #ffffff;
-    /* White bar indicator */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     will-change: top;
 }
@@ -38,7 +38,8 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.8rem;
+    /* Synced with TSX 4rem slot (2.8rem gap + ~1.2rem text height) */
 }
 
 .nav-item {
