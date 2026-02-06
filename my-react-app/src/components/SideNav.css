@@ -93,13 +93,13 @@
 @media (max-width: 768px) {
     .side-nav-wrapper {
         position: fixed;
-        left: auto;
-        right: 20px;
-        /* Move to right side for easier thumb access or less obstruction */
+        left: 20px;
+        /* Move back to Left side */
+        right: auto;
         top: 50%;
         transform: translateY(-50%);
         display: block;
-        /* SHOW IT */
+        /* Ensure visible */
         z-index: 90;
     }
 
@@ -110,34 +110,29 @@
 
     .nav-label {
         display: none;
-        /* Hide text labels on mobile to save space */
+        /* Hide text labels on mobile */
     }
 
     .nav-number {
         display: none;
-        /* Hide numbers too, keep it clean */
+        /* Hide numbers */
     }
 
     .nav-vertical-line-container {
         display: block;
-        /* Keep the line/indicator */
         height: 12rem;
+        margin-left: 0;
+        /* Reset margin */
+        margin-right: 0;
     }
 
     .nav-item {
         padding: 0.5rem 0;
-        /* Increase touch target area */
-        justify-content: flex-end;
+        justify-content: flex-start;
+        /* Align left */
     }
 
     .nav-text-content {
         display: none;
-        /* Hide text wrapper */
-    }
-
-    /* Ensure the active indicator and line are visible */
-    .nav-vertical-line-container {
-        margin-left: 1rem;
-        /* Spacing from screen edge if needed */
     }
 }

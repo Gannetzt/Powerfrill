@@ -29,23 +29,24 @@
 @media (max-width: 768px) {
     .header {
         height: 70px;
-        justify-content: center;
-        /* Center flex items if applicable, but absolute is safer for logo */
+        /* Default flex behavior is row, we want space-between */
+        justify-content: space-between;
     }
 
     .header-container {
         padding: 0 1.5rem;
+        width: 100%;
         justify-content: space-between;
         /* Keep toggle on right */
     }
 
     .logo-wrapper {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        /* Restore relative positioning */
+        left: auto;
+        transform: none;
         width: auto;
-        display: flex;
-        justify-content: center;
+        display: block;
     }
 
     .logo {
