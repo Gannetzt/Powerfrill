@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useLoader } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -195,6 +195,9 @@ export const BatteryModuleInner = React.forwardRef<BatteryModuleRef, any>((props
     const topPlateRef = useRef<THREE.Group>(null);
     const cellGroupRef = useRef<THREE.Group>(null);
 
+    // Load Logo Texture
+    const logoTexture = useLoader(THREE.TextureLoader, '/assets/powerfrill-logo.png');
+
     // Forward ref allows parent to control the entire scene group if needed,
     // but GSAP usually likes direct object refs.
     React.useImperativeHandle(ref, () => ({
@@ -216,6 +219,19 @@ export const BatteryModuleInner = React.forwardRef<BatteryModuleRef, any>((props
             {/* 3. Top Plate Group */}
             <group ref={topPlateRef as any} position={[0, 4.2, 0]}>
                 <RoundedBox args={[10.6, 0.2, 6.6]} radius={0.05} smoothness={2} material={topPlateMat} />
+
+                {/* Logo on Top Plate */}
+                <mesh position={[0, 0.11, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <planeGeometry args={[4, 1.5]} />
+                    <meshStandardMaterial
+                        map={logoTexture}
+                        transparent={true}
+                        roughness={0.2}
+                        metalness={0.5}
+                        polygonOffset={true}
+                        polygonOffsetFactor={-4}
+                    />
+                </mesh>
 
                 <Bolts width={10.2} depth={6.2} countW={10} countD={6} y={0.1} />
 
@@ -252,9 +268,6 @@ export const BatteryModuleInner = React.forwardRef<BatteryModuleRef, any>((props
                     <IndustrialPlug offsetZ={0.45} />
                     <IndustrialPlug offsetZ={-0.45} rotationY={0.2} />
                 </group>
-
-                {/* We didn't add the logo implementation for base64 bypass here yet, 
-                    can add via useLoader if needed, or stick to the geometric design. */}
             </group>
         </group>
     );

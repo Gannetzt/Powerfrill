@@ -138,12 +138,7 @@ export const BatteryModule3D: React.FC = () => {
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
-                            {/* Replaced text with Logo as requested */}
-                            <img
-                                src="/assets/powerfrill-logo.png"
-                                alt="Powerfrill"
-                                style={{ height: '30px', opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(255,102,0,0.3))' }}
-                            />
+                            {/* Logo is now on the 3D model itself */}
                         </div>
                         <div style={{
                             background: 'rgba(255, 102, 0, 0.1)', border: '1px solid rgba(255, 102, 0, 0.3)', padding: '8px 16px',

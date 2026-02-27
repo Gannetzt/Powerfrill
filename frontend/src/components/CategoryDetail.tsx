@@ -81,8 +81,17 @@ const CategoryDetail: React.FC = () => {
                             </p>
 
                             <div className="hero-actions">
-                                <button
+                                <motion.button
                                     className="add-to-quotation-btn"
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: '#ff8533',
+                                        boxShadow: '0 0 30px rgba(255, 102, 0, 0.4)'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.5 }}
                                     onClick={() => addToCart({
                                         id: category.id,
                                         title: category.name,
@@ -91,11 +100,9 @@ const CategoryDetail: React.FC = () => {
                                         quantity: 1
                                     })}
                                 >
-                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <path d="M12 5v14M5 12h14" />
-                                    </svg>
+                                    <span className="btn-icon">＋</span>
                                     Add to Quotation
-                                </button>
+                                </motion.button>
                             </div>
 
                             <div className="tech-spec-mini">
