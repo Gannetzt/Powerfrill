@@ -159,8 +159,10 @@
     }
 
     .hero-left {
-        height: 60vh;
+        height: 50vh;
         position: relative;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .hero-right {
@@ -168,7 +170,34 @@
     }
 
     .hero-right-title {
-        font-size: 3rem;
+        font-size: 2.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-right {
+        padding: 40px 20px;
+    }
+
+    .hero-right-title {
+        font-size: 2.25rem;
+    }
+
+    .hero-right-desc {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .tech-spec-mini {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 3rem;
+    }
+
+    .add-to-quotation-btn {
+        padding: 1rem 1.5rem;
+        width: 100%;
+        justify-content: center;
     }
 }
 

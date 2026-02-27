@@ -1229,14 +1229,61 @@
 @media (max-width: 768px) {
     .hub-stats-bar {
         grid-template-columns: 1fr;
+        margin-top: 0;
     }
 
     .block-title {
-        font-size: 2.5rem;
+        font-size: 2rem !important;
     }
 
     .block-desc {
-        font-size: 1.1rem;
+        font-size: 1rem !important;
+    }
+
+    .solution-hero-title {
+        font-size: 2.5rem !important;
+    }
+
+    .solution-hero-overlay {
+        padding-top: 180px;
+    }
+
+    .hub-intro-box .hub-objective {
+        font-size: 2rem;
+    }
+
+    .hub-intro-box .hub-specialized-info {
+        font-size: 1.25rem;
+    }
+
+    .hub-anatomy-frame-container {
+        padding: 1.5rem;
+    }
+
+    .anatomy-canvas-box {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .solution-hero-title {
+        font-size: 2rem !important;
+    }
+
+    .ch-title {
+        font-size: 1.75rem !important;
+    }
+
+    .ch-body {
+        font-size: 0.95rem !important;
+    }
+
+    .hub-stat-value {
+        font-size: 2rem;
+    }
+
+    .hub-ui-corners {
+        inset: 1rem;
     }
 }
 

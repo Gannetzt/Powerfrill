@@ -13,7 +13,7 @@ def seed_users():
             print("Creating admin user...")
             admin = User(
                 username="admin",
-                email="admin@powerfill.com",
+                email="admin@powerfrill.com",
                 hashed_password=get_password_hash("admin123"), # Default password
                 role=UserRole.ADMIN
             )
