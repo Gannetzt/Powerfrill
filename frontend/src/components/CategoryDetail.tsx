@@ -67,63 +67,59 @@ const CategoryDetail: React.FC = () => {
                         <BatteryModule3D />
                     </div>
                     <div className="hero-right">
-                        <motion.div
-                            initial={{ x: 50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.8, ease: "circOut" }}
-                            className="hero-right-content"
-                        >
-                            <span className="hero-cat-badge">Industrial Automotive // Phase 1</span>
-                            <h1 className="hero-right-title">{category.name}</h1>
-                            <p className="hero-right-desc">
-                                High-performance lithium-ion battery modules engineered for the most demanding 2-wheeler applications.
-                                Featuring industrial-grade architecture, intelligent thermal management, and real-time AI-driven diagnostics.
-                            </p>
+                        <div className="hero-right-content">
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <span className="hero-cat-badge">Industrial Automotive // Phase 1</span>
+                                <h1 className="hero-right-title">{category.name}</h1>
+                                <p className="hero-right-desc">
+                                    High-performance lithium-ion battery modules engineered for the most demanding 2-wheeler applications.
+                                    Featuring industrial-grade architecture, intelligent thermal management, and real-time AI-driven diagnostics.
+                                </p>
 
-                            <div className="hero-actions">
-                                <motion.button
-                                    className="add-to-quotation-btn"
-                                    whileHover={{
-                                        scale: 1.05,
-                                        backgroundColor: '#ff8533',
-                                        boxShadow: '0 0 30px rgba(255, 102, 0, 0.4)'
-                                    }}
-                                    whileTap={{ scale: 0.95 }}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                    onClick={() => addToCart({
-                                        id: category.id,
-                                        title: category.name,
-                                        subtitle: 'Industrial Module Suite',
-                                        image: category.image,
-                                        quantity: 1
-                                    })}
-                                >
-                                    <span className="btn-icon">＋</span>
-                                    Add to Quotation
-                                </motion.button>
-                            </div>
+                                <div className="hero-actions">
+                                    <motion.button
+                                        className="add-to-quotation-btn"
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => addToCart({
+                                            id: category.id,
+                                            title: category.name,
+                                            subtitle: 'Industrial Module Suite',
+                                            image: category.image,
+                                            quantity: 1
+                                        })}
+                                    >
+                                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M12 5v14M5 12h14" />
+                                        </svg>
+                                        Add to Quotation
+                                    </motion.button>
+                                </div>
 
-                            <div className="tech-spec-mini">
-                                <div className="spec-item-mini">
-                                    <span className="spec-label">Capacity Range</span>
-                                    <span className="spec-value">2.4 - 4.8 kWh</span>
+                                <div className="tech-spec-mini">
+                                    <div className="spec-item-mini">
+                                        <span className="spec-label">Capacity Range</span>
+                                        <span className="spec-value">2.4 - 4.8 kWh</span>
+                                    </div>
+                                    <div className="spec-item-mini">
+                                        <span className="spec-label">Peak Discharge</span>
+                                        <span className="spec-value">12.5 kW</span>
+                                    </div>
+                                    <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
+                                        <span className="spec-label">Cycle Life</span>
+                                        <span className="spec-value">2500+ @ 80% DoD</span>
+                                    </div>
+                                    <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
+                                        <span className="spec-label">Ingress Protection</span>
+                                        <span className="spec-value">IP67 Industrial</span>
+                                    </div>
                                 </div>
-                                <div className="spec-item-mini">
-                                    <span className="spec-label">Peak Discharge</span>
-                                    <span className="spec-value">12.5 kW</span>
-                                </div>
-                                <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
-                                    <span className="spec-label">Cycle Life</span>
-                                    <span className="spec-value">2500+ @ 80% DoD</span>
-                                </div>
-                                <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
-                                    <span className="spec-label">Ingress Protection</span>
-                                    <span className="spec-value">IP67 Industrial</span>
-                                </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </div>
                     </div>
                 </div>
             ) : (
