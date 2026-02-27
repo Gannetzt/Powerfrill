@@ -91,10 +91,10 @@ export const BatteryModule3D: React.FC = () => {
     }, [isLoading]);
 
     return (
-        <div ref={containerRef} style={{ height: '400vh', position: 'relative', width: '100vw', background: '#0b0b0b', margin: '0 calc(-50vw + 50%)' }}>
+        <div ref={containerRef} style={{ height: '400vh', position: 'relative', width: '100%', background: '#0b0b0b' }}>
             {isLoading && (
                 <div style={{
-                    position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                     background: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100,
                     transition: 'opacity 0.5s ease'
                 }}>
@@ -102,7 +102,6 @@ export const BatteryModule3D: React.FC = () => {
                         width: '40px', height: '40px', border: '2px solid #222', borderTop: '2px solid #ff6600',
                         borderRadius: '50%', animation: 'spin 1s linear infinite'
                     }} />
-                    <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
                 </div>
             )}
 
@@ -127,7 +126,7 @@ export const BatteryModule3D: React.FC = () => {
                         enableDamping
                         dampingFactor={0.05}
                         target={[0, 0, 0]}
-                        enableZoom={false} // Disable zoom to not conflict with scroll
+                        enableZoom={false}
                     />
                 </Canvas>
 
@@ -139,21 +138,24 @@ export const BatteryModule3D: React.FC = () => {
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
-                            <h1 style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '4px', color: '#ff6600', margin: 0, fontWeight: 800 }}>Series P-86 Components</h1>
-                            <p style={{ fontSize: '11px', color: '#888', margin: '5px 0 0 0', letterSpacing: '1px' }}>Industrial High-Fidelity Inspection</p>
+                            {/* Replaced text with Logo as requested */}
+                            <img
+                                src="/assets/powerfrill-logo.png"
+                                alt="Powerfrill"
+                                style={{ height: '30px', opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(255,102,0,0.3))' }}
+                            />
                         </div>
                         <div style={{
                             background: 'rgba(255, 102, 0, 0.1)', border: '1px solid rgba(255, 102, 0, 0.3)', padding: '8px 16px',
                             borderRadius: '4px', fontSize: '10px', letterSpacing: '2px', color: '#ff6600', textTransform: 'uppercase'
-                        }}>Module // Ready</div>
+                        }}>Industrial AI // Ready</div>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                         <div style={{
-                            fontSize: '10px', color: '#555', letterSpacing: '2px', textTransform: 'uppercase',
+                            fontSize: '10px', color: '#444', letterSpacing: '2px', textTransform: 'uppercase',
                             animation: 'pulse 2s infinite ease-in-out'
-                        }}>Scroll to exploded view</div>
-                        <style>{`@keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }`}</style>
+                        }}>Scroll to inspect internal architecture</div>
                     </div>
                 </div>
             </div>

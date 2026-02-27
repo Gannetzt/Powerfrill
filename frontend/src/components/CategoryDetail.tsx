@@ -62,8 +62,62 @@ const CategoryDetail: React.FC = () => {
         <div className="category-detail-page">
             {/* Hero Section */}
             {categoryId === '2w-packs' ? (
-                <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
-                    <BatteryModule3D />
+                <div className="hero-split-container">
+                    <div className="hero-left">
+                        <BatteryModule3D />
+                    </div>
+                    <div className="hero-right">
+                        <motion.div
+                            initial={{ x: 50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.8, ease: "circOut" }}
+                            className="hero-right-content"
+                        >
+                            <span className="hero-cat-badge">Industrial Automotive // Phase 1</span>
+                            <h1 className="hero-right-title">{category.name}</h1>
+                            <p className="hero-right-desc">
+                                High-performance lithium-ion battery modules engineered for the most demanding 2-wheeler applications.
+                                Featuring industrial-grade architecture, intelligent thermal management, and real-time AI-driven diagnostics.
+                            </p>
+
+                            <div className="hero-actions">
+                                <button
+                                    className="add-to-quotation-btn"
+                                    onClick={() => addToCart({
+                                        id: category.id,
+                                        title: category.name,
+                                        subtitle: 'Industrial Module Suite',
+                                        image: category.image,
+                                        quantity: 1
+                                    })}
+                                >
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                        <path d="M12 5v14M5 12h14" />
+                                    </svg>
+                                    Add to Quotation
+                                </button>
+                            </div>
+
+                            <div className="tech-spec-mini">
+                                <div className="spec-item-mini">
+                                    <span className="spec-label">Capacity Range</span>
+                                    <span className="spec-value">2.4 - 4.8 kWh</span>
+                                </div>
+                                <div className="spec-item-mini">
+                                    <span className="spec-label">Peak Discharge</span>
+                                    <span className="spec-value">12.5 kW</span>
+                                </div>
+                                <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
+                                    <span className="spec-label">Cycle Life</span>
+                                    <span className="spec-value">2500+ @ 80% DoD</span>
+                                </div>
+                                <div className="spec-item-mini" style={{ marginTop: '1rem' }}>
+                                    <span className="spec-label">Ingress Protection</span>
+                                    <span className="spec-value">IP67 Industrial</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             ) : (
                 <section
