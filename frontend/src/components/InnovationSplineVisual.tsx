@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import Spline from '@splinetool/react-spline';
+import './InnovationSplineVisual.css';
 
 const InnovationSplineVisual: React.FC = () => {
     const splineRef = useRef<any>(null);
@@ -42,14 +43,8 @@ const InnovationSplineVisual: React.FC = () => {
     }
 
     return (
-        <div className="innovation-spline-frame" style={{ width: '100%', height: '500px', position: 'relative', overflow: 'hidden' }}>
-            <div className="innovation-visual-overlay" style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0, bottom: 0,
-                background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%)',
-                pointerEvents: 'none',
-                zIndex: 1
-            }} />
+        <div className="innovation-spline-frame">
+            <div className="innovation-visual-overlay" />
 
             <Spline
                 scene="https://prod.spline.design/S2WLN3I28R4v6W4q/scene.splinecode"
@@ -58,19 +53,9 @@ const InnovationSplineVisual: React.FC = () => {
             />
 
             {/* Technical HUD Overlay on Spline */}
-            <div style={{
-                position: 'absolute',
-                bottom: '20px',
-                right: '20px',
-                textAlign: 'right',
-                fontFamily: 'Orbitron, sans-serif',
-                fontSize: '10px',
-                color: '#ff6600',
-                letterSpacing: '2px',
-                zIndex: 2
-            }}>
-                <div style={{ opacity: 0.6 }}>CORE_ANIM_ENGINE</div>
-                <div style={{ fontWeight: 'bold' }}>PROCEDURAL_MAPPING_V4</div>
+            <div className="innovation-hud">
+                <div className="innovation-hud-label">CORE_ANIM_ENGINE</div>
+                <div className="innovation-hud-value">PROCEDURAL_MAPPING_V4</div>
             </div>
         </div>
     );

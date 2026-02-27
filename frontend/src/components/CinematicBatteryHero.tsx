@@ -225,7 +225,7 @@ const CinematicBatteryHero: React.FC = () => {
             </div>
 
             {/* Scroll indicator or spacing */}
-            <div style={{ position: 'absolute', bottom: '50px', width: '100%', textAlign: 'center', opacity: 0.5, fontSize: '0.8rem' }}>
+            <div className="cinematic-scroll-hint">
                 SCROLL TO EXPLORE
             </div>
         </div>

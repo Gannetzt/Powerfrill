@@ -29,64 +29,42 @@ const AnatomyScrollSection: React.FC<{ staticData: any }> = ({ staticData }) => 
             </div>
 
             {/* Technical Data Sheet Overlay - HUD Style (Corner Docked) */}
-            <div style={{
-                position: 'absolute',
-                top: '120px',
-                left: '60px',
-                zIndex: 10,
-                pointerEvents: 'none',
-                fontFamily: 'Orbitron, sans-serif'
-            }}>
+            <div className="anatomy-hud-container">
                 <motion.div
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    style={{
-                        background: 'rgba(5,5,5,0.85)',
-                        backdropFilter: 'blur(15px)',
-                        padding: '1.8rem 2.5rem',
-                        borderLeft: '4px solid #ff6600',
-                        boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
-                        width: '340px'
-                    }}
+                    className="anatomy-kpi-card"
                 >
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <span style={{ fontSize: '0.6rem', color: '#ff6600', letterSpacing: '4px', fontWeight: 800, display: 'block' }}>TECHNICAL SPECIFICATIONS</span>
-                        <h3 style={{ fontSize: '1.4rem', color: '#ffffff', margin: '0.5rem 0', letterSpacing: '1px', fontWeight: 900 }}>
-                            POWERFRILL <span style={{ color: '#ff6600' }}>LFP-2400</span>
+                    <div className="kpi-header">
+                        <span className="kpi-eyebrow">TECHNICAL SPECIFICATIONS</span>
+                        <h3 className="kpi-title">
+                            POWERFRILL <span className="accent">LFP-2400</span>
                         </h3>
                     </div>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr',
-                        gap: '1.2rem',
-                        borderTop: '1px solid rgba(255,255,255,0.1)',
-                        paddingTop: '1.2rem',
-                        borderBottom: '1px solid rgba(255,255,255,0.1)',
-                        paddingBottom: '1.2rem'
-                    }}>
-                        <div>
-                            <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block', letterSpacing: '1px' }}>Nominal Voltage</span>
-                            <span style={{ fontSize: '1rem', color: '#fff', fontWeight: 700 }}>768 VDC</span>
+                    <div className="kpi-grid">
+                        <div className="kpi-item">
+                            <span className="kpi-label">Nominal Voltage</span>
+                            <span className="kpi-value">768 VDC</span>
                         </div>
-                        <div>
-                            <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block', letterSpacing: '1px' }}>Capacity</span>
-                            <span style={{ fontSize: '1rem', color: '#fff', fontWeight: 700 }}>280 Ah</span>
+                        <div className="kpi-item">
+                            <span className="kpi-label">Capacity</span>
+                            <span className="kpi-value">280 Ah</span>
                         </div>
-                        <div>
-                            <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block', letterSpacing: '1px' }}>Lifecycle</span>
-                            <span style={{ fontSize: '1rem', color: '#fff', fontWeight: 700 }}>6,000+</span>
+                        <div className="kpi-item">
+                            <span className="kpi-label">Lifecycle</span>
+                            <span className="kpi-value">6,000+</span>
                         </div>
-                        <div>
-                            <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block', letterSpacing: '1px' }}>Chemistry</span>
-                            <span style={{ fontSize: '1rem', color: '#ff6600', fontWeight: 700 }}>LiFePO₄</span>
+                        <div className="kpi-item">
+                            <span className="kpi-label">Chemistry</span>
+                            <span className="kpi-value accent">LiFePO₄</span>
                         </div>
                     </div>
 
-                    <div style={{ marginTop: '1.2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>SYSTEM STATUS</span>
-                        <span style={{ fontSize: '0.65rem', color: '#00ffcc', fontWeight: 800 }}>● NOMINAL</span>
+                    <div className="kpi-footer">
+                        <span className="status-label">SYSTEM STATUS</span>
+                        <span className="status-value">● NOMINAL</span>
                     </div>
                 </motion.div>
             </div>

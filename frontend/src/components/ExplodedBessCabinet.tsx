@@ -362,21 +362,13 @@ const ExplodedBessCabinet: React.FC = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="exploded-bess-cabinet" style={{ width: '100%', height: '800px', position: 'relative', overflow: 'hidden', background: '#02050a' }}>
-            <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+        <div ref={containerRef} className="exploded-bess-cabinet">
+            <canvas ref={canvasRef} />
 
             {/* HUD Overlay */}
-            <div style={{
-                position: 'absolute',
-                top: '40px',
-                left: '40px',
-                pointerEvents: 'none',
-                fontFamily: 'Orbitron, sans-serif',
-                color: '#ff4500',
-                zIndex: 10
-            }}>
-                <div style={{ fontSize: '12px', letterSpacing: '4px', opacity: 0.6 }}>SYSTEM_INSPECTION_MODE</div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>CABINET_EXPLODED_VIEW</div>
+            <div className="exploded-hud">
+                <div className="eyebrow">SYSTEM_INSPECTION_MODE</div>
+                <div className="title">CABINET_EXPLODED_VIEW</div>
             </div>
         </div>
     );

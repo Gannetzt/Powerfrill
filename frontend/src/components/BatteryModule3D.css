@@ -1,0 +1,117 @@
+.battery-module-container {
+    height: 400vh;
+    position: relative;
+    width: 100%;
+    background: #0b0b0b;
+}
+
+.battery-module-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.battery-module-loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #222;
+    border-top: 2px solid #ff6600;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.battery-canvas-container {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.battery-ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.battery-ui-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.battery-ui-badge {
+    background: rgba(255, 102, 0, 0.1);
+    border: 1px solid rgba(255, 102, 0, 0.3);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #ff6600;
+    text-transform: uppercase;
+}
+
+.battery-ui-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.battery-ui-hint {
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .battery-ui-overlay {
+        padding: 20px;
+    }
+
+    .battery-ui-badge {
+        padding: 6px 12px;
+        font-size: 8px;
+    }
+
+    .battery-ui-hint {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+}

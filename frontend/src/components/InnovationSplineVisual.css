@@ -1,0 +1,52 @@
+.innovation-spline-frame {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.innovation-visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.innovation-hud {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    text-align: right;
+    font-family: 'Orbitron', sans-serif;
+    color: #ff6600;
+    letter-spacing: 2px;
+    z-index: 2;
+}
+
+.innovation-hud-label {
+    opacity: 0.6;
+    font-size: 10px;
+}
+
+.innovation-hud-value {
+    font-weight: bold;
+    font-size: 10px;
+}
+
+@media (max-width: 480px) {
+    .innovation-spline-frame {
+        height: 400px;
+    }
+
+    .innovation-hud {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .innovation-hud-label,
+    .innovation-hud-value {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+}

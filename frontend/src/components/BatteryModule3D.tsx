@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BatteryModuleInner } from './BatteryModuleInner';
+import './BatteryModule3D.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,22 +92,15 @@ export const BatteryModule3D: React.FC = () => {
     }, [isLoading]);
 
     return (
-        <div ref={containerRef} style={{ height: '400vh', position: 'relative', width: '100%', background: '#0b0b0b' }}>
+        <div ref={containerRef} className="battery-module-container">
             {isLoading && (
-                <div style={{
-                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                    background: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100,
-                    transition: 'opacity 0.5s ease'
-                }}>
-                    <div className="loader" style={{
-                        width: '40px', height: '40px', border: '2px solid #222', borderTop: '2px solid #ff6600',
-                        borderRadius: '50%', animation: 'spin 1s linear infinite'
-                    }} />
+                <div className="battery-module-loader">
+                    <div className="battery-module-loader-spinner" />
                 </div>
             )}
 
             {/* Sticky Canvas Container */}
-            <div ref={canvasContainerRef} style={{ position: 'sticky', top: 0, height: '100vh', width: '100%', overflow: 'hidden' }}>
+            <div ref={canvasContainerRef} className="battery-canvas-container">
                 <Canvas
                     camera={{ position: [16, 14, 28], fov: 40 }}
                     gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.0 }}
@@ -133,26 +127,16 @@ export const BatteryModule3D: React.FC = () => {
                 </Canvas>
 
                 {/* UI Overlay */}
-                <div style={{
-                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-                    pointerEvents: 'none', zIndex: 3, display: 'flex', flexDirection: 'column',
-                    justifyContent: 'space-between', padding: '40px', boxSizing: 'border-box'
-                }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div className="battery-ui-overlay">
+                    <div className="battery-ui-top">
                         <div>
                             {/* Logo is now on the 3D model itself */}
                         </div>
-                        <div style={{
-                            background: 'rgba(255, 102, 0, 0.1)', border: '1px solid rgba(255, 102, 0, 0.3)', padding: '8px 16px',
-                            borderRadius: '4px', fontSize: '10px', letterSpacing: '2px', color: '#ff6600', textTransform: 'uppercase'
-                        }}>Industrial AI // Ready</div>
+                        <div className="battery-ui-badge">Industrial AI // Ready</div>
                     </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                        <div style={{
-                            fontSize: '10px', color: '#444', letterSpacing: '2px', textTransform: 'uppercase',
-                            animation: 'pulse 2s infinite ease-in-out'
-                        }}>Scroll to inspect internal architecture</div>
+                    <div className="battery-ui-bottom">
+                        <div className="battery-ui-hint">Scroll to inspect internal architecture</div>
                     </div>
                 </div>
             </div>

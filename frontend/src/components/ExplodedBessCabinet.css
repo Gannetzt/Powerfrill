@@ -1,0 +1,63 @@
+.exploded-bess-cabinet {
+    width: 100%;
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    background: #02050a;
+}
+
+.exploded-bess-cabinet canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.exploded-hud {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    pointer-events: none;
+    font-family: 'Orbitron', sans-serif;
+    color: #ff4500;
+    z-index: 10;
+}
+
+.exploded-hud .eyebrow {
+    font-size: 12px;
+    letter-spacing: 4px;
+    opacity: 0.6;
+}
+
+.exploded-hud .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .exploded-bess-cabinet {
+        height: 500px;
+    }
+
+    .exploded-hud {
+        top: 20px;
+        left: 20px;
+    }
+
+    .exploded-hud .eyebrow {
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    .exploded-hud .title {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .exploded-hud {
+        top: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+        text-align: center;
+    }
+}
