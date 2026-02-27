@@ -3,8 +3,8 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Define materials from the HTML
-const colors = {
+// Define materials inside or as helper objects to avoid early initialization issues
+const COLORS = {
     gray: 0x4a4a4a,
     darkGray: 0x252525,
     silver: 0xaaaaaa,
@@ -12,49 +12,24 @@ const colors = {
     bolt: 0x888888
 };
 
-const topPlateMat = new THREE.MeshPhysicalMaterial({
-    color: colors.gray,
-    roughness: 0.4,
-    metalness: 0.5,
-    clearcoat: 0.1
-});
-
-const lowerCaseMat = new THREE.MeshPhysicalMaterial({
-    color: colors.darkGray,
-    roughness: 0.6,
-    metalness: 0.3
-});
-
-const cellMat = new THREE.MeshPhysicalMaterial({
-    color: colors.orange,
-    emissive: colors.orange,
-    emissiveIntensity: 2.5,
-    roughness: 0.1,
-    metalness: 0.8
-});
-
-const metalMat = new THREE.MeshStandardMaterial({
-    color: colors.silver,
-    metalness: 0.8,
-    roughness: 0.2
-});
-
-const boltMat = new THREE.MeshStandardMaterial({
-    color: colors.bolt,
-    metalness: 0.9,
-    roughness: 0.1
-});
-
-const cellCapMat = new THREE.MeshStandardMaterial({
-    color: 0xeeeeee,
-    metalness: 0.9,
-    roughness: 0.1
-});
-
 const Batteries = () => {
     const cellRows = 6;
     const cellCols = 8;
     const cellSpacing = 0.9;
+
+    const cellMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+        color: COLORS.orange,
+        emissive: COLORS.orange,
+        emissiveIntensity: 2.5,
+        roughness: 0.1,
+        metalness: 0.8
+    }), []);
+
+    const cellCapMat = useMemo(() => new THREE.MeshStandardMaterial({
+        color: 0xeeeeee,
+        metalness: 0.9,
+        roughness: 0.1
+    }), []);
 
     // Create an array of positions
     const positions = useMemo(() => {
@@ -87,6 +62,11 @@ const Batteries = () => {
 
 const Bolts = ({ width, depth, countW, countD, y }: { width: number, depth: number, countW: number, countD: number, y: number }) => {
     const boltGeo = useMemo(() => new THREE.CylinderGeometry(0.08, 0.08, 0.15, 6), []);
+    const boltMat = useMemo(() => new THREE.MeshStandardMaterial({
+        color: COLORS.bolt,
+        metalness: 0.9,
+        roughness: 0.1
+    }), []);
 
     const positions = useMemo(() => {
         const pos = [];
@@ -117,6 +97,18 @@ const Bolts = ({ width, depth, countW, countD, y }: { width: number, depth: numb
 const IndustrialPlug = ({ offsetZ, rotationY = 0 }: { offsetZ: number, rotationY?: number }) => {
     const groupRef = useRef<THREE.Group>(null);
 
+    const metalMat = useMemo(() => new THREE.MeshStandardMaterial({
+        color: COLORS.silver,
+        metalness: 0.8,
+        roughness: 0.2
+    }), []);
+
+    const lowerCaseMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+        color: COLORS.darkGray,
+        roughness: 0.6,
+        metalness: 0.3
+    }), []);
+
     const curve = useMemo(() => new THREE.CatmullRomCurve3([
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(1, 0.5, 0.5),
@@ -125,7 +117,7 @@ const IndustrialPlug = ({ offsetZ, rotationY = 0 }: { offsetZ: number, rotationY
 
     const plugBodyGeo = useMemo(() => new THREE.CylinderGeometry(0.2, 0.2, 0.6, 12), []);
     const plugHeadGeo = useMemo(() => new THREE.BoxGeometry(0.4, 0.4, 0.8), []);
-    const cableMat = useMemo(() => new THREE.MeshStandardMaterial({ color: colors.orange }), []);
+    const cableMat = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.orange }), []);
 
     // Set orientation on mount
     useFrame(() => {
@@ -158,6 +150,12 @@ const IndustrialPlug = ({ offsetZ, rotationY = 0 }: { offsetZ: number, rotationY
 };
 
 const Handle = () => {
+    const metalMat = useMemo(() => new THREE.MeshStandardMaterial({
+        color: COLORS.silver,
+        metalness: 0.8,
+        roughness: 0.2
+    }), []);
+
     const handleClampGeo = useMemo(() => {
         const geo = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 12, 1, false, 0, Math.PI);
         geo.rotateX(Math.PI / 2);
@@ -195,11 +193,30 @@ export const BatteryModuleInner = React.forwardRef<BatteryModuleRef, any>((props
     const topPlateRef = useRef<THREE.Group>(null);
     const cellGroupRef = useRef<THREE.Group>(null);
 
-    // Load Logo Texture
+    // Materials inside to avoid initialization issues
+    const topPlateMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+        color: COLORS.gray,
+        roughness: 0.4,
+        metalness: 0.5,
+        clearcoat: 0.1
+    }), []);
+
+    const lowerCaseMat = useMemo(() => new THREE.MeshPhysicalMaterial({
+        color: COLORS.darkGray,
+        roughness: 0.6,
+        metalness: 0.3
+    }), []);
+
+    const metalMat = useMemo(() => new THREE.MeshStandardMaterial({
+        color: COLORS.silver,
+        metalness: 0.8,
+        roughness: 0.2
+    }), []);
+
+    // Load Logo Texture - This requires a Suspense boundary in the parent!
     const logoTexture = useLoader(THREE.TextureLoader, '/assets/powerfrill-logo.png');
 
-    // Forward ref allows parent to control the entire scene group if needed,
-    // but GSAP usually likes direct object refs.
+    // Forward ref
     React.useImperativeHandle(ref, () => ({
         tray: trayRef.current,
         topPlate: topPlateRef.current,

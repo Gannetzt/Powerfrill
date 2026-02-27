@@ -120,7 +120,9 @@ export const BatteryModule3D: React.FC = () => {
                     {/* Energy Glow Light */}
                     <pointLight position={[0, 2, 0]} color={0xff6600} intensity={50} distance={15} />
 
-                    <BatteryModuleInner ref={moduleRef} />
+                    <React.Suspense fallback={null}>
+                        <BatteryModuleInner ref={moduleRef} />
+                    </React.Suspense>
 
                     <OrbitControls
                         enableDamping
