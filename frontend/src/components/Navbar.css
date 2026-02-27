@@ -93,12 +93,72 @@
     filter: invert(1) brightness(0.2) !important;
 }
 
-.header.is-scrolled .logo-img {
-    height: 90px !important;
+/* Global Back Nav Styles */
+.header-left-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 100%;
 }
 
-.header.is-light .logo-img {
-    filter: invert(1) brightness(0.2) !important;
+.nav-back-wrapper {
+    position: relative;
+    z-index: 10;
+}
+
+.global-back-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.5rem 1rem 0.5rem 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.7;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+}
+
+.global-back-nav svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s ease;
+}
+
+.global-back-nav .back-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.global-back-nav:hover {
+    opacity: 1;
+    gap: 1.2rem;
+}
+
+.global-back-nav:hover svg {
+    transform: translateX(-5px);
+}
+
+@media (max-width: 768px) {
+    .header-left-section {
+        gap: 1rem;
+    }
+
+    .nav-back-wrapper {
+        left: 0;
+    }
+
+    .global-back-nav .back-text {
+        display: none;
+    }
+
+    .global-back-nav {
+        padding: 0.5rem;
+    }
 }
 
 /* Disable mix-blend-mode for color logo on light pages */

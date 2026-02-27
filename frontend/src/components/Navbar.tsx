@@ -127,23 +127,40 @@ const Navbar: React.FC = () => {
             <header className={`header ${isMenuOpen ? 'menu-open' : ''} ${isLightPage ? 'is-light' : ''} ${isScrolled ? 'is-scrolled' : ''} ${location.pathname === '/products' ? 'is-products-page' : ''}`}>
 
                 <div className="header-container">
-                    {location.pathname !== '/products' && (
-                        <div className="logo-wrapper">
-                            <div
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                    if (location.pathname === '/') {
-                                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                                    } else {
-                                        navigate('/');
-                                        window.scrollTo(0, 0);
-                                    }
-                                }}
-                            >
-                                <img src={logoSrc} alt="Powerfrill" className="logo-img" />
+                    <div className="header-left-section">
+                        {location.pathname !== '/' && (
+                            <div className="nav-back-wrapper">
+                                <button
+                                    className="global-back-nav"
+                                    onClick={() => navigate(-1)}
+                                    aria-label="Go back"
+                                >
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                                        <polyline points="12 19 5 12 12 5"></polyline>
+                                    </svg>
+                                    <span className="back-text">BACK</span>
+                                </button>
                             </div>
-                        </div>
-                    )}
+                        )}
+                        {location.pathname !== '/products' && (
+                            <div className="logo-wrapper">
+                                <div
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                        if (location.pathname === '/') {
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        } else {
+                                            navigate('/');
+                                            window.scrollTo(0, 0);
+                                        }
+                                    }}
+                                >
+                                    <img src={logoSrc} alt="Powerfrill" className="logo-img" />
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <div className="header-actions">
                         <div className="user-action-group">
                             {user ? (
