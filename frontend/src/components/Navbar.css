@@ -150,6 +150,8 @@
 
     .nav-back-wrapper {
         left: 0;
+        margin-right: 1.5rem;
+        /* Added from instruction */
     }
 
     .global-back-nav .back-text {
@@ -157,7 +159,22 @@
     }
 
     .global-back-nav {
-        padding: 0.5rem;
+        padding: 8px 12px;
+        /* Modified from instruction */
+    }
+}
+
+@media (max-width: 380px) {
+    .nav-back-wrapper {
+        margin-right: 0.75rem;
+    }
+
+    .logo-img {
+        max-width: 120px;
+    }
+
+    .header-container {
+        padding: 0 1rem;
     }
 }
 

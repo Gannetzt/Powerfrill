@@ -156,48 +156,57 @@
 @media (max-width: 1200px) {
     .hero-split-container {
         flex-direction: column;
+        min-height: auto;
     }
 
     .hero-left {
-        height: 50vh;
+        height: 45vh;
         position: relative;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .hero-right {
-        padding: 60px 40px;
+        padding: 50px 30px;
+        min-height: 50vh;
     }
 
     .hero-right-title {
-        font-size: 2.75rem;
+        font-size: clamp(2.25rem, 8vw, 3rem);
+        letter-spacing: -1px;
     }
 }
 
 @media (max-width: 480px) {
     .hero-right {
-        padding: 40px 20px;
+        padding: 40px 24px 80px;
     }
 
     .hero-right-title {
-        font-size: 2.25rem;
+        font-size: 2.1rem;
     }
 
     .hero-right-desc {
         font-size: 0.95rem;
         margin-bottom: 2rem;
+        color: #999;
     }
 
     .tech-spec-mini {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-top: 3rem;
+        gap: 1.25rem;
+        margin-top: 2.5rem;
+    }
+
+    .spec-item-mini {
+        padding-left: 0.75rem;
     }
 
     .add-to-quotation-btn {
-        padding: 1rem 1.5rem;
+        padding: 1.1rem 1.5rem;
         width: 100%;
         justify-content: center;
+        font-size: 0.9rem;
     }
 }
 
