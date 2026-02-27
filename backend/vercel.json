@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "app/main.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "app/main.py"
+        }
+    ],
+    "env": {
+        "DATABASE_URL": "postgresql://neondb_owner:npg_Qi0nTy6LeoaN@ep-twilight-cloud-aizn5cti-pooler.c-4.us-east-1.aws.neon.tech/powerfrill_website?sslmode=require"
+    }
+}
