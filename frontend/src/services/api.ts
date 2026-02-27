@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://backend-beta-weld-46.vercel.app';
 
 export async function apiRequest(endpoint: string, options: RequestInit = {}) {
     const token = localStorage.getItem('access_token');
