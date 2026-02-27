@@ -144,8 +144,11 @@
         bottom: 120px !important;
         /* Lowered slightly but raised z-index */
         transform: none !important;
-        width: auto !important;
-        padding: 1.5rem !important;
+        width: 90% !important;
+        /* Force constraint instead of auto */
+        max-width: 400px !important;
+        box-sizing: border-box !important;
+        padding: 1.25rem !important;
         animation: panelEnterMobile 0.6s ease-out forwards !important;
         z-index: 300;
         background: rgba(0, 0, 0, 0.85);
@@ -163,12 +166,14 @@
     }
 
     .hnip-title {
-        font-size: 1.6rem !important;
+        font-size: clamp(1.2rem, 6vw, 1.6rem) !important;
+        word-wrap: break-word;
     }
 
     .hnip-desc {
-        font-size: 0.85rem !important;
-        margin-bottom: 1rem !important;
+        font-size: 0.8rem !important;
+        /* Slightly smaller to fit tight heights */
+        margin-bottom: 0.8rem !important;
     }
 
     .hnip-stats {

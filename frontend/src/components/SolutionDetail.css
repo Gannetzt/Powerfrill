@@ -23,11 +23,21 @@
 }
 
 .container {
+    width: 100%;
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 2.5rem;
     position: relative;
     z-index: 5;
+    box-sizing: border-box;
+    /* Ensure padding doesn't cause overflow */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.25rem;
+        /* Reduce container padding on mobile to give text more room */
+    }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -423,7 +433,8 @@
 
 .ch-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    /* Scaled down minimum for mobile */
     font-weight: 900;
     line-height: 1.05;
     color: #fff;
@@ -431,6 +442,8 @@
     text-shadow: 0 0 80px rgba(var(--hub-accent-rgb), 0.25);
     max-width: 900px;
     text-transform: uppercase;
+    word-wrap: break-word;
+    /* Prevent long words from overflowing */
 }
 
 .ch-body {
@@ -713,38 +726,64 @@
     font-weight: 800;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+
+    /* Critical Fix: Re-structure the container on mobile & tablet to stack instead of overlap */
+    .hub-anatomy-frame-container {
+        display: flex;
+        flex-direction: column-reverse;
+        /* Put 3D on top, info below */
+        height: auto !important;
+        /* Remove 100vh lock */
+        min-height: 100vh;
+        padding-top: 100px;
+    }
+
     .anatomy-hud-container {
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 400px;
+        position: relative;
+        /* Remove absolute positioning */
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 2rem 2rem 2rem;
+        margin-top: -50px;
+        /* Slight overlap for visual integration */
+        z-index: 20;
     }
 
     .anatomy-kpi-card {
         width: 100%;
-        padding: 1.25rem 1.5rem;
+        padding: 1.5rem 2rem;
         border-left: 3px solid #ff6600;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(10, 10, 10, 0.95);
+        /* Darker background to separate from 3D */
     }
 
     .kpi-header {
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
     }
 
     .kpi-title {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
     }
 
     .kpi-grid {
-        gap: 0.75rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+        gap: 1rem;
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
     }
 
     .kpi-value {
-        font-size: 0.9rem;
+        font-size: 1rem;
+    }
+
+    /* Ensure the 3D canvas container has a defined height when stacked */
+    .hub-anatomy-frame-container>div:first-child {
+        height: 60vh !important;
+        min-height: 400px;
     }
 }
 

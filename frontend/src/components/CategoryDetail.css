@@ -25,11 +25,13 @@
 }
 
 .category-hero-title {
-    font-size: 4.5rem;
+    font-size: clamp(2rem, 8vw, 4.5rem);
     color: #fff;
     font-weight: 700;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     text-align: center;
+    word-wrap: break-word;
+    padding: 0 1rem;
 }
 
 /* 3D Hero Variant - Split Layout */
@@ -80,12 +82,14 @@
 }
 
 .hero-right-title {
-    font-size: 4rem;
+    font-size: clamp(2rem, 8vw, 4rem);
     color: #fff;
     font-weight: 900;
-    line-height: 1;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
     letter-spacing: -2px;
+    word-wrap: break-word;
+    /* Prevent overflow on long words */
 }
 
 .hero-right-desc {
@@ -245,11 +249,13 @@
 }
 
 .section-heading {
-    font-size: 2.25rem;
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
     color: #ffffff;
     margin-bottom: 4rem;
     position: relative;
     display: inline-block;
+    word-wrap: break-word;
+    max-width: 100%;
 }
 
 .heading-accent {

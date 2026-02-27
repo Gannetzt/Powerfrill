@@ -6,9 +6,19 @@
 }
 
 .container {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 40px;
+    box-sizing: border-box;
+    /* Prevent padding from causing horizontal overflow */
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+        /* Reduce padding on mobile */
+    }
 }
 
 .grid-2 {
@@ -122,12 +132,15 @@
 }
 
 .et-title {
-    font-size: 3.5rem;
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+    /* Responsive scaling */
     font-weight: 800;
     letter-spacing: -2px;
     margin-bottom: 10px;
     line-height: 1;
     color: #ffffff;
+    word-wrap: break-word;
+    /* Prevent long words from breaking container */
 }
 
 .et-subtitle {
