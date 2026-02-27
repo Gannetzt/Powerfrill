@@ -5,7 +5,7 @@ import { categories } from '../data/products';
 import { productService, publishingService } from '../services/api';
 import { useCart } from '../context/CartContext';
 import './CategoryDetail.css';
-
+import { BatteryModule3D } from './BatteryModule3D';
 const CategoryDetail: React.FC = () => {
     const { categoryId } = useParams<{ categoryId: string }>();
     const category = categories.find(c => c.id === categoryId);
@@ -61,20 +61,26 @@ const CategoryDetail: React.FC = () => {
     return (
         <div className="category-detail-page">
             {/* Hero Section */}
-            <section
-                className="category-hero"
-                style={{ backgroundImage: `url(${categoryId === '2w-packs' ? '/battery_hero_bg.png' : category.image})` }}
-            >
-                <div className="category-hero-overlay">
-                    <motion.h1
-                        initial={{ y: 30, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        className="category-hero-title"
-                    >
-                        {category.name}
-                    </motion.h1>
+            {categoryId === '2w-packs' ? (
+                <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
+                    <BatteryModule3D />
                 </div>
-            </section>
+            ) : (
+                <section
+                    className="category-hero"
+                    style={{ backgroundImage: `url(${category.image})` }}
+                >
+                    <div className="category-hero-overlay">
+                        <motion.h1
+                            initial={{ y: 30, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            className="category-hero-title"
+                        >
+                            {category.name}
+                        </motion.h1>
+                    </div>
+                </section>
+            )}
 
             {/* Breadcrumbs */}
             <div className="container">
