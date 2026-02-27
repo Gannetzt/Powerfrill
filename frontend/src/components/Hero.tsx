@@ -112,7 +112,14 @@ const Hero: React.FC = () => {
     }, [activeSection]);
 
     useEffect(() => {
+        let lastScrollTime = 0;
+        const throttleInterval = 100; // ms
+
         const handleScroll = () => {
+            const now = Date.now();
+            if (now - lastScrollTime < throttleInterval) return;
+            lastScrollTime = now;
+
             const container = containerRef.current;
             if (!container) return;
 
@@ -149,29 +156,35 @@ const Hero: React.FC = () => {
         >
             {/* Ambient Background Videos - Fixed */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-                {sections.map((s, i) => s.bgVideo && (
-                    <video
-                        key={`bg-video-${i}`}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="hero-video-background"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            opacity: activeSection === i ? 0.95 : 0,
-                            filter: 'none',
-                            transition: 'opacity 1.5s ease-in-out',
-                        }}
-                    >
-                        <source src={s.bgVideo} type="video/mp4" />
-                    </video>
-                ))}
+                {sections.map((s, i) => {
+                    // Performance: Only render the active video to save CPU/GPU decode cycles
+                    // Browsers struggle with playing 5+ 1080p videos even if opacity is 0
+                    if (activeSection !== i && s.bgVideo) return null;
+
+                    return s.bgVideo && (
+                        <video
+                            key={`bg-video-${i}`}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="hero-video-background"
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                opacity: activeSection === i ? 0.95 : 0,
+                                filter: 'none',
+                                transition: 'opacity 1s ease-in-out',
+                            }}
+                        >
+                            <source src={s.bgVideo} type="video/mp4" />
+                        </video>
+                    );
+                })}
             </div>
 
             {/* Scrollable Content Layers */}

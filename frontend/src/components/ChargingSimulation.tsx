@@ -34,36 +34,48 @@ const ChargingSimulation: React.FC = () => {
             }
         }
 
-        // Animate numbers
-        const CYCLE = 6000;
         let animationFrameId: number;
+        let isVisible = true;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting;
+            },
+            { threshold: 0.1 }
+        );
+        if (particlesRef.current?.parentElement) {
+            observer.observe(particlesRef.current.parentElement);
+        }
 
+        const CYCLE = 6000;
         const update = () => {
-            const elapsed = (Date.now() % CYCLE) / CYCLE;
-
-            let currentPct;
-            if (elapsed < 0.80) {
-                currentPct = Math.round((elapsed / 0.80) * 100);
-            } else if (elapsed < 0.90) {
-                currentPct = 100;
-            } else {
-                currentPct = 0;
-            }
-
-            setPct(currentPct);
-            setKw((11.2 * (currentPct / 100 * 0.6 + 0.4)).toFixed(1));
-            setKm(Math.round(currentPct * 4.2));
-
-            const minsLeft = Math.max(0, Math.round((100 - currentPct) * 0.4));
-            setEta(currentPct >= 100 ? 'DONE' : (minsLeft + 'm'));
-
             animationFrameId = requestAnimationFrame(update);
+
+            if (isVisible) {
+                const elapsed = (Date.now() % CYCLE) / CYCLE;
+
+                let currentPct;
+                if (elapsed < 0.80) {
+                    currentPct = Math.round((elapsed / 0.80) * 100);
+                } else if (elapsed < 0.90) {
+                    currentPct = 100;
+                } else {
+                    currentPct = 0;
+                }
+
+                setPct(currentPct);
+                setKw((11.2 * (currentPct / 100 * 0.6 + 0.4)).toFixed(1));
+                setKm(Math.round(currentPct * 4.2));
+
+                const minsLeft = Math.max(0, Math.round((100 - currentPct) * 0.4));
+                setEta(currentPct >= 100 ? 'DONE' : (minsLeft + 'm'));
+            }
         };
 
         update();
 
         return () => {
             cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
         };
     }, []);
 

@@ -28,12 +28,13 @@ const ExplodedBessCabinet: React.FC = () => {
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
             antialias: true,
-            alpha: true
+            alpha: true,
+            powerPreference: 'high-performance'
         });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
@@ -47,8 +48,8 @@ const ExplodedBessCabinet: React.FC = () => {
         const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
         mainLight.position.set(20, 30, 20);
         mainLight.castShadow = true;
-        mainLight.shadow.mapSize.width = 2048;
-        mainLight.shadow.mapSize.height = 2048;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
         mainLight.shadow.camera.left = -30;
         mainLight.shadow.camera.right = 30;
         mainLight.shadow.camera.top = 30;
@@ -311,14 +312,32 @@ const ExplodedBessCabinet: React.FC = () => {
 
         tl.to(camera.position, { z: 45, y: 15, ease: "power2.inOut" }, 0); // Zoomed out end position
 
-        // --- Render Loop ---
+        let isVisible = true;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting;
+                // Performance: Disable ScrollTrigger when not in view
+                ScrollTrigger.getAll().forEach(st => {
+                    if (st.vars.trigger === containerRef.current) {
+                        isVisible ? st.enable() : st.disable();
+                    }
+                });
+            },
+            { threshold: 0.05 }
+        );
+        observer.observe(containerRef.current);
+
         const clock = new THREE.Clock();
+        let animationFrameId: number;
         const animate = () => {
-            requestAnimationFrame(animate);
-            const t = clock.getElapsedTime();
-            cellOrangeMat.emissiveIntensity = 1.0 + Math.sin(t * 3) * 0.4;
-            controls.update();
-            renderer.render(scene, camera);
+            animationFrameId = requestAnimationFrame(animate);
+
+            if (isVisible) {
+                const t = clock.getElapsedTime();
+                cellOrangeMat.emissiveIntensity = 1.0 + Math.sin(t * 3) * 0.4;
+                controls.update();
+                renderer.render(scene, camera);
+            }
         };
         animate();
 
@@ -334,7 +353,10 @@ const ExplodedBessCabinet: React.FC = () => {
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
             renderer.dispose();
+            scene.clear();
             ScrollTrigger.getAll().forEach(st => st.kill());
         };
     }, []);

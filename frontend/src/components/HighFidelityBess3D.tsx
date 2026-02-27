@@ -43,12 +43,13 @@ const HighFidelityBess3D: React.FC<HighFidelityBess3DProps> = ({ accent = '#ff66
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
             antialias: true,
-            alpha: true
+            alpha: true,
+            powerPreference: 'high-performance'
         });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Lower pixel ratio for performance
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.VSMShadowMap;
+        renderer.shadowMap.type = THREE.PCFShadowMap; // Faster than VSM
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
@@ -64,10 +65,10 @@ const HighFidelityBess3D: React.FC<HighFidelityBess3DProps> = ({ accent = '#ff66
         const mainLight = new THREE.DirectionalLight(0xffffff, 2.0);
         mainLight.position.set(20, 40, 30);
         mainLight.castShadow = true;
-        mainLight.shadow.mapSize.width = 2048; // High res shadows
-        mainLight.shadow.mapSize.height = 2048;
-        mainLight.shadow.bias = -0.0001;
-        mainLight.shadow.radius = 4;
+        mainLight.shadow.mapSize.width = 1024; // Balanced resolution
+        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.bias = -0.001;
+        mainLight.shadow.radius = 2;
         scene.add(mainLight);
 
         const fillLight = new THREE.DirectionalLight(0x00aaff, 0.8);
@@ -239,15 +240,28 @@ const HighFidelityBess3D: React.FC<HighFidelityBess3DProps> = ({ accent = '#ff66
             innerGroup.add(logoRight);
         }
 
-        const animate = () => {
-            requestAnimationFrame(animate);
-            // Handle scroll rotation
-            const prog: number = scrollYProgress.get();
-            // Rotate from -0.3 to 0.3 radians based on scroll
-            innerGroup.rotation.y = (prog - 0.5) * 1.5;
+        let isVisible = true;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting;
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(container);
 
-            controls.update();
-            renderer.render(scene, camera);
+        let animationFrameId: number;
+        const animate = () => {
+            animationFrameId = requestAnimationFrame(animate);
+
+            if (isVisible) {
+                // Handle scroll rotation
+                const prog: number = scrollYProgress.get();
+                // Rotate from -0.3 to 0.3 radians based on scroll
+                innerGroup.rotation.y = (prog - 0.5) * 1.5;
+
+                controls.update();
+                renderer.render(scene, camera);
+            }
         };
         animate();
 
@@ -262,7 +276,10 @@ const HighFidelityBess3D: React.FC<HighFidelityBess3DProps> = ({ accent = '#ff66
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
             renderer.dispose();
+            scene.clear();
         };
     }, [accent]);
 

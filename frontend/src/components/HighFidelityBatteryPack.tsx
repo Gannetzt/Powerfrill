@@ -19,11 +19,15 @@ const HighFidelityBatteryPack: React.FC = () => {
         const camera = new THREE.PerspectiveCamera(40, containerRef.current.clientWidth / containerRef.current.clientHeight, 0.1, 1000);
         camera.position.set(16, 14, 28);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
         renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.0;
         containerRef.current.appendChild(renderer.domElement);
@@ -45,6 +49,8 @@ const HighFidelityBatteryPack: React.FC = () => {
         const frontSpot = new THREE.SpotLight(0xffffff, 100, 60, 0.5, 0.5, 1);
         frontSpot.position.set(10, 25, 20);
         frontSpot.castShadow = true;
+        frontSpot.shadow.mapSize.width = 1024;
+        frontSpot.shadow.mapSize.height = 1024;
         scene.add(frontSpot);
 
         const topFill = new THREE.DirectionalLight(0xffffff, 0.6);
@@ -304,11 +310,25 @@ const HighFidelityBatteryPack: React.FC = () => {
         // Step 3: Energy Glow Intensity Increase
         tl.to(cellMat, { emissiveIntensity: 12, duration: 1, ease: "slow" }, 1);
 
+        let isVisible = true;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting;
+                isVisible ? tl.play() : tl.pause();
+            },
+            { threshold: 0.1 }
+        );
+        observer.observe(containerRef.current);
+
         // Animation Loop
+        let animationFrameId: number;
         const animate = () => {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
+            animationFrameId = requestAnimationFrame(animate);
+
+            if (isVisible) {
+                controls.update();
+                renderer.render(scene, camera);
+            }
         };
         animate();
 
@@ -323,9 +343,13 @@ const HighFidelityBatteryPack: React.FC = () => {
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
             if (containerRef.current && renderer.domElement) {
                 containerRef.current.removeChild(renderer.domElement);
             }
+            renderer.dispose();
+            scene.clear();
             tl.kill();
         };
     }, []);

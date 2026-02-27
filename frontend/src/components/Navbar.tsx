@@ -102,10 +102,20 @@ const Navbar: React.FC = () => {
 
     // Handle body scroll lock and global blur
     React.useEffect(() => {
+        let isScrolledVal = false;
+        let ticking = false;
+
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            isScrolledVal = window.scrollY > 50;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    setIsScrolled(isScrolledVal);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
