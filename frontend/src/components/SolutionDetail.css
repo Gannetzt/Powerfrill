@@ -231,6 +231,13 @@
     pointer-events: none;
 }
 
+@media (max-width: 768px) {
+    .hub-ui-corners {
+        inset: 1rem;
+        display: none;
+    }
+}
+
 .corner-bracket {
     position: absolute;
     width: 30px;
@@ -278,6 +285,16 @@
     letter-spacing: 0.2em;
     opacity: 0.4;
     line-height: 2;
+}
+
+@media (max-width: 768px) {
+    .hub-status-readout {
+        top: 6.5rem;
+        right: 1rem;
+        font-size: 0.5rem;
+        display: none;
+        /* Often too cluttered for small mobile */
+    }
 }
 
 .readout-label {

@@ -489,24 +489,12 @@
 
 @media (max-width: 768px) {
     .hero-product-showcase {
-        bottom: 20px;
-        gap: 1.25rem;
-        padding: 0.6rem 1.25rem;
-        width: auto;
-        border-radius: 40px;
-    }
-
-    .hps-label {
-        font-size: 0.5rem;
-    }
-
-    .hps-icon {
-        width: 22px;
-        height: 22px;
+        display: none;
+        /* Hide to avoid extreme clutter with other fixed elements */
     }
 
     .hero-social-dock {
-        bottom: 85px;
+        bottom: 20px;
         right: 15px;
         flex-direction: column;
         gap: 1rem;

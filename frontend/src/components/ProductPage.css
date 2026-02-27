@@ -63,9 +63,15 @@
 
 .gallery-morph-wrap {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-top: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+    .gallery-morph-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .gallery__item {
@@ -437,10 +443,26 @@
     .grid-2,
     .hero-grid {
         grid-template-columns: 1fr;
+        gap: 40px;
     }
 
     .related-grid-et {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .related-grid-et {
+        grid-template-columns: 1fr;
+    }
+
+    .enterprise-breadcrumb {
+        flex-wrap: wrap;
+        font-size: 0.75rem;
+    }
+
+    .et-title {
+        font-size: 2.5rem;
     }
 }
 

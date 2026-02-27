@@ -141,11 +141,23 @@
         right: 5% !important;
         left: 5% !important;
         top: auto !important;
-        bottom: 120px !important;
+        bottom: 140px !important;
+        /* Raised to clear social dock */
         transform: none !important;
         width: auto !important;
         padding: 1.5rem !important;
         animation: panelEnterMobile 0.6s ease-out forwards !important;
+        z-index: 300;
+    }
+
+    .hero-discover-action {
+        bottom: 85px !important;
+        /* Move higher */
+        left: 5% !important;
+        padding: 0.8rem 1.5rem !important;
+        font-size: 0.6rem !important;
+        width: 90% !important;
+        text-align: center !important;
     }
 
     .hnip-title {
@@ -548,8 +560,12 @@
 
 @media (max-width: 768px) {
     .hero-social-dock {
-        bottom: 40px;
-        right: 24px;
+        bottom: 25px !important;
+        /* Bottom most */
+        left: 5% !important;
+        right: 5% !important;
         flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
     }
 }
