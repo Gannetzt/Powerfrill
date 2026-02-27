@@ -1,0 +1,303 @@
+.battery-lifecycle-story {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: 900vh;
+    background: #02050a;
+    color: #fff;
+    overflow: visible;
+}
+
+.lifecycle-viewport {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.lifecycle-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* SCANLINES OVERLAY */
+.lifecycle-overlay-scan {
+    position: absolute;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 3px,
+            rgba(0, 0, 0, 0.07) 3px,
+            rgba(0, 0, 0, 0.07) 4px);
+}
+
+/* VIGNETTE */
+.lifecycle-vig {
+    position: absolute;
+    inset: 0;
+    z-index: 91;
+    pointer-events: none;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%,
+            transparent 40%,
+            rgba(2, 5, 10, 0.85) 100%);
+}
+
+/* INDUSTRIAL HUD */
+.lifecycle-hud {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.hc {
+    position: absolute;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: rgba(160, 180, 200, 0.5);
+    line-height: 2;
+}
+
+.hc b {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+}
+
+.hc .s2 {
+    color: var(--hub-accent);
+}
+
+.hc .s3 {
+    color: var(--hub-accent-cyan, #00e5ff);
+}
+
+.htl {
+    top: 40px;
+    left: 40px;
+}
+
+.htr {
+    top: 40px;
+    right: 40px;
+    text-align: right;
+}
+
+.hbl {
+    bottom: 40px;
+    left: 40px;
+}
+
+.hbr {
+    bottom: 40px;
+    right: 40px;
+    text-align: right;
+}
+
+/* CORNER BRACKETS */
+.cbr {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    opacity: 0.45;
+}
+
+.cbr.tl {
+    top: 24px;
+    left: 24px;
+    border-top: 1.5px solid var(--hub-accent);
+    border-left: 1.5px solid var(--hub-accent);
+}
+
+.cbr.tr {
+    top: 24px;
+    right: 24px;
+    border-top: 1.5px solid var(--hub-accent);
+    border-right: 1.5px solid var(--hub-accent);
+}
+
+.cbr.bl {
+    bottom: 24px;
+    left: 24px;
+    border-bottom: 1.5px solid var(--hub-accent);
+    border-left: 1.5px solid var(--hub-accent);
+}
+
+.cbr.br {
+    bottom: 24px;
+    right: 24px;
+    border-bottom: 1.5px solid var(--hub-accent);
+    border-right: 1.5px solid var(--hub-accent);
+}
+
+/* PART LABELS */
+.lbl-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.lbl {
+    position: absolute;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--hub-accent-cyan, #00e5ff);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.5s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lbl.on {
+    opacity: 1;
+}
+
+.lbl .ln {
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--hub-accent-cyan, #00e5ff), transparent);
+    flex-shrink: 0;
+}
+
+.lbl.r .ln {
+    background: linear-gradient(270deg, var(--hub-accent-cyan, #00e5ff), transparent);
+}
+
+/* TITLE CARD */
+.anatomy-title-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 300;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.anatomy-title-card.on {
+    opacity: 1;
+}
+
+.anatomy-title-card h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 9px;
+    color: #a0b4c8;
+    margin-bottom: 8px;
+}
+
+.anatomy-title-card h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--hub-accent);
+    text-shadow: 0 0 40px rgba(var(--hub-accent-rgb), 0.5);
+    letter-spacing: 3px;
+}
+
+.anatomy-title-card p {
+    margin-top: 10px;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* SCROLL HINT (V2) */
+.anatomy-hint {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px;
+    letter-spacing: 5px;
+    color: rgba(var(--hub-accent-rgb), 0.55);
+    text-align: center;
+    z-index: 500;
+    transition: opacity 0.5s;
+}
+
+.chvs {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.chv {
+    width: 11px;
+    height: 6px;
+    border-right: 1.5px solid var(--hub-accent);
+    border-bottom: 1.5px solid var(--hub-accent);
+    transform: rotate(45deg);
+    opacity: 0;
+    animation: chvA 1.6s ease-in-out infinite;
+}
+
+.chv:nth-child(2) {
+    animation-delay: .18s
+}
+
+.chv:nth-child(3) {
+    animation-delay: .36s
+}
+
+@keyframes chvA {
+
+    0%,
+    100% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 0.85
+    }
+}
+
+/* Progress Bar */
+.lifecycle-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--hub-accent);
+    box-shadow: 0 0 10px var(--hub-accent);
+    z-index: 1000;
+    transition: width 0.1s linear;
+}
+
+@media (max-width: 768px) {
+    .hc {
+        font-size: 7px;
+    }
+
+    .hc b {
+        font-size: 10px;
+    }
+
+    .anatomy-title-card h2 {
+        font-size: 24px;
+    }
+
+    .lbl {
+        font-size: 6px;
+    }
+
+    .lbl .ln {
+        width: 20px;
+    }
+}

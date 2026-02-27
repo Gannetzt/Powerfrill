@@ -1,0 +1,129 @@
+.admin-header {
+    padding: 0 40px;
+    height: 80px;
+    background: #000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-brand-nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    height: 100%;
+}
+
+.admin-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 100%;
+}
+
+.admin-brand {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 2.5px;
+    color: #fff;
+    background: linear-gradient(135deg, #fff 0%, #ff6b00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
+
+.admin-logo-link:hover .admin-brand {
+    filter: brightness(1.2);
+}
+
+.top-nav {
+    display: flex;
+    gap: 5px;
+    height: 100%;
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #ff6b00;
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ff6b00;
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.user-info-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user-badge {
+    background: rgba(255, 107, 0, 0.2);
+    color: #ff6b00;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.user-email {
+    font-size: 11px;
+    opacity: 0.4;
+    font-weight: 500;
+}
+
+.logout-button {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+    background: #ff4444;
+    border-color: #ff4444;
+    transform: translateY(-1px);
+}

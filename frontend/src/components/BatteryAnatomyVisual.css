@@ -1,0 +1,148 @@
+.battery-anatomy-visual-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+}
+
+.battery-anatomy-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* HUD Overlay Styles */
+.anatomy-hud-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.hud-part {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    opacity: 0.45;
+}
+
+.hud-part.tl {
+    top: 16px;
+    left: 16px;
+    border-top: 1.5px solid #ff8c00;
+    border-left: 1.5px solid #ff8c00;
+}
+
+.hud-part.tr {
+    top: 16px;
+    right: 16px;
+    border-top: 1.5px solid #ff8c00;
+    border-right: 1.5px solid #ff8c00;
+}
+
+.hud-part.bl {
+    bottom: 16px;
+    left: 16px;
+    border-bottom: 1.5px solid #ff8c00;
+    border-left: 1.5px solid #ff8c00;
+}
+
+.hud-part.br {
+    bottom: 16px;
+    right: 16px;
+    border-bottom: 1.5px solid #ff8c00;
+    border-right: 1.5px solid #ff8c00;
+}
+
+.hud-readout {
+    position: absolute;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: rgba(160, 180, 200, 0.5);
+    line-height: 1.6;
+}
+
+.hud-readout b {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.hud-readout .accent-sub {
+    color: #ff8c00;
+}
+
+.hud-readout .accent-sub.cyan {
+    color: #00e5ff;
+}
+
+.hud-readout b.orange {
+    color: #ff8c00;
+}
+
+.h-tl {
+    top: 24px;
+    left: 28px;
+}
+
+.h-tr {
+    top: 28px;
+    right: 28px;
+    text-align: right;
+}
+
+.h-bl {
+    bottom: 24px;
+    left: 28px;
+}
+
+.h-br {
+    bottom: 28px;
+    right: 28px;
+    text-align: right;
+}
+
+/* Labels */
+.anatomy-label {
+    position: absolute;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #00e5ff;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 200;
+}
+
+.anatomy-label.on {
+    opacity: 1;
+    visibility: visible;
+}
+
+.anatomy-label .line {
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, #00e5ff, transparent);
+    flex-shrink: 0;
+}
+
+.anatomy-label .line.right {
+    background: linear-gradient(270deg, #00e5ff, transparent);
+    order: 2;
+}
+
+@media (max-width: 1024px) {
+    .anatomy-label {
+        display: none;
+    }
+}

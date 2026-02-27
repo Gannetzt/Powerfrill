@@ -1,0 +1,113 @@
+:root {
+    --cinematic-bg: #050505;
+    --cinematic-accent: #ff6600;
+}
+
+.cinematic-hero-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: var(--cinematic-bg);
+    color: #fff;
+    overflow: hidden;
+}
+
+.cinematic-scroll-container {
+    position: relative;
+    height: 400vh;
+    /* Drives the scroll length */
+    width: 100%;
+}
+
+.cinematic-sticky-stage {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 70%);
+}
+
+/* --- Canvas Layer --- */
+.cinematic-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+/* --- Overlay Content --- */
+.cinematic-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cinematic-brand-logo {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 900;
+    font-size: 4rem;
+    letter-spacing: 0.5rem;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.cinematic-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem;
+    color: var(--cinematic-accent);
+    letter-spacing: 0.2rem;
+    margin-top: 1rem;
+    opacity: 0;
+    text-transform: uppercase;
+}
+
+/* --- Technical HUD Elements --- */
+.tech-hud-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    pointer-events: none;
+}
+
+.tech-line {
+    position: absolute;
+    background: rgba(255, 102, 0, 0.3);
+}
+
+.tech-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100px 100px;
+    opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cinematic-brand-logo {
+        font-size: 2.5rem;
+    }
+}

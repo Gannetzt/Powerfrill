@@ -1,0 +1,181 @@
+.featured-products-section {
+    padding: 10rem 0;
+    background: #000;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-header {
+    margin-bottom: 5rem;
+    text-align: left;
+}
+
+.section-subtitle {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #ff6600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+}
+
+.title-accent {
+    width: 60px;
+    height: 4px;
+    background: #ff6600;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+}
+
+.featured-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.featured-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 102, 0, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.featured-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.featured-image-wrap {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-card:hover .featured-image {
+    transform: scale(1.1);
+}
+
+.featured-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ff6600;
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 900;
+    padding: 0.4rem 0.8rem;
+    letter-spacing: 0.1em;
+}
+
+.featured-info {
+    padding: 2.5rem;
+}
+
+.featured-cat {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ff6600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.featured-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.featured-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.featured-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.featured-price {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.05em;
+}
+
+.featured-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.featured-add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ff6600;
+    color: #000;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+}
+
+.featured-add-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.featured-add-btn.added {
+    background: #00ffcc;
+    color: #000;
+    transform: scale(1.1);
+}
+
+.featured-action {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #ff6600;
+    letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+}
