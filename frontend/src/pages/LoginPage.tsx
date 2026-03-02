@@ -10,6 +10,7 @@ const LoginPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
     const [username, setUsername] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -60,6 +61,7 @@ const LoginPage: React.FC = () => {
             await signup({
                 email,
                 password,
+                phone_number: phoneNumber,
                 full_name: fullName,
                 username: username || null,
                 role: 'viewer'
@@ -123,6 +125,15 @@ const LoginPage: React.FC = () => {
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
+                                />
+                            </div>
+                            <div className="input-group">
+                                <label>Phone Number</label>
+                                <input
+                                    type="tel"
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    required={!isLogin}
                                 />
                             </div>
                         </>

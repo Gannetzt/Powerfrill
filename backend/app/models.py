@@ -11,6 +11,7 @@ class UserRole(str, Enum):
 class UserBase(SQLModel):
     username: Optional[str] = Field(default=None, unique=True, index=True)
     email: str = Field(unique=True, index=True)
+    phone_number: Optional[str] = None
     full_name: Optional[str] = None
     role: UserRole = Field(default=UserRole.VIEWER)
     is_active: bool = Field(default=True)

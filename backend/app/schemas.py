@@ -13,6 +13,7 @@ class TokenData(BaseModel):
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    phone_number: str
     username: Optional[str] = None
     full_name: Optional[str] = None
     role: UserRole = UserRole.VIEWER
@@ -21,6 +22,7 @@ class UserCreate(BaseModel):
 class UserOut(BaseModel):
     id: int
     email: EmailStr
+    phone_number: Optional[str] = None
     username: Optional[str] = None
     full_name: Optional[str] = None
     role: UserRole
@@ -32,6 +34,7 @@ class UserOut(BaseModel):
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
     full_name: Optional[str] = None
     role: Optional[UserRole] = None
     is_active: Optional[bool] = None
@@ -41,6 +44,17 @@ class UserUpdate(BaseModel):
 class InquiryCreate(BaseModel):
     message: str
     product_list: List[str] = []
+
+class InquiryWithUser(BaseModel):
+    id: int
+    message: str
+    product_list: List[str]
+    status: str
+    created_at: str
+    user_id: int
+    user_email: str
+    user_name: Optional[str] = None
+    user_phone: Optional[str] = None
 
 class ProductCreate(ProductBase):
     pass

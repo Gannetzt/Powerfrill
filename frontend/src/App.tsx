@@ -15,6 +15,7 @@ const ProductsOverview = lazy(() => import('./components/ProductsOverview.tsx'))
 const ProductEditor = lazy(() => import('./pages/ProductEditor.tsx'))
 const PublishingCenter = lazy(() => import('./pages/PublishingCenter.tsx'))
 const AdminProductList = lazy(() => import('./pages/AdminProductList.tsx'))
+const AdminQuotations = lazy(() => import('./pages/AdminQuotations.tsx'))
 const SolutionDetail = lazy(() => import('./components/SolutionDetail.tsx'))
 const CategoryDetail = lazy(() => import('./components/CategoryDetail.tsx'))
 const CheckoutPage = lazy(() => import('./components/CheckoutPage.tsx'))
@@ -129,6 +130,11 @@ function App() {
                   <Route path="/admin/products" element={
                     <ProtectedRoute roles={['admin', 'editor']}>
                       <AdminProductList />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/quotations" element={
+                    <ProtectedRoute roles={['admin', 'editor']}>
+                      <AdminQuotations />
                     </ProtectedRoute>
                   } />
                   <Route path="/admin/products/new" element={

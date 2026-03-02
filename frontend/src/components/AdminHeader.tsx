@@ -9,6 +9,7 @@ const AdminHeader: React.FC = () => {
     const navItems = [
         { label: 'Dashboard', path: '/admin' },
         { label: 'Inventory', path: '/admin/products' },
+        { label: 'Quotations', path: '/admin/quotations' },
         { label: 'Team', path: '/admin/staff' },
         { label: 'Publishing', path: '/admin/publishing' }
     ];

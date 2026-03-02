@@ -13,7 +13,7 @@ from .models import User, UserRole, Product, Resource, Promotion, Inquiry
 from .auth import create_access_token, get_password_hash, get_current_user, check_role, verify_password
 from .schemas import (
     Token, UserCreate, UserOut, UserUpdate, 
-    ProductCreate, ProductUpdate, InquiryCreate,
+    ProductCreate, ProductUpdate, InquiryCreate, InquiryWithUser,
     ResourceCreate, ResourceOut, PromotionCreate, PromotionOut
 )
 from .config import settings
@@ -57,6 +57,7 @@ async def signup(user_in: UserCreate, session: Session = Depends(get_session)):
     
     db_user = User(
         email=user_in.email,
+        phone_number=user_in.phone_number,
         username=user_in.username,
         full_name=user_in.full_name,
         hashed_password=get_password_hash(user_in.password),
@@ -103,9 +104,24 @@ async def create_inquiry(inquiry_in: InquiryCreate, current_user: User = Depends
     session.refresh(db_inquiry)
     return db_inquiry
 
-@app.get("/inquiries", response_model=List[Inquiry], dependencies=[Depends(check_role([UserRole.ADMIN, UserRole.EDITOR]))])
+@app.get("/inquiries", response_model=List[InquiryWithUser], dependencies=[Depends(check_role([UserRole.ADMIN, UserRole.EDITOR]))])
 async def get_all_inquiries(session: Session = Depends(get_session)):
-    return session.exec(select(Inquiry)).all()
+    inquiries = session.exec(select(Inquiry)).all()
+    result = []
+    for inquiry in inquiries:
+        user = session.get(User, inquiry.user_id)
+        result.append(InquiryWithUser(
+            id=inquiry.id,
+            message=inquiry.message,
+            product_list=inquiry.product_list,
+            status=inquiry.status,
+            created_at=inquiry.created_at,
+            user_id=inquiry.user_id,
+            user_email=user.email if user else "Unknown",
+            user_name=user.full_name if user else None,
+            user_phone=user.phone_number if user else None
+        ))
+    return result
 
 # User Management Endpoints (Admin Only)
 @app.get("/users", response_model=List[UserOut], dependencies=[Depends(check_role([UserRole.ADMIN]))])
