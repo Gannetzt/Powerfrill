@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./Hero.css";
 
 
@@ -101,7 +102,6 @@ const Hero: React.FC = () => {
     const [hoveredSection, setHoveredSection] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const section = sections[activeSection];
 
     // Emit event for Navbar color adjustment
     useEffect(() => {
@@ -188,13 +188,49 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Scrollable Content Layers */}
-            {sections.map((_, i) => (
+            {sections.map((s, i) => (
                 <div
                     key={`scroll-sec-${i}`}
                     className="hero-scroll-section"
                     style={{ height: '100vh', scrollSnapAlign: 'start', position: 'relative' }}
                 >
+                    <motion.div
+                        className={`rimac-content-container ${i === 2 || i === 4 ? 'layout-bottom-right' : 'layout-center'}`}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false, amount: 0.5 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        {!(i === 2 || i === 4) && (
+                            <>
+                                <div className="rimac-eyebrow">0{i + 1} {s.label}</div>
+                                <h2 className="rimac-title">{s.title}</h2>
+                                <p className="rimac-description">{s.description}</p>
 
+                                {s.stats && (
+                                    <div className="rimac-stats">
+                                        {s.stats.map((st, si) => (
+                                            <div key={si} className="rimac-stat">
+                                                <span className="rimac-stat-val">{st.val}</span>
+                                                <span className="rimac-stat-unit">{st.unit}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        )}
+
+                        <div className="rimac-cta-wrapper">
+                            <button
+                                className="rimac-explore-btn"
+                                onClick={() => navigate(s.route)}
+                            >
+                                <span className="btn-line left" />
+                                <span className="btn-text">EXPLORE</span>
+                                <span className="btn-line right" />
+                            </button>
+                        </div>
+                    </motion.div>
                 </div>
             ))}
 
@@ -211,67 +247,22 @@ const Hero: React.FC = () => {
                         onMouseLeave={() => setHoveredSection(null)}
                         className={`hero-nav-dot-item ${activeSection === i ? 'is-active' : ''} ${hoveredSection === i ? 'is-hovered' : ''}`}
                     >
-                        <div className="hero-nav-dot-line" style={{ background: activeSection === i || hoveredSection === i ? s.accent : 'rgba(255,255,255,0.1)' }} />
-                        <span className="hero-nav-dot-label" style={{ color: activeSection === i ? s.accent : hoveredSection === i ? '#fff' : 'rgba(255,255,255,0.25)' }}>
+                        <div className="hero-nav-dot-line" style={{ background: activeSection === i || hoveredSection === i ? s.accent : 'var(--text-secondary)', opacity: activeSection === i || hoveredSection === i ? 1 : 0.5 }} />
+                        <span className="hero-nav-dot-label" style={{ color: activeSection === i ? s.accent : hoveredSection === i ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
                             {s.id} {s.label}
                         </span>
                     </button>
                 ))}
             </nav>
 
-            {/* Info Panel — strictly only shows on hover */}
-            {hoveredSection !== null && (() => {
-                const s = sections[hoveredSection];
-                return (
-                    <div
-                        className="hero-nav-info-panel is-hover-mode"
-                        key={hoveredSection}
-                        style={{ '--panel-accent': s.accent, position: 'fixed' } as React.CSSProperties}
-                    >
-                        <div className="hnip-eyebrow">POWERFILL {s.id}</div>
-                        <div className="hnip-title">{s.title}</div>
-                        <div className="hnip-subtitle" style={{ color: s.accent }}>
-                            {s.subtitle}
-                        </div>
-                        <p className="hnip-desc">{s.description}</p>
-                        {s.stats && (
-                            <div className="hnip-stats">
-                                {s.stats.map((st, si) => (
-                                    <div key={si} className="hnip-stat">
-                                        <span className="hnip-stat-val">{st.val}</span>
-                                        <span className="hnip-stat-unit">{st.unit}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                        <button
-                            className="hnip-cta"
-                            onClick={() => navigate(s.route)}
-                            style={{ borderColor: s.accent, color: s.accent }}
-                        >
-                            {s.actionLabel || 'EXPLORE →'}
-                        </button>
-                    </div>
-                );
-            })()}
 
-            {/* Static bottom-left CTA for all screens */}
-            <div style={{
-                position: 'fixed',
-                bottom: '10%',
-                left: '10%',
-                zIndex: 40,
-            }}>
-                <button
-                    className="hero-discover-action"
-                    onClick={() => navigate(section.route)}
-                >
-                    DISCOVER SOLUTIONS →
-                </button>
+            {/* Scroll Indicator */}
+            <div className="rimac-scroll-indicator">
+                <div className="scroll-line" />
             </div>
 
-            {/* Social Media Icons (Restored) */}
-            <div className="hero-social-dock">
+            {/* Social Media Icons (Directly Black as requested) */}
+            <div className="hero-social-dock is-black-text">
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hsd-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -286,6 +277,7 @@ const Hero: React.FC = () => {
                         <circle cx="4" cy="4" r="2"></circle>
                     </svg>
                 </a>
+                <div className="hsd-scroll-text">SCROLL TO DISCOVER</div>
             </div>
 
             <div className="hero-bottom-navigator" style={{ position: 'fixed' }}>

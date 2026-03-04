@@ -7,48 +7,52 @@ body {
 }
 
 :root {
-  /* Dark Professional Theme Color Palette */
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
+  /* Common Variables */
   --accent-primary: #ff6600;
   /* Energy Orange */
   --accent-secondary: #ff9900;
-  --text-primary: #ffffff;
-  --text-secondary: #64748b;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.08);
-
-  /* Typography */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --font-main: 'Outfit', sans-serif;
   --font-special: 'Space Grotesk', sans-serif;
 
-  /* Transitions */
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Global Dark Theme Defaults */
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
+  /* Dark Theme (Default) */
   --bg-primary: #000000;
   --bg-secondary: #0a0a0a;
+  --bg-tertiary: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(0, 0, 0, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-bg: #0a0a0a;
 }
 
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.5s ease;
+.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #000000;
+  --text-secondary: #4a4a4a;
+  --border-color: #e9ecef;
+  --card-bg: #ffffff;
+  --hover-bg: #f1f3f5;
+  --sidebar-bg: #ffffff;
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  /* Retained from original, not in instruction but makes sense */
+  --bg-tertiary: #f1f5f9;
+  /* Retained from original, not in instruction but makes sense */
 }
 
 .dark-theme {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #111111;
   --text-primary: #ffffff;
   --text-secondary: #94a3b8;
-  --bg-primary: #000000;
-}
-
-/* Deprecating light-theme to enforce Powerfrill brand look */
-.light-theme {
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --bg-primary: #000000;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(0, 0, 0, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-bg: #0a0a0a;
 }
 
 * {

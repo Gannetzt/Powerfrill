@@ -1,140 +1,150 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-
-import ChargingSimulation from './ChargingSimulation';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { productsData } from '../data/products';
+import ProductCard from './ProductCard';
 import './ProductsOverview.css';
 
 
-
 const ProductsOverview: React.FC = () => {
-    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+    const [sortBy, setSortBy] = useState<'default' | 'name-asc' | 'name-desc'>('default');
+    const [viewMode, setViewMode] = useState<'grid-3' | 'grid-4'>('grid-3');
+
+    const menus = Array.from(new Set(productsData.map(p => p.menuId)));
+
+    const filteredProducts = useMemo(() => {
+        let result = [...productsData];
+
+        if (selectedMenu) {
+            result = result.filter(p => p.menuId === selectedMenu);
+        }
+
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            result = result.filter(p =>
+                p.title.toLowerCase().includes(query) ||
+                p.category.toLowerCase().includes(query) ||
+                p.industryTags.some(t => t.toLowerCase().includes(query))
+            );
+        }
+
+        if (sortBy === 'name-asc') {
+            result.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortBy === 'name-desc') {
+            result.sort((a, b) => b.title.localeCompare(a.title));
+        }
+
+        return result;
+    }, [selectedMenu, searchQuery, sortBy]);
 
     return (
-        <div className="products-overview-page">
-            {/* Direct Hero Simulation - Clean & Responsive */}
-            <section className="products-hero-simulation">
-                <div className="hero-simulation-bg">
-                    <ChargingSimulation />
-                </div>
-
-                <div className="hero-simulation-overlay">
-                    <div className="hero-text-content">
-                        <motion.h1
-                            className="slider-heading"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            «Our components form the core <br />
-                            of the hydraulic system.»
-                        </motion.h1>
-                        <motion.div
-                            className="slider-underline"
-                            initial={{ width: 0 }}
-                            animate={{ width: 80 }}
-                            transition={{ delay: 0.5, duration: 0.8 }}
-                        />
-
-                        {/* Glassy E-commerce Categories Navigation */}
-                        <motion.div
-                            className="glassy-categories-nav"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.8, duration: 0.8 }}
-                        >
-                            <div className="gc-card" onClick={() => navigate('/hub/solar-energy')}>
-                                <div className="gc-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                        <path d="M12 2L2 7L12 12L22 7L12 2Z" />
-                                        <path d="M2 17L12 22L22 17" />
-                                        <path d="M2 12L12 17L22 12" />
-                                    </svg>
-                                </div>
-                                <span>CORES</span>
-                            </div>
-                            <div className="gc-card" onClick={() => navigate('/hub/battery-bess')}>
-                                <div className="gc-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                        <path d="M21 16.09V7.91C21 7.42 20.74 6.96 20.31 6.72L13.31 2.72C12.5 2.25 11.5 2.25 10.69 2.72L3.69 6.72C3.26 6.96 3 7.42 3 7.91V16.09C3 16.58 3.26 17.04 3.69 17.28L10.69 21.28C11.5 21.75 12.5 21.75 13.31 21.28L20.31 17.28C20.74 17.04 21 16.58 21 16.09Z" />
-                                        <path d="M12 22V12" />
-                                        <path d="M12 12L20.3 7.2" />
-                                        <path d="M12 12L3.7 7.2" />
-                                    </svg>
-                                </div>
-                                <span>PACKS</span>
-                            </div>
-                            <div className="gc-card" onClick={() => navigate('/hub/future-tech')}>
-                                <div className="gc-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                        <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                                        <line x1="12" y1="22.08" x2="12" y2="12" />
-                                    </svg>
-                                </div>
-                                <span>MODULES</span>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
-
-
-
-            {/* Breadcrumbs & Title */}
-            <div className="container content-container" id="product-content-area">
-                <nav className="industrial-breadcrumb">
-                    <Link to="/">Home</Link>
-                    <span className="sep">›</span>
-                    <span className="active-crumb">Products</span>
-                </nav>
-
-                <div className="brand-section">
-                    <h2 className="brand-title">Products</h2>
-                    <div className="brand-underline"></div>
-                    <p className="brand-text">
-                        Where conventional solutions stop, innovation begins. With this in mind, we always strive to set new standards in technology, quality, manufacturing, delivery,
-                        and customer care.
-                    </p>
-                </div>
-            </div>
-
-            {/* Hub Selector Section */}
-            <section className="hubs-selector-section">
-                <div className="container">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="general-product-info"
-                    >
-                        <h3>Explore Our Solutions</h3>
-                        <p>
-                            Powerfill offers a comprehensive range of cutting-edge energy solutions.
-                            Click on the icons above to discover our specialized products in Solar Energy,
-                            Storage Systems, and Advanced Battery Technology.
-                        </p>
-                        <div className="info-grid text-center mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="p-6 bg-gray-50 rounded-lg">
-                                <h4 className="text-xl font-bold text-gray-800 mb-2">Efficiency</h4>
-                                <p className="text-gray-600">Maximized energy output for every application.</p>
-                            </div>
-                            <div className="p-6 bg-gray-50 rounded-lg">
-                                <h4 className="text-xl font-bold text-gray-800 mb-2">Durability</h4>
-                                <p className="text-gray-600">Engineered to withstand the toughest environments.</p>
-                            </div>
-                            <div className="p-6 bg-gray-50 rounded-lg">
-                                <h4 className="text-xl font-bold text-gray-800 mb-2">Innovation</h4>
-                                <p className="text-gray-600">Pioneering the future of renewable energy.</p>
-                            </div>
+        <div className="products-ecommerce-page">
+            <div className="container ecommerce-layout">
+                {/* Sidebar Filters */}
+                <aside className="ecommerce-sidebar">
+                    <div className="sidebar-section">
+                        <h4>Search Products</h4>
+                        <div className="search-box">
+                            <input
+                                type="text"
+                                placeholder="Search by name or category..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
                         </div>
-                    </motion.div>
-                </div>
-            </section>
+                    </div>
 
+                    <div className="sidebar-section">
+                        <h4>Product Hubs</h4>
+                        <ul className="category-list">
+                            <li
+                                className={selectedMenu === null ? 'active' : ''}
+                                onClick={() => setSelectedMenu(null)}
+                            >
+                                All Solutions
+                            </li>
+                            {menus.map(menu => (
+                                <li
+                                    key={menu}
+                                    className={selectedMenu === menu ? 'active' : ''}
+                                    onClick={() => setSelectedMenu(menu)}
+                                >
+                                    {menu.replace('-', ' ').toUpperCase()}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
+                    <div className="sidebar-section">
+                        <h4>Need Assistance?</h4>
+                        <div className="assistance-box">
+                            <p>Can't find the specific energy infrastructure you need?</p>
+                            <Link to="/hub/about" className="contact-link">Contact Engineering →</Link>
+                        </div>
+                    </div>
+                </aside>
 
+                {/* Main Content Area */}
+                <main className="ecommerce-main">
+                    <div className="shop-controls">
+                        <div className="results-count">
+                            Showing {filteredProducts.length} results
+                        </div>
+
+                        <div className="controls-right">
+                            <div className="view-toggle">
+                                <button
+                                    className={viewMode === 'grid-3' ? 'active' : ''}
+                                    onClick={() => setViewMode('grid-3')}
+                                    title="3 Columns"
+                                >
+                                    <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
+                                </button>
+                                <button
+                                    className={viewMode === 'grid-4' ? 'active' : ''}
+                                    onClick={() => setViewMode('grid-4')}
+                                    title="4 Columns"
+                                >
+                                    <svg viewBox="0 0 24 24" width="18" height="18"><rect x="2" y="2" width="4" height="4" /><rect x="9" y="2" width="4" height="4" /><rect x="16" y="2" width="4" height="4" /><rect x="2" y="9" width="4" height="4" /><rect x="9" y="9" width="4" height="4" /><rect x="16" y="9" width="4" height="4" /><rect x="2" y="16" width="4" height="4" /><rect x="9" y="16" width="4" height="4" /><rect x="16" y="16" width="4" height="4" /></svg>
+                                </button>
+                            </div>
+
+                            <select className="sort-dropdown" value={sortBy} onChange={(e) => setSortBy(e.target.value as any)}>
+                                <option value="default">Default Sorting</option>
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <AnimatePresence mode="popLayout">
+                        <motion.div
+                            className={`product-grid ${viewMode}`}
+                            layout
+                        >
+                            {filteredProducts.map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {filteredProducts.length === 0 && (
+                        <div className="no-results">
+                            <h3>No products found</h3>
+                            <p>Try adjusting your search or filters to find what you're looking for.</p>
+                            <button className="reset-btn" onClick={() => { setSearchQuery(''); setSelectedMenu(null); }}>Reset All Filters</button>
+                        </div>
+                    )}
+                </main>
+            </div>
         </div>
     );
 };
 
 export default ProductsOverview;
+

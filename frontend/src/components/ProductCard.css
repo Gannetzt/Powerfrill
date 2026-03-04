@@ -1,0 +1,143 @@
+.ecommerce-product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ecommerce-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-primary);
+}
+
+.card-image-link {
+    display: block;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    position: relative;
+    background: #f8fafc;
+}
+
+.card-image-container {
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.ecommerce-product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.card-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.card-details {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-meta {
+    margin-bottom: 0.5rem;
+}
+
+.card-category {
+    font-size: 0.7rem;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.card-title-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+    transition: color 0.3s;
+}
+
+.card-title:hover {
+    color: var(--accent-primary);
+}
+
+.card-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.price-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.view-details-btn {
+    display: inline-block;
+    padding: 0.8rem 1.2rem;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: var(--transition-smooth);
+    border: 1px solid var(--border-color);
+}
+
+.view-details-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+/* Theme specific adjustments */
+.light-theme .card-image-link {
+    background: #f1f5f9;
+}

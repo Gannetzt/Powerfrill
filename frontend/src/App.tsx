@@ -104,73 +104,77 @@ function HomePage() {
   );
 }
 
+import { ThemeProvider } from './context/ThemeContext.tsx'
+
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <div className="app">
-            <Navbar />
-            <div className="main-content-wrapper">
-              <Suspense fallback={<div className="loading-state">...</div>}>
-                <PromotionPopup />
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/products" element={<ProductsOverview />} />
-                  <Route path="/hub/:solutionId" element={<SolutionDetail />} />
-                  <Route path="/category/:categoryId" element={<CategoryDetail />} />
-                  <Route path="/checkout" element={<CheckoutPage />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <div className="app">
+              <Navbar />
+              <div className="main-content-wrapper">
+                <Suspense fallback={<div className="loading-state">...</div>}>
+                  <PromotionPopup />
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/products" element={<ProductsOverview />} />
+                    <Route path="/hub/:solutionId" element={<SolutionDetail />} />
+                    <Route path="/category/:categoryId" element={<CategoryDetail />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
 
-                  {/* Admin Routes */}
-                  <Route path="/admin" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/products" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <AdminProductList />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/quotations" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <AdminQuotations />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/products/new" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <ProductEditor />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/products/:id" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <ProductEditor />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/staff" element={
-                    <ProtectedRoute roles={['admin']}>
-                      <StaffManagement />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/admin/publishing" element={
-                    <ProtectedRoute roles={['admin', 'editor']}>
-                      <PublishingCenter />
-                    </ProtectedRoute>
-                  } />
+                    {/* Admin Routes */}
+                    <Route path="/admin" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/products" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <AdminProductList />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/quotations" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <AdminQuotations />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/products/new" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <ProductEditor />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/products/:id" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <ProductEditor />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/staff" element={
+                      <ProtectedRoute roles={['admin']}>
+                        <StaffManagement />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/admin/publishing" element={
+                      <ProtectedRoute roles={['admin', 'editor']}>
+                        <PublishingCenter />
+                      </ProtectedRoute>
+                    } />
 
-                  {/* Enterprise Catalog Routing */}
-                  <Route path="/:menuId/:groupId/:categoryId/:productSlug" element={<ProductPageWrapper />} />
+                    {/* Enterprise Catalog Routing */}
+                    <Route path="/:menuId/:groupId/:categoryId/:productSlug" element={<ProductPageWrapper />} />
 
-                  {/* Backward Compatible / Legacy Route */}
-                  <Route path="/product/:productId" element={<ProductPageWrapper />} />
-                  <Route path="/login" element={<LoginPage />} />
-                </Routes>
-              </Suspense>
+                    {/* Backward Compatible / Legacy Route */}
+                    <Route path="/product/:productId" element={<ProductPageWrapper />} />
+                    <Route path="/login" element={<LoginPage />} />
+                  </Routes>
+                </Suspense>
+              </div>
             </div>
-          </div>
-        </BrowserRouter>
-      </CartProvider>
-    </AuthProvider>
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 
