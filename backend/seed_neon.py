@@ -1,7 +1,8 @@
 import bcrypt
 from sqlmodel import Session, SQLModel
 from app.models import User, Product, UserRole
-from app.database import engine
+from sqlmodel import create_engine
+engine = create_engine("postgresql://neondb_owner:npg_Qi0nTy6LeoaN@ep-twilight-cloud-aizn5cti-pooler.c-4.us-east-1.aws.neon.tech/powerfrill_website?sslmode=require")
 
 def create_db_and_tables():
     SQLModel.metadata.drop_all(engine)
