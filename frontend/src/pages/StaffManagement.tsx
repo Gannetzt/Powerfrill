@@ -122,13 +122,13 @@ const StaffManagement: React.FC = () => {
                                             onChange={(e) => handleRoleChange(user, e.target.value)}
                                             className={`role-badge ${user.role}`}
                                         >
-                                            <option value="admin">Admin</option>
-                                            <option value="editor">Editor</option>
-                                            <option value="viewer">Viewer</option>
+                                            <option value="ADMIN">Admin</option>
+                                            <option value="EDITOR">Editor</option>
+                                            <option value="VIEWER">Viewer</option>
                                         </select>
                                     </td>
                                     <td>
-                                        {user.role === 'admin' ? (
+                                        {user.role === 'ADMIN' ? (
                                             <span className="all-access">FULL SYSTEM</span>
                                         ) : (
                                             <div className="permission-chips">

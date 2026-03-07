@@ -18,62 +18,71 @@
     inset: 0;
     pointer-events: none;
     z-index: 100;
+    padding: 24px;
 }
 
 .hud-part {
     position: absolute;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     opacity: 0.45;
+    filter: drop-shadow(0 0 4px #ff8c00);
 }
 
 .hud-part.tl {
     top: 16px;
     left: 16px;
-    border-top: 1.5px solid #ff8c00;
-    border-left: 1.5px solid #ff8c00;
+    border-top: 2px solid #ff8c00;
+    border-left: 2px solid #ff8c00;
 }
 
 .hud-part.tr {
     top: 16px;
     right: 16px;
-    border-top: 1.5px solid #ff8c00;
-    border-right: 1.5px solid #ff8c00;
+    border-top: 2px solid #ff8c00;
+    border-right: 2px solid #ff8c00;
 }
 
 .hud-part.bl {
     bottom: 16px;
     left: 16px;
-    border-bottom: 1.5px solid #ff8c00;
-    border-left: 1.5px solid #ff8c00;
+    border-bottom: 2px solid #ff8c00;
+    border-left: 2px solid #ff8c00;
 }
 
 .hud-part.br {
     bottom: 16px;
     right: 16px;
-    border-bottom: 1.5px solid #ff8c00;
-    border-right: 1.5px solid #ff8c00;
+    border-bottom: 2px solid #ff8c00;
+    border-right: 2px solid #ff8c00;
 }
 
 .hud-readout {
     position: absolute;
     font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 2.5px;
-    color: rgba(160, 180, 200, 0.5);
-    line-height: 1.6;
+    color: rgba(160, 180, 200, 0.6);
+    line-height: 1.8;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 12px;
+    backdrop-filter: blur(4px);
+    border-left: 1px solid rgba(255, 140, 0, 0.3);
 }
 
 .hud-readout b {
     color: #fff;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     display: block;
     margin-bottom: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .hud-readout .accent-sub {
     color: #ff8c00;
+    font-size: 8px;
+    text-transform: uppercase;
 }
 
 .hud-readout .accent-sub.cyan {
@@ -86,54 +95,66 @@
 
 .h-tl {
     top: 24px;
-    left: 28px;
+    left: 24px;
 }
 
 .h-tr {
-    top: 28px;
-    right: 28px;
+    top: 24px;
+    right: 24px;
     text-align: right;
+    border-left: none;
+    border-right: 1px solid rgba(255, 140, 0, 0.3);
 }
 
 .h-bl {
     bottom: 24px;
-    left: 28px;
+    left: 24px;
 }
 
 .h-br {
-    bottom: 28px;
-    right: 28px;
+    bottom: 24px;
+    right: 24px;
     text-align: right;
+    border-left: none;
+    border-right: 1px solid rgba(255, 140, 0, 0.3);
 }
 
-/* Labels */
+/* Labels - Emo Energy Style Kinetic Transitions */
 .anatomy-label {
     position: absolute;
     font-family: 'Orbitron', sans-serif;
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 2px;
     color: #00e5ff;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.5s ease;
+    transform: translateX(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     z-index: 200;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
 }
 
 .anatomy-label.on {
     opacity: 1;
     visibility: visible;
+    transform: translateX(0);
+}
+
+.anatomy-label:not(.on) {
+    transform: translateX(-10px);
 }
 
 .anatomy-label .line {
-    width: 36px;
+    width: 48px;
     height: 1px;
     background: linear-gradient(90deg, #00e5ff, transparent);
     flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
 }
 
 .anatomy-label .line.right {

@@ -6,7 +6,7 @@
     min-height: 100vh;
     background: transparent;
     /* Changed from #000 */
-    padding-bottom: 8rem;
+    padding-bottom: 4rem;
     position: relative;
     z-index: 1;
     color: #fff;
@@ -362,6 +362,16 @@
     margin-bottom: 12rem;
 }
 
+.full-bleed-breakout {
+    width: 100vw !important;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    overflow: hidden;
+}
+
 /* CINEMATIC SEQUENCE V2 STYLES */
 .hub-immersive-sequence-v2 {
     position: relative;
@@ -597,10 +607,10 @@
 
 .hub-stats-bar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 1.5rem;
-    margin-top: -40px;
-    margin-bottom: 8rem;
+    margin-top: 3rem;
+    margin-bottom: 4rem;
     position: relative;
     z-index: 20;
 }
@@ -883,9 +893,9 @@
 
 .hub-main-layout {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 5rem;
-    margin-top: 6rem;
+    grid-template-columns: 1fr 340px;
+    gap: 3rem;
+    margin-top: 2rem;
 }
 
 .hub-intro-box {
@@ -1471,14 +1481,18 @@
 /* 3D Anatomy Frame Utility */
 .hub-anatomy-frame-container {
     margin-top: 4rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    padding: 3rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    position: relative;
+    width: 100vw !important;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    overflow: hidden;
 }
 
 .anatomy-canvas-box {
@@ -1502,4 +1516,59 @@
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.4);
     line-height: 1.6;
+}
+
+.hub-anatomy-frame-container {
+    width: 100vw;
+    height: 100vh;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    position: relative;
+    overflow: hidden;
+    background: #000;
+}
+
+.hub-cinematic-inspection {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    background: #000 !important;
+    overflow: hidden;
+    position: relative;
+    z-index: 5;
+}
+
+.immersive-3d-journey {
+    position: relative;
+    width: 100%;
+}
+
+.sticky-3d-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.immersive-ui-overlay {
+    pointer-events: none;
+    z-index: 10;
+}
+
+.cinematic-header .section-title {
+    font-family: 'Inter', sans-serif !important;
+    letter-spacing: -0.05em !important;
+    font-weight: 800 !important;
+    line-height: 0.9 !important;
+    background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.terminal-stats {
+    background: rgba(var(--hub-accent-rgb, 255, 102, 0), 0.05);
+    padding: 1.5rem;
+    border-right: 2px solid var(--hub-accent, #ff6600);
+    backdrop-filter: blur(10px);
 }

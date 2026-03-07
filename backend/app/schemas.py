@@ -44,6 +44,10 @@ class UserUpdate(BaseModel):
 class InquiryCreate(BaseModel):
     message: str
     product_list: List[str] = []
+    project_type: Optional[str] = None
+    voltage_required: Optional[str] = None
+    capacity_required: Optional[str] = None
+    industry_segment: Optional[str] = None
 
 class InquiryWithUser(BaseModel):
     id: int
@@ -53,6 +57,10 @@ class InquiryWithUser(BaseModel):
     created_at: str
     user_id: int
     user_email: str
+    project_type: Optional[str] = None
+    voltage_required: Optional[str] = None
+    capacity_required: Optional[str] = None
+    industry_segment: Optional[str] = None
     user_name: Optional[str] = None
     user_phone: Optional[str] = None
 
@@ -68,7 +76,13 @@ class ProductUpdate(BaseModel):
     priceLabel: Optional[str] = None
     availability: Optional[str] = None
     rating: Optional[float] = None
-    # Add other fields as needed
+    chemistry: Optional[str] = None
+    certification: Optional[str] = None
+    cycle_life: Optional[str] = None
+    warranty_years: Optional[int] = None
+    charging_time: Optional[str] = None
+    voltage_nominal: Optional[str] = None
+    capacity_ah: Optional[str] = None
 
 class ResourceBase(BaseModel):
     title: str

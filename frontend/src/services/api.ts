@@ -1,4 +1,6 @@
-const API_URL = 'https://backend-beta-weld-46.vercel.app';
+const API_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:8000'
+    : 'https://backend-beta-weld-46.vercel.app';
 
 export async function apiRequest(endpoint: string, options: RequestInit = {}) {
     const token = localStorage.getItem('access_token');
@@ -38,9 +40,15 @@ export const productService = {
 
 export const authService = {
     login: async (formData: FormData) => {
+        // Convert FormData to URLSearchParams for standard OAuth2 x-www-form-urlencoded
+        const searchParams = new URLSearchParams();
+        formData.forEach((value, key) => {
+            searchParams.append(key, value as string);
+        });
+
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
-            body: formData,
+            body: searchParams,
         });
         if (!response.ok) {
             const error = await response.json();

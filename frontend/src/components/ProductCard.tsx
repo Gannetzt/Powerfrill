@@ -33,7 +33,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Link to={productPath} className="card-image-link">
                 <div className="card-image-container">
                     <img src={image} alt={title} className="product-image" loading="lazy" />
-                    <div className="card-badge">SALE</div>
+                    {product.certification ? (
+                        <div className="card-badge technical">{product.certification}</div>
+                    ) : (
+                        <div className="card-badge">PREMIUM</div>
+                    )}
                 </div>
             </Link>
 

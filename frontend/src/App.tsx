@@ -126,37 +126,37 @@ function App() {
 
                     {/* Admin Routes */}
                     <Route path="/admin" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <AdminDashboard />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/products" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <AdminProductList />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/quotations" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <AdminQuotations />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/products/new" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <ProductEditor />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/products/:id" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <ProductEditor />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/staff" element={
-                      <ProtectedRoute roles={['admin']}>
+                      <ProtectedRoute roles={['ADMIN']}>
                         <StaffManagement />
                       </ProtectedRoute>
                     } />
                     <Route path="/admin/publishing" element={
-                      <ProtectedRoute roles={['admin', 'editor']}>
+                      <ProtectedRoute roles={['ADMIN', 'EDITOR']}>
                         <PublishingCenter />
                       </ProtectedRoute>
                     } />

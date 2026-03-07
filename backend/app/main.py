@@ -99,7 +99,11 @@ async def create_inquiry(inquiry_in: InquiryCreate, current_user: User = Depends
     db_inquiry = Inquiry(
         user_id=current_user.id,
         message=inquiry_in.message,
-        product_list=inquiry_in.product_list
+        product_list=inquiry_in.product_list,
+        project_type=inquiry_in.project_type,
+        voltage_required=inquiry_in.voltage_required,
+        capacity_required=inquiry_in.capacity_required,
+        industry_segment=inquiry_in.industry_segment
     )
     session.add(db_inquiry)
     session.commit()
@@ -117,6 +121,10 @@ async def get_all_inquiries(session: Session = Depends(get_session)):
             message=inquiry.message,
             product_list=inquiry.product_list,
             status=inquiry.status,
+            project_type=inquiry.project_type,
+            voltage_required=inquiry.voltage_required,
+            capacity_required=inquiry.capacity_required,
+            industry_segment=inquiry.industry_segment,
             created_at=inquiry.created_at,
             user_id=inquiry.user_id,
             user_email=user.email if user else "Unknown",

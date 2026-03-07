@@ -54,7 +54,7 @@ const PromotionPopup: React.FC = () => {
         fetchPromos();
     }, [location.pathname]);
 
-    const isAdmin = user?.role === 'admin' || user?.role === 'editor';
+    const isAdmin = user?.role === 'ADMIN' || user?.role === 'EDITOR';
 
     if (!promo || !isVisible || isAdmin) return null;
 

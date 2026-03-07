@@ -26,6 +26,14 @@ export interface ProductData {
     solutionId: string;
     category: string;
     categoryPath: string[];
+    // Technical Depth Fields
+    chemistry?: string;
+    certification?: string;
+    cycleLife?: string;
+    warrantyYears?: number;
+    chargingTime?: string;
+    voltageNominal?: string;
+    capacityAh?: string;
 }
 
 
@@ -55,6 +63,120 @@ export interface SolutionHub {
 
 
 export const productsData: ProductData[] = [
+    // --- NEW PROFESSIONAL CATEGORIES (Inspired by aqueouss.in) ---
+    {
+        id: 'erickshaw-pro-max',
+        menuId: 'battery-bess',
+        groupId: 'automotive-battery-packs',
+        categoryId: 'e-rickshaw',
+        slug: 'professional-erickshaw-battery-60v',
+        title: 'PowerFill Pro-Rickshaw Max',
+        subtitle: 'AIS 156 Phase 2 Certified LFP Pack',
+        image: '/assets/erickshaw-pro.png',
+        productType: 'hardware',
+        brief: 'The ultimate power source for commercial E-Rickshaws, designed for 100km+ daily range and 3000+ cycle life.',
+        chemistry: 'LFP (LiFePO4)',
+        certification: 'AIS 156 Phase 2',
+        cycleLife: '3500+ Cycles @ 80% DOD',
+        warrantyYears: 3,
+        chargingTime: '3 Hours (Fast Charge)',
+        voltageNominal: '60V',
+        capacityAh: '100Ah',
+        features: [
+            { value: '100km+', label: 'RANGE' },
+            { value: 'AIS 156', label: 'CERTIFIED' },
+            { value: '3500+', label: 'CYCLES' }
+        ],
+        description: 'Engineered for the demanding Indian terrain, the Pro-Rickshaw Max offers unmatched reliability. With advanced BMS protection and high-quality LFP cells, it ensures maximum safety and ROI for fleet operators.',
+        industryTags: ['Commercial', 'Logistics'],
+        technologyTags: ['LFP', 'Smart BMS', 'AIS 156'],
+        applicationTags: ['E-Rickshaw', 'Cargo Loader'],
+        specifications: {
+            'Nominal Voltage': '60V',
+            'Rated Capacity': '100Ah',
+            'Max Discharge Current': '100A',
+            'Peak Discharge (3s)': '200A',
+            'IP Rating': 'IP67'
+        },
+        solutionId: 'battery-bess',
+        category: 'E-RICKSHAW BATTERY',
+        categoryPath: ['Automotive', 'E-Rickshaw']
+    },
+    {
+        id: 'escooter-pro-glide',
+        menuId: 'battery-bess',
+        groupId: 'automotive-battery-packs',
+        categoryId: 'e-scooter',
+        slug: 'professional-escooter-battery-72V',
+        title: 'PowerFill Glide-Pro',
+        subtitle: 'High-Performance E-Scooter Module',
+        image: '/assets/escooter-pro.png',
+        productType: 'hardware',
+        brief: 'Compact, high-density Lithium-ion pack for next-gen electric scooters and motorcycles.',
+        chemistry: 'NMC / LFP Options',
+        certification: 'AIS 156 compliant',
+        cycleLife: '2000+ Cycles',
+        warrantyYears: 2,
+        chargingTime: '2 Hours',
+        voltageNominal: '72V',
+        capacityAh: '40Ah',
+        features: [
+            { value: '72V', label: 'POWER' },
+            { value: '2 Hours', label: 'CHARGE' },
+            { value: 'IP67', label: 'WATERPROOF' }
+        ],
+        description: 'The Glide-Pro is designed for urban commuters who demand performance and safety. Its compact form factor and smart thermal management make it the perfect fit for modern e-scooters.',
+        industryTags: ['Mobility', 'Consumer'],
+        technologyTags: ['High Density', 'Compact Design'],
+        applicationTags: ['E-Scooter', 'E-Bike'],
+        specifications: {
+            'Nominal Voltage': '72V',
+            'Capacity': '40Ah',
+            'Weight': '18kg',
+            'Dimensions': '320 x 200 x 180 mm'
+        },
+        solutionId: 'battery-bess',
+        category: 'E-SCOOTER BATTERY',
+        categoryPath: ['Automotive', 'E-Scooter']
+    },
+    {
+        id: 'solar-pro-store',
+        menuId: 'solar-energy',
+        groupId: 'energy-storage-solutions',
+        categoryId: 'solar-storage',
+        slug: 'professional-solar-storage-battery',
+        title: 'SolarStore Industrial Max',
+        subtitle: 'Deep-Cycle Solar Storage System',
+        image: '/assets/solar-pro.png',
+        productType: 'hardware',
+        brief: 'Industrial-grade LFP storage for off-grid and hybrid solar plants, featuring modular scalability.',
+        chemistry: 'LFP (LiFePO4)',
+        certification: 'IEC 62619 / CE',
+        cycleLife: '6000+ Cycles @ 0.5C',
+        warrantyYears: 5,
+        chargingTime: '4-6 Hours',
+        voltageNominal: '48V / 51.2V',
+        capacityAh: '200Ah (Per Module)',
+        features: [
+            { value: '6000+', label: 'CYCLES' },
+            { value: '5 Years', label: 'WARRANTY' },
+            { value: 'Modular', label: 'SCALABLE' }
+        ],
+        description: 'SolarStore Industrial Max is the backbone of reliable solar energy storage. With its long cycle life and robust safety features, it provides consistent power for years, reducing the total cost of ownership.',
+        industryTags: ['Solar', 'Industrial', 'Backup'],
+        technologyTags: ['Deep Cycle', 'LFP', 'Modular'],
+        applicationTags: ['Off-Grid Solar', 'Grid-Tie Backup', 'Industrial UPS'],
+        specifications: {
+            'Energy': '10.24 kWh',
+            'Max Charge/Discharge': '100A',
+            'Parallel Support': 'Up to 15 Units',
+            'Life Expectancy': '10+ Years'
+        },
+        solutionId: 'solar-energy',
+        category: 'SOLAR STORAGE',
+        categoryPath: ['Solar', 'Storage']
+    },
+
     // --- SOLAR POWER SOLUTIONS ---
     // Solar Panels
     {

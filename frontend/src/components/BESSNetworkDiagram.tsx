@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import './BESSNetworkDiagram.css';
+
+gsap.registerPlugin(MotionPathPlugin);
 
 /**
  * BESS Network Diagram — Correct Energy Flow
@@ -9,6 +13,91 @@ import './BESSNetworkDiagram.css';
  * Power Grid ──► BESS (Charges Batteries) ──► Battery Swapping Station ◄── Customer EVs
  */
 const BESSNetworkDiagram: React.FC = () => {
+    const svgRef = useRef<SVGSVGElement>(null);
+
+    useEffect(() => {
+        if (!svgRef.current) return;
+
+        const ctx = gsap.context(() => {
+            // 1. Flow Lines Animation
+            const flowLines = svgRef.current?.querySelectorAll('.flow-line');
+            if (flowLines && flowLines.length > 0) {
+                gsap.to(flowLines, {
+                    strokeDashoffset: -100,
+                    duration: 2,
+                    repeat: -1,
+                    ease: "none"
+                });
+            }
+
+            // 2. Battery Fills Stagger
+            const fills = svgRef.current?.querySelectorAll('.battery-fill');
+            if (fills && fills.length > 0) {
+                gsap.fromTo(fills,
+                    { opacity: 0.2, scaleX: 0.5 },
+                    {
+                        opacity: 0.8,
+                        scaleX: 1,
+                        duration: 1.5,
+                        stagger: 0.1,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut"
+                    }
+                );
+            }
+
+            // 3. Solar Cells Shimmer
+            const solarCells = svgRef.current?.querySelectorAll('.solar-cell');
+            if (solarCells && solarCells.length > 0) {
+                gsap.to(solarCells, {
+                    opacity: 0.8,
+                    duration: 2,
+                    stagger: {
+                        amount: 1.5,
+                        from: "random"
+                    },
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+
+            // 4. Power Pulses (Travelling dots)
+            const lines = ['flow-solar-bess', 'flow-bess-grid', 'flow-bess-ev'];
+            lines.forEach((className) => {
+                const path = svgRef.current?.querySelector(`.${className}`) as SVGPathElement;
+                if (!path) return;
+
+                // Create a pulse circle for each main line
+                const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                pulse.setAttribute("r", "3");
+                pulse.setAttribute("fill", className.includes('solar') ? "#ffcc00" : "#ff6600");
+                pulse.setAttribute("class", "power-pulse-particle");
+                pulse.style.filter = "drop-shadow(0 0 4px " + (className.includes('solar') ? "#ffcc00" : "#ff6600") + ")";
+                svgRef.current?.appendChild(pulse);
+
+                gsap.set(pulse, { opacity: 0 });
+
+                gsap.to(pulse, {
+                    motionPath: {
+                        path: path,
+                        align: path,
+                        alignOrigin: [0.5, 0.5],
+                        autoRotate: true
+                    },
+                    opacity: 1,
+                    duration: className.includes('solar') ? 2 : 3,
+                    repeat: -1,
+                    ease: "none",
+                    delay: Math.random() * 2
+                });
+            });
+        }, svgRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
         <div className="bess-diagram-wrapper">
             <div className="bess-diagram-label">
@@ -17,6 +106,7 @@ const BESSNetworkDiagram: React.FC = () => {
             </div>
 
             <svg
+                ref={svgRef}
                 className="bess-network-svg"
                 viewBox="0 0 960 440"
                 fill="none"

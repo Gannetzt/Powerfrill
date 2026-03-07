@@ -4,10 +4,15 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import './ExplodedBessCabinet.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ExplodedBessCabinet: React.FC = () => {
+interface ExplodedBessCabinetProps {
+    accent?: string;
+}
+
+const ExplodedBessCabinet: React.FC<ExplodedBessCabinetProps> = ({ accent = '#ff4500' }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -16,14 +21,13 @@ const ExplodedBessCabinet: React.FC = () => {
 
         // --- Core Setup ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x02050a); // Industrial dark background
-        scene.fog = new THREE.Fog(0x02050a, 20, 150);
+        scene.background = null;
 
         const width = containerRef.current.clientWidth;
         const height = containerRef.current.clientHeight;
 
-        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-        camera.position.set(0, 8, 60); // Zoomed out initial position
+        const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
+        camera.position.set(0, 8, 55);
 
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
@@ -43,9 +47,9 @@ const ExplodedBessCabinet: React.FC = () => {
         controls.enableZoom = false;
 
         // --- Lights ---
-        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        const mainLight = new THREE.DirectionalLight(0xffffff, 2.2);
         mainLight.position.set(20, 30, 20);
         mainLight.castShadow = true;
         mainLight.shadow.mapSize.width = 1024;
@@ -56,34 +60,32 @@ const ExplodedBessCabinet: React.FC = () => {
         mainLight.shadow.camera.bottom = -30;
         scene.add(mainLight);
 
-        const headLight = new THREE.SpotLight(0xffffff, 0.8, 100, Math.PI / 4, 0.5);
+        const headLight = new THREE.SpotLight(0xffffff, 1.5, 100, Math.PI / 4, 0.5);
         headLight.position.set(0, 15, 50);
         scene.add(headLight);
 
-        // --- Floor ---
-        const floorGeo = new THREE.PlaneGeometry(200, 200);
-        const floorMat = new THREE.ShadowMaterial({ opacity: 0.15 });
-        const floor = new THREE.Mesh(floorGeo, floorMat);
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        scene.add(floor);
+        const fillLight = new THREE.DirectionalLight(0x00aaff, 0.8);
+        fillLight.position.set(-20, 10, -15);
+        scene.add(fillLight);
 
-        const grid = new THREE.GridHelper(100, 40, 0x333333, 0x111111);
-        scene.add(grid);
+        // --- Floor Removed ("only keep the bess") ---
 
         // --- Cabinet Materials ---
         const cabinetMat = new THREE.MeshStandardMaterial({ color: 0x151515, roughness: 0.6, metalness: 0.2 });
         const internalMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.8 });
         const moduleMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 });
         const cellOrangeMat = new THREE.MeshStandardMaterial({
-            color: 0xff4500,
-            emissive: 0xff4500,
-            emissiveIntensity: 1.2,
-            roughness: 0.3
+            color: new THREE.Color(accent),
+            emissive: new THREE.Color(accent),
+            emissiveIntensity: 1.5,
+            roughness: 0.2,
+            metalness: 0.5
         });
-        const doorInnerMat = new THREE.MeshStandardMaterial({ color: 0xdbdbdb, roughness: 0.4 });
-        const orangeCableMat = new THREE.MeshStandardMaterial({ color: 0xff4500, roughness: 0.3, metalness: 0.1 });
+        const doorInnerMat = new THREE.MeshStandardMaterial({ color: 0xdbdbdb, roughness: 0.4, metalness: 0.3 });
+        const orangeCableMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(accent), roughness: 0.3, metalness: 0.3 });
         const screenMat = new THREE.MeshBasicMaterial({ color: 0x222222 });
+
+
 
         // --- Textures ---
         const textureLoader = new THREE.TextureLoader();
@@ -128,9 +130,28 @@ const ExplodedBessCabinet: React.FC = () => {
         const dangerMat = new THREE.MeshBasicMaterial({ map: dangerTex, transparent: true });
 
         // --- Modeling ---
+        // --- Particles ---
+        const particleCount = 1000;
+        const particleGeo = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 200;
+        }
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particleMat = new THREE.PointsMaterial({
+            size: 0.2,
+            color: new THREE.Color(accent),
+            transparent: true,
+            opacity: 0.3,
+            blending: THREE.AdditiveBlending
+        });
+        const particles = new THREE.Points(particleGeo, particleMat);
+        scene.add(particles);
+
         const cabWidth = 18; const cabHeight = 20; const cabDepth = 14;
         const cabinetGroup = new THREE.Group();
         cabinetGroup.position.y = 1.5;
+        cabinetGroup.scale.set(1.3, 1.3, 1.3); // Reduced for "clear view"
         scene.add(cabinetGroup);
 
         const wallThick = 0.5;
@@ -144,6 +165,30 @@ const ExplodedBessCabinet: React.FC = () => {
         const topWall = new THREE.Mesh(new THREE.BoxGeometry(cabWidth, wallThick, cabDepth), cabinetMat);
         topWall.position.set(0, cabHeight - wallThick / 2, 0);
         walls.add(topWall);
+
+        // --- Energy Flow Infrastructure ---
+        const flowLines = new THREE.Group();
+        flowLines.visible = false;
+        cabinetGroup.add(flowLines);
+
+        const flowMat = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(accent),
+            transparent: true,
+            opacity: 0,
+            blending: THREE.AdditiveBlending
+        });
+
+        // Create horizontal busbars/lines between modules
+        for (let r = 0; r < 6; r++) {
+            const line = new THREE.Mesh(new THREE.BoxGeometry(cabWidth - 2, 0.05, 0.05), flowMat);
+            line.position.set(0, (r + 0.5) * (cabHeight / 6), 0);
+            flowLines.add(line);
+        }
+
+        // --- Scanning Light ---
+        const scanLight = new THREE.PointLight(0x00ffff, 0, 15);
+        scanLight.position.set(0, cabHeight / 2, 2);
+        cabinetGroup.add(scanLight);
 
         const bottomWall = new THREE.Mesh(new THREE.BoxGeometry(cabWidth, wallThick, cabDepth), cabinetMat);
         bottomWall.position.set(0, wallThick / 2, 0);
@@ -288,29 +333,83 @@ const ExplodedBessCabinet: React.FC = () => {
             cabinetGroup.add(w);
         });
 
-        // --- Animations ---
+        // --- Animations (Emo Energy Style Sequenced Reveal) ---
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top center",
                 end: "bottom center",
-                scrub: 1.5
+                scrub: 1.5,
+                // snap: {
+                //     snapTo: [0, 0.5, 1], // defined steps: Closed -> Opened -> Exploded
+                //     duration: {min: 0.5, max: 1.5},
+                //     ease: "power3.inOut"
+                // }
             }
         });
 
-        tl.to(leftDoorGroup.rotation, { y: -Math.PI * 0.8, ease: "power2.inOut" }, 0);
-        tl.to(rightDoorGroup.rotation, { y: Math.PI * 0.8, ease: "power2.inOut" }, 0);
+        // 1. Initial State: Large and impressively framed.
+        camera.position.set(0, 10, 60);
 
-        allBatteries.forEach((bat) => {
-            tl.to(bat.position, {
-                z: 10 + Math.random() * 5, // Reduced explosion depth
-                x: bat.position.x * 1.3,
-                y: bat.position.y * 1.3,
-                ease: "power1.inOut"
-            }, 0.2);
-        });
+        // 2. Camera sweeps back to show full expansion
+        tl.to(camera.position, { z: 85, y: 30, ease: "power2.inOut", duration: 2 }, 0);
 
-        tl.to(camera.position, { z: 45, y: 15, ease: "power2.inOut" }, 0); // Zoomed out end position
+        // 3. Doors swing open (snappier, engineered feel)
+        tl.to(leftDoorGroup.rotation, { y: -Math.PI * 0.8, ease: "power4.inOut", duration: 1 }, 0.5);
+        tl.to(rightDoorGroup.rotation, { y: Math.PI * 0.8, ease: "power4.inOut", duration: 1 }, 0.5);
+
+        // 4. Structured Forward Slide (Disassembly)
+        // Instead of throwing particles, we slide them forward linearly
+        tl.to(allBatteries.map(bat => bat.position), {
+            z: (_i, target) => target.z + 12, // Slide forward clearly
+            x: (_i, target) => target.x * 1.1, // Very slight widening
+            y: (_i, target) => target.y,       // Keep vertical alignment
+            ease: "power2.inOut",
+            duration: 2,
+            stagger: {
+                amount: 1.2,
+                from: "start"
+            }
+        }, 1.2);
+
+        // 5. Reveal Energy Flow Lines & Scanning Effect
+        tl.to(flowMat, {
+            opacity: 0.8,
+            duration: 1,
+            onStart: () => { flowLines.visible = true; }
+        }, 2.0);
+
+        tl.to(scanLight, {
+            intensity: 10,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        }, 2.0);
+
+        // Procedural scanning movement
+        tl.to(scanLight.position, {
+            y: cabHeight,
+            duration: 4,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        }, 2.0);
+
+        // --- New Scrolling Effects ---
+        // Subtle vertical glide
+        tl.to(cabinetGroup.position, {
+            y: 5,
+            ease: "none",
+            duration: 4
+        }, 0);
+
+        // Particle Parallax
+        tl.to(particles.position, {
+            y: -30,
+            ease: "none",
+            duration: 4
+        }, 0);
 
         let isVisible = true;
         const observer = new IntersectionObserver(
@@ -325,7 +424,7 @@ const ExplodedBessCabinet: React.FC = () => {
             },
             { threshold: 0.05 }
         );
-        observer.observe(containerRef.current);
+        if (containerRef.current) observer.observe(containerRef.current);
 
         const clock = new THREE.Clock();
         let animationFrameId: number;
@@ -335,6 +434,15 @@ const ExplodedBessCabinet: React.FC = () => {
             if (isVisible) {
                 const t = clock.getElapsedTime();
                 cellOrangeMat.emissiveIntensity = 1.0 + Math.sin(t * 3) * 0.4;
+
+                // Sync rotation with ScrollTrigger progress for "alive" feel
+                const progress = tl.scrollTrigger?.progress || 0;
+                cabinetGroup.rotation.y = (progress - 0.5) * 0.8;
+
+                // Particles slow drift
+                particles.rotation.y = t * 0.05;
+                particles.rotation.x = t * 0.02;
+
                 controls.update();
                 renderer.render(scene, camera);
             }
@@ -355,8 +463,13 @@ const ExplodedBessCabinet: React.FC = () => {
             window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
             observer.disconnect();
+
+            // Dispose Three.js resources
+            particleGeo.dispose();
+            particleMat.dispose();
             renderer.dispose();
             scene.clear();
+
             ScrollTrigger.getAll().forEach(st => st.kill());
         };
     }, []);
@@ -364,12 +477,6 @@ const ExplodedBessCabinet: React.FC = () => {
     return (
         <div ref={containerRef} className="exploded-bess-cabinet">
             <canvas ref={canvasRef} />
-
-            {/* HUD Overlay */}
-            <div className="exploded-hud">
-                <div className="eyebrow">SYSTEM_INSPECTION_MODE</div>
-                <div className="title">CABINET_EXPLODED_VIEW</div>
-            </div>
         </div>
     );
 };

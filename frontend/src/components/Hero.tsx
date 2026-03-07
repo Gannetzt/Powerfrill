@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import "./Hero.css";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 
 // --- Sections Data ---
@@ -21,7 +25,8 @@ const sections = [
         ],
         route: '/hub/bess-info',
         actionLabel: 'CHECK BESS PRODUCTS',
-        bgVideo: '/assets/hero-bg.mp4',
+        bgImage: '/assets/hero-bess-bg.png',
+        bgVideo: '/assets/bess-bg.mp4',
         isLight: false
     },
     {
@@ -38,22 +43,25 @@ const sections = [
         ],
         route: '/products',
         actionLabel: 'EXPLORE PRODUCTS',
+        bgImage: '/assets/hero-products-bg.png',
+        bgVideo: '/assets/products-bg.mp4',
         isLight: false
     },
     {
         id: "03",
         label: "APPLICATION",
-        title: "APPLICATION",
-        subtitle: "ENGINEERING SERVICES · CUSTOM SOLUTIONS",
-        description: "Beyond hardware, we offer specialized engineering services: custom power module development, full-scale site maintenance, and deep-sea application consulting for extreme environments.",
+        title: "MONETIZATION",
+        subtitle: "ENERGY TRADING · GRID BALANCING",
+        description: "Transform your energy storage into a revenue-generating asset. Our advanced software seamlessly integrates with wholesale energy markets, automatically identifying and capitalizing on peak pricing opportunities, frequency regulation, and capacity markets.",
         accent: "#ffcc00",
         stats: [
-            { val: "IP67", unit: "RATING" },
-            { val: "-40C", unit: "TEMP" },
-            { val: "20Y", unit: "LIFE" },
+            { val: "AI", unit: "TRADING" },
+            { val: "24/7", unit: "ARBITRAGE" },
+            { val: "ROI", unit: "MAXIMIZED" },
         ],
         route: '/hub/application',
         actionLabel: 'OUR SERVICES',
+        bgImage: '/assets/hero-application-monetize-bg.png',
         bgVideo: '/assets/application-bg.mp4',
         isLight: false
     },
@@ -73,28 +81,61 @@ const sections = [
         ],
         route: '/hub/innovation',
         actionLabel: 'FUTURE TECH',
-        bgVideo: '/assets/innovation-bg.mp4',
+        bgImage: '/assets/hero-innovation-bg.png',
         isLight: false
     },
     {
         id: "05",
         label: "ABOUT",
-        title: "ABOUT",
-        subtitle: "MISSION · CONTACT INFORMATION",
-        description: "Mission: To digitize the world's energy grid through vertically integrated hardware. Contact us at info@powerfrill.tech or visit our Global HQ for strategic partnerships.",
+        title: "ABOUT POWERFILL",
+        subtitle: "GLOBAL LEADERSHIP · INDUSTRIAL SCALE",
+        description: "PowerFill is a global leader in energy infrastructure, operating across 42 regions with a focus on mission-critical battery systems and grid monetization. We combine enterprise-grade hardware with intelligent software to participate in the world's most lucrative energy markets, ensuring maximum ROI and grid stability for a decentralized energy future.",
         accent: "#ff0066",
         stats: [
-            { val: "EST", unit: "2018" },
-            { val: "GLOBAL", unit: "AUTH" },
-            { val: "24/7", unit: "SUPP" },
+            { val: "42", unit: "REGIONS" },
+            { val: "SECURE", unit: "TRANSACT" },
+            { val: "24/7", unit: "MONITOR" },
         ],
         route: '/hub/about',
-        actionLabel: 'GET IN TOUCH',
-        bgVideo: '/assets/about-bg.mp4',
+        actionLabel: 'OUR IDENTITY',
+        bgImage: '/assets/hero-about-monetize-bg.png',
         isLight: false
-    },
+    }
 ];
 
+
+
+
+
+// --- Text Splitting Utils (Emo Energy Style) ---
+const SplitChars = ({ children, className = "" }: { children: string, className?: string }) => {
+    return (
+        <span className={`split-chars-wrapper ${className}`} style={{ display: 'inline-block' }}>
+            {children.split("").map((char, i) => (
+                char === " " ? <span key={i} style={{ display: 'inline-block', width: '0.25em' }}>&nbsp;</span> :
+                    <span key={i} style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top' }}>
+                        <span className="split-char" style={{ display: 'inline-block', transform: 'translateY(120%)', opacity: 0 }}>
+                            {char}
+                        </span>
+                    </span>
+            ))}
+        </span>
+    );
+};
+
+const SplitWords = ({ children, className = "" }: { children: string, className?: string }) => {
+    return (
+        <span className={`split-words-wrapper ${className}`} style={{ display: 'inline-block' }}>
+            {children.split(" ").map((word, i) => (
+                <span key={i} style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', marginRight: '0.25em' }}>
+                    <span className="split-word" style={{ display: 'inline-block', transform: 'translateY(120%)', opacity: 0 }}>
+                        {word}
+                    </span>
+                </span>
+            ))}
+        </span>
+    );
+};
 
 const Hero: React.FC = () => {
     const navigate = useNavigate();
@@ -111,33 +152,46 @@ const Hero: React.FC = () => {
         window.dispatchEvent(event);
     }, [activeSection]);
 
-    useEffect(() => {
-        let lastScrollTime = 0;
-        const throttleInterval = 100; // ms
+    // GSAP Scroll Animations
+    useGSAP(() => {
+        const sectionElements = gsap.utils.toArray<HTMLElement>('.hero-scroll-section');
 
-        const handleScroll = () => {
-            const now = Date.now();
-            if (now - lastScrollTime < throttleInterval) return;
-            lastScrollTime = now;
+        sectionElements.forEach((sec, i) => {
+            // Emo Energy style text reveal: fade up and staggered characters and words
+            const charEls = sec.querySelectorAll('.split-char');
+            const wordEls = sec.querySelectorAll('.split-word');
+            const otherEls = sec.querySelectorAll('.rimac-stats, .rimac-cta-wrapper');
 
-            const container = containerRef.current;
-            if (!container) return;
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sec,
+                    scroller: containerRef.current,
+                    start: "top 60%", // Start revealing when section is 60% in view
+                    toggleActions: "play none none reverse" // Play forward on enter, reverse on leave back
+                }
+            });
 
-            const vh = window.innerHeight;
-            const scrollPos = container.scrollTop;
-            const index = Math.round(scrollPos / vh);
-
-            if (index !== activeSection && index < sections.length) {
-                setActiveSection(index);
+            if (charEls.length) {
+                // Snappy ease for technical Rimac/Emo Energy feel
+                tl.to(charEls, { y: '0%', opacity: 1, duration: 0.8, stagger: 0.02, ease: "power4.out" }, 0);
             }
-        };
+            if (wordEls.length) {
+                tl.to(wordEls, { y: '0%', opacity: 1, duration: 0.8, stagger: 0.015, ease: "power3.out" }, 0.15);
+            }
+            if (otherEls.length) {
+                tl.fromTo(otherEls, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }, 0.4);
+            }
 
-        const el = containerRef.current;
-        if (el) el.addEventListener("scroll", handleScroll, { passive: true });
-        return () => {
-            if (el) el.removeEventListener("scroll", handleScroll);
-        };
-    }, [activeSection]);
+            // Trigger active section for Nav Dots and Background Image Opacity logic
+            ScrollTrigger.create({
+                trigger: sec,
+                scroller: containerRef.current,
+                start: "top 50%",
+                onEnter: () => setActiveSection(i),
+                onEnterBack: () => setActiveSection(i)
+            });
+        });
+    }, { scope: containerRef });
 
     const goToSection = (index: number) => {
         const container = containerRef.current;
@@ -154,35 +208,55 @@ const Hero: React.FC = () => {
             className="hero-page-rimac-v2"
             style={{ overflowY: 'auto', scrollSnapType: 'y mandatory' }}
         >
-            {/* Ambient Background Videos - Fixed */}
-            <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+            {/* Ambient Background Images with Parallax & Scale Effect */}
+            <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', backgroundColor: '#050505' }}>
                 {sections.map((s, i) => {
-                    // Performance: Only render the active video to save CPU/GPU decode cycles
-                    // Browsers struggle with playing 5+ 1080p videos even if opacity is 0
-                    if (activeSection !== i && s.bgVideo) return null;
-
-                    return s.bgVideo && (
-                        <video
-                            key={`bg-video-${i}`}
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="hero-video-background"
+                    const isActive = activeSection === i;
+                    return (
+                        <div
+                            key={`bg-content-${i}`}
+                            className="hero-background-layer"
                             style={{
                                 position: 'absolute',
                                 top: 0,
                                 left: 0,
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover',
-                                opacity: activeSection === i ? 0.95 : 0,
-                                filter: 'none',
-                                transition: 'opacity 1s ease-in-out',
+                                opacity: isActive ? 0.85 : 0,
+                                transform: isActive ? 'scale(1)' : 'scale(1.1)',
+                                filter: 'brightness(0.7) contrast(1.1)',
+                                transition: 'opacity 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), transform 1.8s cubic-bezier(0.25, 0.1, 0.25, 1)',
                             }}
                         >
-                            <source src={s.bgVideo} type="video/mp4" />
-                        </video>
+                            {(s as any).bgVideo ? (
+                                <video
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    poster={s.bgImage}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover'
+                                    }}
+                                >
+                                    <source src={(s as any).bgVideo} type="video/mp4" />
+                                </video>
+                            ) : (
+                                s.bgImage && (
+                                    <div
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            backgroundImage: `url(${s.bgImage})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                        }}
+                                    />
+                                )
+                            )}
+                        </div>
                     );
                 })}
             </div>
@@ -194,31 +268,29 @@ const Hero: React.FC = () => {
                     className="hero-scroll-section"
                     style={{ height: '100vh', scrollSnapAlign: 'start', position: 'relative' }}
                 >
-                    <motion.div
-                        className={`rimac-content-container ${i === 2 || i === 4 ? 'layout-bottom-right' : 'layout-center'}`}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: false, amount: 0.5 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        {!(i === 2 || i === 4) && (
-                            <>
-                                <div className="rimac-eyebrow">0{i + 1} {s.label}</div>
-                                <h2 className="rimac-title">{s.title}</h2>
-                                <p className="rimac-description">{s.description}</p>
+                    <div className="rimac-content-container layout-center">
+                        <>
+                            <div className="rimac-eyebrow">
+                                <SplitChars>{`0${i + 1}`}</SplitChars> <SplitChars>{s.label}</SplitChars>
+                            </div>
+                            <h2 className="rimac-title">
+                                <SplitChars>{s.title}</SplitChars>
+                            </h2>
+                            <p className="rimac-description">
+                                <SplitWords>{s.description}</SplitWords>
+                            </p>
 
-                                {s.stats && (
-                                    <div className="rimac-stats">
-                                        {s.stats.map((st, si) => (
-                                            <div key={si} className="rimac-stat">
-                                                <span className="rimac-stat-val">{st.val}</span>
-                                                <span className="rimac-stat-unit">{st.unit}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </>
-                        )}
+                            {s.stats && (
+                                <div className="rimac-stats">
+                                    {s.stats.map((st, si) => (
+                                        <div key={si} className="rimac-stat">
+                                            <span className="rimac-stat-val">{st.val}</span>
+                                            <span className="rimac-stat-unit">{st.unit}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </>
 
                         <div className="rimac-cta-wrapper">
                             <button
@@ -230,7 +302,7 @@ const Hero: React.FC = () => {
                                 <span className="btn-line right" />
                             </button>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             ))}
 

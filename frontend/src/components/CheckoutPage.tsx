@@ -14,6 +14,10 @@ const CheckoutPage: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [quoteId, setQuoteId] = useState('');
     const [message, setMessage] = useState('');
+    const [projectType, setProjectType] = useState('Standard Solution');
+    const [voltage, setVoltage] = useState('');
+    const [capacity, setCapacity] = useState('');
+    const [industrySegment, setIndustrySegment] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -31,7 +35,11 @@ const CheckoutPage: React.FC = () => {
             const productIds = cartItems.map(item => item.id);
             const inquiry = await productService.createInquiry({
                 message,
-                product_list: productIds
+                product_list: productIds,
+                project_type: projectType,
+                voltage_required: voltage,
+                capacity_required: capacity,
+                industry_segment: industrySegment
             });
 
             setQuoteId(`QT-${inquiry.id}`);
@@ -123,10 +131,49 @@ const CheckoutPage: React.FC = () => {
                                 </div>
 
                                 <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>PROJECT TYPE</label>
+                                        <select value={projectType} onChange={(e) => setProjectType(e.target.value)}>
+                                            <option value="Standard Solution">Standard Solution</option>
+                                            <option value="Custom Battery Pack">Custom Battery Pack</option>
+                                            <option value="OEM Manufacturing">OEM Manufacturing</option>
+                                            <option value="Prototype Development">Prototype Development</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>INDUSTRY SEGMENT</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. E-Rickshaw, Solar, Medical"
+                                            value={industrySegment}
+                                            onChange={(e) => setIndustrySegment(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>REQUIRED VOLTAGE (V)</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. 48V, 60V, 72V"
+                                            value={voltage}
+                                            onChange={(e) => setVoltage(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>REQUIRED CAPACITY (Ah)</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. 100Ah, 200Ah"
+                                            value={capacity}
+                                            onChange={(e) => setCapacity(e.target.value)}
+                                            required
+                                        />
+                                    </div>
                                     <div className="form-group full">
-                                        <label>PROJECT SPECIFICATIONS / NOTES</label>
+                                        <label>TECHNICAL SPECIFICATIONS / PROJECT NOTES</label>
                                         <textarea
-                                            placeholder="Tell us about your project requirements or raise any technical questions..."
+                                            placeholder="Tell us about your technical requirements or specific use cases..."
                                             rows={6}
                                             value={message}
                                             onChange={(e) => setMessage(e.target.value)}

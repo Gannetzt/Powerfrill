@@ -4,9 +4,9 @@ from sqlmodel import SQLModel, Field, Column, JSON
 from enum import Enum
 
 class UserRole(str, Enum):
-    ADMIN = "admin"
-    EDITOR = "editor"
-    VIEWER = "viewer"
+    ADMIN = "ADMIN"
+    EDITOR = "EDITOR"
+    VIEWER = "VIEWER"
 
 class UserBase(SQLModel):
     username: Optional[str] = Field(default=None, unique=True, index=True)
@@ -28,6 +28,11 @@ class Inquiry(SQLModel, table=True):
     message: str
     product_list: List[str] = Field(default=[], sa_column=Column(JSON))
     status: str = Field(default="pending")
+    # Added for professional consultation flow
+    project_type: Optional[str] = None
+    voltage_required: Optional[str] = None
+    capacity_required: Optional[str] = None
+    industry_segment: Optional[str] = None
     created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
 
 class ProductBase(SQLModel):
@@ -42,13 +47,21 @@ class ProductBase(SQLModel):
     productType: str
     brief: str
     description: str
+    # Technical Depth Fields (Inspired by aqueouss.in)
+    chemistry: Optional[str] = "LFP" # LFP, NMC, etc.
+    certification: Optional[str] = "AIS 156" 
+    cycle_life: Optional[str] = "3000+"
+    warranty_years: Optional[int] = 3
+    charging_time: Optional[str] = "2-4 Hours"
+    voltage_nominal: Optional[str] = None
+    capacity_ah: Optional[str] = None
     features: List[Dict[str, str]] = Field(default=[], sa_column=Column(JSON))
     advantages: List[str] = Field(default=[], sa_column=Column(JSON))
     applications: Optional[str] = None
     proTip: Optional[str] = None
     gallery: List[str] = Field(default=[], sa_column=Column(JSON))
     priceLabel: Optional[str] = None
-    availability: Optional[str] = None
+    availability: Optional[str] = "In Stock"
     rating: Optional[float] = None
     hideQuotation: bool = Field(default=False)
     industryTags: List[str] = Field(default=[], sa_column=Column(JSON))

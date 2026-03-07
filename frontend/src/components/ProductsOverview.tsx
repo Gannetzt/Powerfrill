@@ -81,6 +81,17 @@ const ProductsOverview: React.FC = () => {
                     </div>
 
                     <div className="sidebar-section">
+                        <h4>Applications</h4>
+                        <ul className="category-list small">
+                            <li onClick={() => setSearchQuery('Rickshaw')}>E-Rickshaw</li>
+                            <li onClick={() => setSearchQuery('Scooter')}>E-Scooter</li>
+                            <li onClick={() => setSearchQuery('Solar')}>Solar Storage</li>
+                            <li onClick={() => setSearchQuery('Industrial')}>Industrial UPS</li>
+                            <li onClick={() => setSearchQuery('Medical')}>Medical Grade</li>
+                        </ul>
+                    </div>
+
+                    <div className="sidebar-section">
                         <h4>Need Assistance?</h4>
                         <div className="assistance-box">
                             <p>Can't find the specific energy infrastructure you need?</p>

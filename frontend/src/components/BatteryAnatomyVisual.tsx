@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import './BatteryAnatomyVisual.css';
 
 interface BatteryAnatomyVisualProps {
@@ -438,11 +439,22 @@ const BatteryAnatomyVisual: React.FC<BatteryAnatomyVisualProps> = ({ accent, pro
 
             ctx.clearRect(0, 0, W, H);
 
-            // Subtle Grid (Only if HUD is on)
+            // Scanning Lines (Emo Energy Style)
             if (showHud) {
+                // Subtle Grid
                 ctx.save(); ctx.globalAlpha = 0.035; ctx.strokeStyle = '#ff8c00';
                 for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
                 for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+                // Horizontal Scanning Beam
+                const scanY = (animT * 120) % H;
+                const g = ctx.createLinearGradient(0, scanY - 2, 0, scanY + 2);
+                g.addColorStop(0, 'transparent');
+                g.addColorStop(0.5, 'rgba(0, 229, 255, 0.4)');
+                g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g;
+                ctx.fillRect(0, scanY - 2, W, 4);
+
                 ctx.restore();
             }
 
@@ -491,15 +503,44 @@ const BatteryAnatomyVisual: React.FC<BatteryAnatomyVisualProps> = ({ accent, pro
         };
     }, [accent, progress]);
 
-    const pct = Math.round(clamp(1 - progress / 0.72, 0, 1) * 100);
-    const statusText = progress < 0.05 ? 'ASSEMBLED' : progress > 0.88 ? 'DISASSEMBLED' : 'ANATOMY VIEW';
+    const [smoothProgress, setSmoothProgress] = useState(progress);
+    const hudContainerRef = useRef<HTMLDivElement>(null);
+
+    // Sync smooth progress
+    useEffect(() => {
+        gsap.to({ val: smoothProgress }, {
+            val: progress,
+            duration: 0.6,
+            ease: "power2.out",
+            onUpdate: function () {
+                setSmoothProgress(this.targets()[0].val);
+            }
+        });
+    }, [progress]);
+
+    // Animate HUD Readouts on mount/show
+    useEffect(() => {
+        if (showHud && hudContainerRef.current) {
+            const readouts = hudContainerRef.current.querySelectorAll('.hud-readout');
+            const corners = hudContainerRef.current.querySelectorAll('.hud-part');
+
+            gsap.set([readouts, corners], { opacity: 0, scale: 0.95 });
+
+            const tl = gsap.timeline();
+            tl.to(corners, { opacity: 0.45, scale: 1, duration: 0.8, stagger: 0.1, ease: "power4.out" })
+                .to(readouts, { opacity: 1, scale: 1, duration: 1, stagger: 0.2, ease: "power2.out" }, "-=0.4");
+        }
+    }, [showHud]);
+
+    const pct = Math.round(clamp(1 - smoothProgress / 0.72, 0, 1) * 100);
+    const statusText = smoothProgress < 0.05 ? 'ASSEMBLED' : smoothProgress > 0.88 ? 'DISASSEMBLED' : 'ANATOMY VIEW';
 
     return (
         <div className="battery-anatomy-visual-container" ref={containerRef}>
             <canvas ref={canvasRef} className="battery-anatomy-canvas" />
 
             {showHud && (
-                <div className="anatomy-hud-overlay">
+                <div className="anatomy-hud-overlay" ref={hudContainerRef}>
                     <div className="hud-part tl"></div><div className="hud-part tr"></div>
                     <div className="hud-part bl"></div><div className="hud-part br"></div>
                     <div className="hud-readout h-tl">POWERFRILL · BESS<br /><b>LFP-2400</b><span className="accent-sub">ANATOMY VIEW</span></div>
@@ -512,17 +553,17 @@ const BatteryAnatomyVisual: React.FC<BatteryAnatomyVisualProps> = ({ accent, pro
             {/* Part Labels (Only if HUD is on) */}
             {showHud && (
                 <>
-                    <div className={`anatomy-label l-casing ${progress > 0.1 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 240px)', left: 'calc(50% + 155px)' }}><div className="line" />AL-6061 OUTER CASING</div>
-                    <div className={`anatomy-label l-bms ${progress > 0.16 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 175px)', right: 'calc(50% + 148px)' }}>BMS PCB · 16S MANAGEMENT<div className="line right" /></div>
-                    <div className={`anatomy-label l-bus ${progress > 0.22 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 115px)', left: 'calc(50% + 155px)' }}><div className="line" />COPPER BUSBARS · INTERCONNECT</div>
-                    <div className={`anatomy-label l-cell1 ${progress > 0.28 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 60px)', right: 'calc(50% + 148px)' }}>PRISMATIC CELL MODULE × 4<div className="line right" /></div>
-                    <div className={`anatomy-label l-sep ${progress > 0.34 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 0px)', left: 'calc(50% + 155px)' }}><div className="line" />PE SEPARATOR MEMBRANE</div>
-                    <div className={`anatomy-label l-anode ${progress > 0.38 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 48px)', right: 'calc(50% + 148px)' }}>GRAPHITE ANODE LAYER<div className="line right" /></div>
-                    <div className={`anatomy-label l-cath ${progress > 0.44 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 90px)', left: 'calc(50% + 155px)' }}><div className="line" />LFP CATHODE FOIL</div>
-                    <div className={`anatomy-label l-elec ${progress > 0.5 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 135px)', right: 'calc(50% + 148px)' }}>LiPF₆ LIQUID ELECTROLYTE<div className="line right" /></div>
-                    <div className={`anatomy-label l-cell2 ${progress > 0.54 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 175px)', left: 'calc(50% + 155px)' }}><div className="line" />CELL MODULE STACK × 4</div>
-                    <div className={`anatomy-label l-cool ${progress > 0.65 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 218px)', right: 'calc(50% + 148px)' }}>LIQUID COOLING PLATE<div className="line right" /></div>
-                    <div className={`anatomy-label l-base ${progress > 0.7 && progress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 252px)', left: 'calc(50% + 155px)' }}><div className="line" />STRUCTURAL BASE · AL-6061</div>
+                    <div className={`anatomy-label l-casing ${smoothProgress > 0.1 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 240px)', left: 'calc(50% + 155px)' }}><div className="line" />AL-6061 OUTER CASING</div>
+                    <div className={`anatomy-label l-bms ${smoothProgress > 0.16 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 175px)', right: 'calc(50% + 148px)' }}>BMS PCB · 16S MANAGEMENT<div className="line right" /></div>
+                    <div className={`anatomy-label l-bus ${smoothProgress > 0.22 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 115px)', left: 'calc(50% + 155px)' }}><div className="line" />COPPER BUSBARS · INTERCONNECT</div>
+                    <div className={`anatomy-label l-cell1 ${smoothProgress > 0.28 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% - 60px)', right: 'calc(50% + 148px)' }}>PRISMATIC CELL MODULE × 4<div className="line right" /></div>
+                    <div className={`anatomy-label l-sep ${smoothProgress > 0.34 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 0px)', left: 'calc(50% + 155px)' }}><div className="line" />PE SEPARATOR MEMBRANE</div>
+                    <div className={`anatomy-label l-anode ${smoothProgress > 0.38 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 48px)', right: 'calc(50% + 148px)' }}>GRAPHITE ANODE LAYER<div className="line right" /></div>
+                    <div className={`anatomy-label l-cath ${smoothProgress > 0.44 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 90px)', left: 'calc(50% + 155px)' }}><div className="line" />LFP CATHODE FOIL</div>
+                    <div className={`anatomy-label l-elec ${smoothProgress > 0.5 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 135px)', right: 'calc(50% + 148px)' }}>LiPF₆ LIQUID ELECTROLYTE<div className="line right" /></div>
+                    <div className={`anatomy-label l-cell2 ${smoothProgress > 0.54 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 175px)', left: 'calc(50% + 155px)' }}><div className="line" />CELL MODULE STACK × 4</div>
+                    <div className={`anatomy-label l-cool ${smoothProgress > 0.65 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 218px)', right: 'calc(50% + 148px)' }}>LIQUID COOLING PLATE<div className="line right" /></div>
+                    <div className={`anatomy-label l-base ${smoothProgress > 0.7 && smoothProgress < 0.9 ? 'on' : ''}`} style={{ top: 'calc(50% + 252px)', left: 'calc(50% + 155px)' }}><div className="line" />STRUCTURAL BASE · AL-6061</div>
                 </>
             )}
         </div>

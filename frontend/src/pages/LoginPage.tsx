@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
     // Redirection logic
     React.useEffect(() => {
         if (user) {
-            if (user.role === 'admin' || user.role === 'editor') {
+            if (user.role === 'ADMIN' || user.role === 'EDITOR') {
                 navigate('/admin');
             } else if (cartCount > 0) {
                 navigate('/checkout');
@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
                 phone_number: phoneNumber,
                 full_name: fullName,
                 username: username || null,
-                role: 'viewer'
+                role: 'VIEWER'
             });
             setSuccess('Account created successfully! Logging you in...');
 

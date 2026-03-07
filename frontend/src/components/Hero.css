@@ -88,18 +88,20 @@
 }
 
 .hero-nav-dot-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 800;
     /* Bold as requested */
     text-transform: uppercase;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.4em;
+    /* Wider spacing Rimac style */
     transition: all 0.4s ease;
 }
 
 .hero-nav-dot-item.is-active .hero-nav-dot-label,
 .hero-nav-dot-item.is-hovered .hero-nav-dot-label {
-    letter-spacing: 0.35em;
-    transform: translateX(8px) scale(1.1);
+    letter-spacing: 0.5em;
+    /* Expanding on hover */
+    transform: translateX(8px);
 }
 
 /* --- Info Panel — Positioned on the Right Edge --- */
@@ -611,42 +613,44 @@
 }
 
 .rimac-eyebrow {
-    font-size: 0.9rem;
-    letter-spacing: 0.4em;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
     color: var(--text-secondary);
-    /* Use theme variable */
-    margin-bottom: 1.5rem;
-    font-weight: 500;
+    margin-bottom: 1rem;
+    /* Tighter Rimac spacing */
+    font-weight: 600;
 }
 
 .rimac-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    /* Larger bolder titles */
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
+    letter-spacing: -0.04em;
+    /* Tight negative tracking for technical feel */
+    margin-bottom: 1.5rem;
     line-height: 0.9;
     max-width: 900px;
     color: var(--text-primary);
-    /* Use theme variable */
 }
 
 .rimac-description {
-    font-size: clamp(0.85rem, 1.5vw, 1rem);
-    line-height: 1.5;
-    color: var(--text-secondary);
-    /* Use theme variable */
-    max-width: 550px;
-    margin: 0 auto 2rem;
-    font-weight: 300;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    /* Slightly dimmer for contrast against bold title */
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    font-weight: 400;
 }
 
 .rimac-stats {
     display: flex;
     justify-content: center;
-    gap: 3rem;
-    margin-bottom: 2.5rem;
+    gap: 4rem;
+    /* More spacing Rimac style */
+    margin-bottom: 3rem;
 }
 
 .rimac-stat {
@@ -656,17 +660,22 @@
 }
 
 .rimac-stat-val {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    /* Much larger stat values */
+    font-weight: 800;
+    /* Bolder */
     color: #fff;
+    letter-spacing: -0.02em;
 }
 
 .rimac-stat-unit {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    /* Wider spacing */
+    color: var(--text-secondary);
     text-transform: uppercase;
     margin-top: 0.5rem;
+    font-weight: 600;
 }
 
 /* --- Rimac Explore Button --- */

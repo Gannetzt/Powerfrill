@@ -29,7 +29,14 @@ const ProductPage: React.FC<ProductData> = (product) => {
         specifications,
         hideQuotation,
         categoryId,
-        menuId
+        menuId,
+        chemistry,
+        certification,
+        cycleLife,
+        warrantyYears,
+        chargingTime,
+        voltageNominal,
+        capacityAh
     } = product;
 
     const { addToCart } = useCart();
@@ -205,12 +212,46 @@ const ProductPage: React.FC<ProductData> = (product) => {
                         </div>
 
                         <div className="et-highlights-strip">
-                            {features.slice(0, 3).map((f, i) => (
+                            {chemistry && (
+                                <div className="highlight-item">
+                                    <span className="h-val">{chemistry}</span>
+                                    <span className="h-lab">CHEMISTRY</span>
+                                </div>
+                            )}
+                            {certification && (
+                                <div className="highlight-item highlight-cert">
+                                    <span className="h-val">{certification}</span>
+                                    <span className="h-lab">CERTIFICATION</span>
+                                </div>
+                            )}
+                            {cycleLife && (
+                                <div className="highlight-item">
+                                    <span className="h-val">{cycleLife}</span>
+                                    <span className="h-lab">CYCLE LIFE</span>
+                                </div>
+                            )}
+                            {!chemistry && features.slice(0, 3).map((f, i) => (
                                 <div key={i} className="highlight-item">
                                     <span className="h-val">{f.value}</span>
                                     <span className="h-lab">{f.label}</span>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Trust Badges Section */}
+                        <div className="et-trust-badges">
+                            <div className="trust-badge">
+                                <span className="badge-icon">🛡️</span>
+                                <span className="badge-text">AIS 156 PHASE 2</span>
+                            </div>
+                            <div className="trust-badge">
+                                <span className="badge-icon">🚚</span>
+                                <span className="badge-text">PAN INDIA DELIVERY</span>
+                            </div>
+                            <div className="trust-badge">
+                                <span className="badge-icon">⚙️</span>
+                                <span className="badge-text">CUSTOM SOLUTIONS</span>
+                            </div>
                         </div>
 
                         <div className="et-cta-group">
@@ -289,6 +330,30 @@ const ProductPage: React.FC<ProductData> = (product) => {
                     <div className="specs-table-wrap">
                         <table className="specs-table">
                             <tbody>
+                                {voltageNominal && (
+                                    <tr>
+                                        <td className="spec-key">NOMINAL VOLTAGE</td>
+                                        <td className="spec-val">{voltageNominal}</td>
+                                    </tr>
+                                )}
+                                {capacityAh && (
+                                    <tr>
+                                        <td className="spec-key">RATED CAPACITY</td>
+                                        <td className="spec-val">{capacityAh}</td>
+                                    </tr>
+                                )}
+                                {chargingTime && (
+                                    <tr>
+                                        <td className="spec-key">CHARGING TIME</td>
+                                        <td className="spec-val">{chargingTime}</td>
+                                    </tr>
+                                )}
+                                {warrantyYears && (
+                                    <tr>
+                                        <td className="spec-key">WARRANTY</td>
+                                        <td className="spec-val">{warrantyYears} YEARS</td>
+                                    </tr>
+                                )}
                                 {Object.entries(specifications).map(([key, val], i) => (
                                     <tr key={i}>
                                         <td className="spec-key">{key}</td>

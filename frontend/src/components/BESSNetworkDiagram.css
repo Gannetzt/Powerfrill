@@ -50,9 +50,9 @@
     }
 }
 
-.solar-cell {
+/* .solar-cell {
     animation: solar-shimmer 2.5s ease-in-out infinite;
-}
+} */
 
 /* ── BESS box — border pulse ── */
 @keyframes bess-box-pulse {
@@ -89,9 +89,9 @@
     }
 }
 
-.battery-fill {
+/* .battery-fill {
     animation: battery-fill-anim 3s ease-in-out infinite alternate;
-}
+} */
 
 /* ── Flow lines — animated dash ── */
 @keyframes dash-flow {
@@ -100,21 +100,13 @@
     }
 }
 
-.flow-line {
+/* .flow-line {
     animation: dash-flow 3s linear infinite;
 }
 
-.flow-bess-grid {
-    animation-duration: 2.5s;
-}
-
-.flow-bess-ev {
-    animation-duration: 3.5s;
-}
-
-.flow-solar-bess {
-    animation-duration: 2s;
-}
+.flow-bess-grid { animation-duration: 2.5s; }
+.flow-bess-ev { animation-duration: 3.5s; }
+.flow-solar-bess { animation-duration: 2s; } */
 
 /* ── EV car — subtle float ── */
 @keyframes ev-float {
